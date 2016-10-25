@@ -5,12 +5,7 @@
 import React from 'react'
 
 import SmartMenu from '../../../components/layout/navigation/components/SmartMenu.jsx'
-
-import MinifyMenu from '../../../components/layout/actions/MinifyMenu.jsx'
-
 import LoginInfo from '../../../components/user/components/LoginInfo.jsx'
-
-import AsideChat from '../../../components/chat/components/AsideChat.jsx'
 
 let rawItems = require('json!../../config/menu-items.json').items;
 
@@ -21,9 +16,8 @@ let Navigation = React.createClass({
                 <LoginInfo />
                 <nav>
                     <SmartMenu rawItems={rawItems} />
-                    <AsideChat />
                 </nav>
-                <MinifyMenu />
+
             </aside>
         )
     }

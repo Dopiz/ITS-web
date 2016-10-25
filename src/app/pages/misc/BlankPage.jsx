@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SubHeader from '../layout/SubHeader.jsx'
+
 import BigBreadcrumbs from '../../../components/layout/navigation/components/BigBreadcrumbs.jsx'
 import WidgetGrid from '../../../components/layout/widgets/WidgetGrid.jsx'
 import JarvisWidget from '../../../components/layout/widgets/JarvisWidget.jsx'
@@ -30,9 +30,6 @@ let BlankPage = React.createClass({
 
                                 <div>
                                     <div className="widget-body">
-
-
-
 
                                     </div>
                                 </div>
