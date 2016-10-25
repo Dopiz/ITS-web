@@ -1,19 +1,14 @@
 {
-  "name": "smartadmin-reactjs",
-  "version": "1.8.1",
+  "name": "issue-tracking-system",
+  "version": "1.0.0",
   "description": "",
   "main": "web/index.html",
   "scripts": {
     "build": "./node_modules/.bin/webpack --config webpack/webpack.build.config.js --progress --colors",
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors --inline --hot"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://smartadmin-reactjs@bitbucket.org/smartadmin-reactjs/smartadmin-reactjs.git"
-  },
-  "author": "sunny",
+  "author": "Wayne Zhang",
   "license": "wrapbootstrap",
-  "homepage": "https://wrapbootstrap.com/theme/smartadmin-responsive-webapp-WB0573SK0",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
     "babel-loader": "^6.2.0",

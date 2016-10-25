@@ -1,14 +1,10 @@
 {
-  "name": "smartadmin-reactjs",
+  "name": "issue-tracking-system",
   "version": "0.0.1",
   "authors": [
-    "Sunny <info@myorange.ca>"
+    "Wayne Zhang"
   ],
   "main": "index.html",
-  "keywords": [
-    "smartadmin",
-    "reactjs"
-  ],
   "license": "wrapbootstrap",
   "ignore": [
     "**/.*",
