@@ -1,16 +1,45 @@
 {
   "items": [
     {
-      "title": "Dashboard",
-      "icon": "fa fa-lg fa-fw fa-home",
+      "title": "Issues",
+      "icon": "fa fa-lg fa-fw fa-paper-plane",
       "items": [
         {
           "route": "/dashboard",
-          "title": "Analytics Dashboard"
+          "title": "All Issues"
         },
         {
-          "route": "/dashboard/social-wall.html",
-          "title": "Social Wall"
+          "route": "/dashboard",
+          "title": "Development"
+        },
+        {
+          "route" : "/dashboard",
+          "title" : "Testing"
+        },
+        {
+          "route" : "/dashboard",
+          "title" : "Closed Issues"
+        }
+      ]
+    },{
+      "title" : "Users",
+      "icon" : "fa fa-lg fa-fw fa-user",
+      "items" : [
+        {
+          "route": "/dashboard",
+          "title": "All Users"
+        },
+        {
+          "route": "/dashboard",
+          "title": "Manager"
+        },
+        {
+          "route": "/dashboard",
+          "title": "Developer"
+        },
+        {
+          "route": "/dashboard",
+          "title": "Tester"
         }
       ]
     }

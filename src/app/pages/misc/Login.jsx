@@ -10,7 +10,7 @@ let Login = React.createClass({
                 <header id="header" className="animated fadeInDown">
 
                     <div id="logo-group">
-                        <span id="logo"> <img src="styles/img/logo.png" alt="SmartAdmin"/> </span>
+                        <span id="logo"> <img src="styles/img/ITS_logo_black.png" style={{width:"100%"}} alt="SmartAdmin"/> </span>
                     </div>
 
                 </header>

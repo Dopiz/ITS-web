@@ -12,7 +12,7 @@ let Header = React.createClass({
         return <header id="header">
             <div id="logo-group">
                 <span id="logo">
-                    <img src="styles/img/logo.png" // place your logo here
+                    <img src="styles/img/ITS_logo_black.png" style={{width:"100%"}} // place your logo here
                          alt="SmartAdmin"/>
                 </span>
             </div>

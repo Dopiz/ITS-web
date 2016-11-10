@@ -15,11 +15,10 @@ const Routes = (
     <Route>
         <Route path="/" component={Layout}>
 
-            
+
             <Redirect from="/" to="/dashboard"/>
             <IndexRoute component={Dashboard}/>
             <Route path="dashboard" component={Dashboard}/>
-
 
             /*show error page*/
             <Route path="misc">
