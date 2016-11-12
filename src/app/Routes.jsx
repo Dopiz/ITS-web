@@ -1,14 +1,16 @@
 import React from 'react'
 import {Route, Redirect, IndexRoute} from 'react-router'
 
+import {
+    AllIssues,
+    Layout,
+    Page404,
+    Page500,
+    BlankPage,
+    Login
+} from './pages/index.jsx'
+
 import Dashboard from './pages/dashboard/Dashboard.jsx'
-
-import Layout from './pages/layout/Layout.jsx'
-
-import Page404 from './pages/misc/Page404.jsx'
-import Page500 from './pages/misc/Page500.jsx'
-import BlankPage from './pages/misc/BlankPage.jsx'
-import Login from './pages/misc/Login.jsx'
 
 
 const Routes = (
@@ -19,6 +21,10 @@ const Routes = (
             <Redirect from="/" to="/dashboard"/>
             <IndexRoute component={Dashboard}/>
             <Route path="dashboard" component={Dashboard}/>
+
+            <Route path="issue">
+                <Route path="allIssues" component={AllIssues} />
+            </Route>
 
             /*show error page*/
             <Route path="misc">

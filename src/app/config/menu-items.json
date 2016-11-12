@@ -5,7 +5,7 @@
       "icon": "fa fa-lg fa-fw fa-paper-plane",
       "items": [
         {
-          "route": "/dashboard",
+          "route": "/issue/allIssues",
           "title": "All Issues"
         },
         {
