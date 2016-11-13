@@ -3,6 +3,7 @@ import {Route, Redirect, IndexRoute} from 'react-router'
 
 import {
     AllIssues,
+    AllUsers,
     Layout,
     Page404,
     Page500,
@@ -18,12 +19,15 @@ const Routes = (
         <Route path="/" component={Layout}>
 
 
-            <Redirect from="/" to="/dashboard"/>
-            <IndexRoute component={Dashboard}/>
-            <Route path="dashboard" component={Dashboard}/>
+            <Redirect from="/" to="/issue"/>
+            <IndexRoute component={AllIssues}/>
 
             <Route path="issue">
                 <Route path="allIssues" component={AllIssues} />
+            </Route>
+
+            <Route path="user">
+                <Route path="allUsers" component={AllUsers} />
             </Route>
 
             /*show error page*/

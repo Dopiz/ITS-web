@@ -10,6 +10,9 @@ import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
 
+import NewIssueDialog from '../../../components/issue/NewIssueDialog.jsx'
+import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
+
 let AllIssues = React.createClass({
     getInitialState: function() {
         return {
@@ -18,39 +21,51 @@ let AllIssues = React.createClass({
             issuesList : [{
                 id : "123",
                 project : "project 1",
+                title : "title 1",
                 priority : "Low",
-                status : "Started",
+                status : "New",
+                type : "Bug",
                 owner : "pm1",
                 tester : "tester1",
                 developer : "dev1",
-                date : "2016/01/01"
+                createdDate : "2016/01/01",
+                dueDate : "2016/01/03"
             },{
                 id : "124",
                 project : "project 2",
+                title : "title 2",
                 priority : "Medium",
-                status : "Closed",
+                status : "In Progress",
+                type : "Bug",
                 owner : "pm2",
                 tester : "tester2",
                 developer : "dev2",
-                date : "2016/01/02"
+                createdDate : "2016/01/02",
+                dueDate : "2016/01/03"
             },{
                 id : "125",
                 project : "project 3",
+                title : "title 3",
                 priority : "High",
-                status : "Pending",
+                status : "In QA",
+                type : "Task",
                 owner : "pm3",
                 tester : "tester3",
                 developer : "dev3",
-                date : "2016/01/03"
+                createdDate : "2016/01/03",
+                dueDate : "2016/01/03"
             },{
                 id : "126",
                 project : "project 3",
+                title : "title 4",
                 priority : "Critical",
-                status : "Pending",
+                status : "Closed",
+                type : "Task",
                 owner : "pm3",
                 tester : "tester3",
                 developer : "dev3",
-                date : "2016/01/03"
+                createdDate : "2016/01/03",
+                dueDate : "2016/01/03"
             }]
         };
     },
@@ -83,14 +98,17 @@ let AllIssues = React.createClass({
 
         function statusFormatter(cell, row){
             switch (cell) {
-                case "Started" :
-                    return '<span class="center-block padding-5 label label-success">'+ cell +'</span>';
+                case "New" :
+                    return '<span class="center-block padding-5 label bg-color-blueDark txt-color-white">'+ cell +'</span>';
                     break;
-                case "Pending" :
-                    return '<span class="center-block padding-5 label bg-color-blueLight txt-color-white">'+ cell +'</span>';
+                case "In Progress" :
+                    return '<span class="center-block padding-5 label btn-primary">'+ cell +'</span>';
+                    break;
+                case "In QA" :
+                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
                     break;
                 case "Closed" :
-                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label bg-color-blueLight txt-color-white">'+ cell +'</span>';
                     break;
             }
         }
@@ -116,9 +134,10 @@ let AllIssues = React.createClass({
             type: "SelectFilter",
             placeholder: "Filter Status",
             options: {
-                Started : "Started",
-                Pending : "Pending",
-                Closed : "Closed"
+                "New" : "New",
+                "In Progress" : "In Progress",
+                "In QA" : "In QA",
+                "Closed" : "Closed"
             }
         };
 
@@ -148,6 +167,10 @@ let AllIssues = React.createClass({
 
         return (
             <div id="content">
+
+                <NewIssueDialog />
+                <IssueHistoryDialog />
+
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
                         <h1 className="page-title txt-color-blueDark">
@@ -166,7 +189,7 @@ let AllIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#ApplicationDialog"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#NewIssueDialog"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New
@@ -196,6 +219,19 @@ let AllIssues = React.createClass({
                                             <span className="btn-label">
                                                 <i className="fa fa-eye"></i>
                                             </span>View
+                                        </a>
+                                    </OverlayTrigger>
+                                </div>
+
+                                <div className="btn-group" >
+                                    <OverlayTrigger placement="top"
+                                        overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
+                                        <a onClick={this.buttonViewEvent}
+                                        data-toggle="modal" data-target="#IssueHistoryDialog"
+                                        className="btn btn-sm btn-labeled btn-warning">
+                                            <span className="btn-label">
+                                                <i className="fa fa-history"></i>
+                                            </span>History
                                         </a>
                                     </OverlayTrigger>
                                 </div>
@@ -234,14 +270,17 @@ let AllIssues = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allIssuesList" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID">  <Msg phrase="ID" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} filter={statusFilter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="owner" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="tester" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="developer" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="date" dataSort={true} csvHeader="Date">  <Msg phrase="Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="createdDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="dueDate" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>

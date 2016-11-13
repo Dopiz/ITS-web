@@ -13,7 +13,9 @@ let Navigation = React.createClass({
     render: function () {
         return (
             <aside id="left-panel">
-                <LoginInfo />
+                <LoginInfo
+                    username="WayneZhang"
+                    avatar="styles/img/ITS_logo_black.png" />
                 <nav>
                     <SmartMenu rawItems={rawItems} />
                 </nav>

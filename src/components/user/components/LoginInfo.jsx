@@ -5,26 +5,38 @@ import ToggleShortcut from './ToggleShortcut.jsx'
 
 let LoginInfo = React.createClass({
     getInitialState: function () {
-        return {}
+        return {
+            username : "",
+            avatar : ""
+        }
     },
-    componentWillMount: function () {
-		UserStore.listen(function (data) {
-            this.setState(data)
-        }.bind(this))
-    },
-	render: function(){
-		return (
+    // componentWillMount: function () {
+		// UserStore.listen(function (data) {
+    //         this.setState(data)
+    //     }.bind(this))
+    // },
+    componentWillReceiveProps : function(nextProps){
 
-			<div className="login-info">
-			    <span>
-			        <ToggleShortcut>
-			            <img src={this.state.picture} alt="me"
-							 className="online" /><span>{ this.state.username }</span><i className="fa fa-angle-down" />
-			        </ToggleShortcut>
-			     </span>
-			</div>
-		)
-	}
-});
+        this.setState({
+            username : nextProps.username,
+            avatar : nextProps.avatar
+        }, function(){
+
+        });
+    },
+  	render: function(){
+  		return (
+
+  			<div className="login-info">
+  			    <span>
+  			        <ToggleShortcut>
+  			            <img src="styles/img/avatars/4.png" alt="me"
+  							 className="online" /><span>{ this.state.username }</span><i/>
+  			        </ToggleShortcut>
+  			     </span>
+  			</div>
+  		)
+  	}
+  });
 
 export default LoginInfo

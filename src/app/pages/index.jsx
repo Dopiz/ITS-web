@@ -1,6 +1,9 @@
 /*issue*/
 import AllIssues from './issue/AllIssues.jsx' ;
 exports.AllIssues = AllIssues;
+/*user*/
+import AllUsers from './user/AllUsers.jsx' ;
+exports.AllUsers = AllUsers;
 /*Layout*/
 import Layout from './layout/Layout.jsx' ;
 exports.Layout = Layout;
