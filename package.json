@@ -5,7 +5,8 @@
   "main": "web/index.html",
   "scripts": {
     "build": "./node_modules/.bin/webpack --config webpack/webpack.build.config.js --progress --colors",
-    "dev": "./node_modules/.bin/webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors --inline --hot"
+    "dev": "./node_modules/.bin/webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors --inline --hot",
+    "start": "http-server -p 8080 web"
   },
   "author": "Wayne Zhang",
   "license": "wrapbootstrap",
