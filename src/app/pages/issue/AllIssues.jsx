@@ -10,7 +10,7 @@ import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
 
-import NewIssueDialog from '../../../components/issue/NewIssueDialog.jsx'
+import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
 
 let AllIssues = React.createClass({
@@ -168,7 +168,7 @@ let AllIssues = React.createClass({
         return (
             <div id="content">
 
-                <NewIssueDialog />
+                <IssueDialogModal />
                 <IssueHistoryDialog />
 
                 <div className="row hidden-xs">
@@ -189,7 +189,7 @@ let AllIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#NewIssueDialog"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New

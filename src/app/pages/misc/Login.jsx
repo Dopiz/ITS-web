@@ -3,6 +3,15 @@ import React from 'react'
 import UiValidate from '../../../components/forms/validation/UiValidate.jsx'
 let Login = React.createClass({
 
+    getInitialState: function() {
+        return {
+
+        };
+    },
+
+    handleSubmitForm : function(e){
+        console.log("in");
+    },
 
     render: function () {
         return (
@@ -22,7 +31,7 @@ let Login = React.createClass({
                             <div className="col-md-offset-4 col-md-4">
                                 <div className="well no-padding">
                                     <UiValidate>
-                                    <form action="#/dashboard" id="login-form" className="smart-form client-form">
+                                    <form onSubmit={this.handleSubmitForm} action="#/issue/AllIssues" id="login-form" className="smart-form client-form">
                                         <header>
                                             Sign In
                                         </header>

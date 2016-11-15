@@ -40,6 +40,10 @@
         {
           "route": "/dashboard",
           "title": "Tester"
+        },
+        {
+          "route": "/dashboard",
+          "title": "Customer"
         }
       ]
     }

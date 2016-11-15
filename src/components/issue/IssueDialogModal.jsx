@@ -9,7 +9,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 
-let NewIssueDialog = React.createClass({
+let IssueDialogModal = React.createClass({
 
     getInitialState: function() {
         return {
@@ -58,7 +58,7 @@ let NewIssueDialog = React.createClass({
 
         return (
             <div>
-                <div className="modal fade" id="NewIssueDialog" tabIndex="-1" role="dialog" aria-labelledby="NewIssueDialog" aria-hidden="true">
+                <div className="modal fade" id="IssueDialogModal" tabIndex="-1" role="dialog" aria-labelledby="IssueDialogModal" aria-hidden="true">
                     <div className="modal-dialog" style={{width:"50%"}}>
                         <div className="modal-content" style={{padding:"10px"}}>
                             <WidgetGrid>
@@ -116,6 +116,21 @@ let NewIssueDialog = React.createClass({
                                                         <option value="Medium">Medium</option>
                                                         <option value="High">High</option>
                                                         <option value="Critical">Critical</option>
+                                                </select>
+                                            </label>
+                                        </section>
+
+                                        <section>
+                                            <label className="label">Type</label>
+                                            <label className={this.state.formClassName}>
+                                                <select name="priority" id='priority' className="form-control"
+                                                    value={this.state.priority}
+                                                    onChange={this.handleChange(this, 'priority')}
+                                                    disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        <option value="Bug">Bug</option>
+                                                        <option value="Task">Task</option>
+                                                        <option value="Feature">Feature</option>
                                                 </select>
                                             </label>
                                         </section>
@@ -206,4 +221,4 @@ let NewIssueDialog = React.createClass({
     }
 });
 
-export default NewIssueDialog
+export default IssueDialogModal
