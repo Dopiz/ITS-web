@@ -7,6 +7,9 @@ exports.AllUsers = AllUsers;
 /*Layout*/
 import Layout from './layout/Layout.jsx' ;
 exports.Layout = Layout;
+/*project*/
+import AllProjects from './project/AllProjects.jsx' ;
+exports.AllProjects = AllProjects;
 /*misc*/
 import Page404 from './misc/Page404.jsx' ;
 exports.Page404 = Page404;

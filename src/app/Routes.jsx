@@ -4,6 +4,7 @@ import {Route, Redirect, IndexRoute} from 'react-router'
 import {
     AllIssues,
     AllUsers,
+    AllProjects,
     Layout,
     Page404,
     Page500,
@@ -28,6 +29,10 @@ const Routes = (
 
             <Route path="user">
                 <Route path="allUsers" component={AllUsers} />
+            </Route>
+
+            <Route path="project">
+                <Route path="allProjects" component={AllProjects} />
             </Route>
 
             /*show error page*/

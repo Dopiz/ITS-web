@@ -46,6 +46,16 @@
           "title": "Customer"
         }
       ]
+    },{
+      "title" : "Projects",
+      "icon" : "fa fa-lg fa-fw fa-list-alt",
+      "items" : [
+        {
+          "route": "/project/allProjects",
+          "title": "All Projects"
+        }
+      ]
     }
+
   ]
 }
