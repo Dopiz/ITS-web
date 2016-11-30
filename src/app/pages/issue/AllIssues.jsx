@@ -9,6 +9,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
+import {HTTPService} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
@@ -71,13 +72,24 @@ let AllIssues = React.createClass({
     },
     componentWillMount: function() {
 
+        this.fetchIssues();
+    },
+    fetchIssues : function(){
 
+        HTTPService.get('issue/getIssues');
+        .then(function(data) {
 
+            console.log(data);
+
+        }.bind(this));
     },
     buttonCreateIssue : function(){
 
     },
     buttonEditIssue : function(){
+
+    },
+    butoonViewEvent : function(){
 
     },
     buttonExportCSV: function(){
@@ -196,6 +208,7 @@ let AllIssues = React.createClass({
                                         </a>
                                     </OverlayTrigger>
                                 </div>
+
 
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
