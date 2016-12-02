@@ -79,10 +79,13 @@ let AllIssues = React.createClass({
         HTTPService.get('issue/getIssues')
         .then(function(data) {
             console.log(data);
+            this.setState({
+                issues : data
+            })
 
         }.bind(this));
     },
-    buttonCreateIssue : function(){
+    buttonAddIssue : function(){
 
     },
     buttonEditIssue : function(){
@@ -100,8 +103,7 @@ let AllIssues = React.createClass({
     onSortChange : function(){
         this.forceUpdate();
     },
-    render: function () {
-
+    render: function() {
         var arrow_style = {
             fontSize:"5px",
             margin:"0px 7px 0px 7px"
@@ -200,7 +202,7 @@ let AllIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonAddIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New

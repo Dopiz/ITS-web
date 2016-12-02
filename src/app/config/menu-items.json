@@ -1,6 +1,10 @@
 {
   "items": [
     {
+      "title": "Home Page",
+      "route": "/",
+      "icon": "fa fa-lg fa-fw fa fa-home"
+    },{
       "title": "Issues",
       "icon": "fa fa-lg fa-fw fa-paper-plane",
       "items": [
@@ -13,11 +17,11 @@
           "title": "Development"
         },
         {
-          "route" : "/dashboard",
+          "route" : "/issue/testing",
           "title" : "Testing"
         },
         {
-          "route" : "/dashboard",
+          "route" : "/issue/closedIssues",
           "title" : "Closed Issues"
         }
       ]
