@@ -1,6 +1,16 @@
 /*issue*/
 import AllIssues from './issue/AllIssues.jsx' ;
 exports.AllIssues = AllIssues;
+/*Development*/
+import Development from './issue/Development.jsx' ;
+exports.Development = Development;
+/*Testing*/
+import Testing from './issue/Testing.jsx' ;
+exports.Testing = Testing;
+/*ClosedIssues*/
+import ClosedIssues from './issue/ClosedIssues.jsx' ;
+exports.ClosedIssues = ClosedIssues;
+
 /*user*/
 import AllUsers from './user/AllUsers.jsx' ;
 exports.AllUsers = AllUsers;

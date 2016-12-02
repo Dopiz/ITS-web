@@ -14,73 +14,28 @@ import {HTTPService} from '../../../services/index.js'
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
 
-let AllIssues = React.createClass({
+let Testing = React.createClass({
     getInitialState: function() {
         return {
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             issuesList : [{
-                id : "123",
-                project : "project 1",
-                title : "title 1",
-                priority : "Low",
-                status : "New",
+                id : "1",
+                project : "Testing Test",
+                title : "title",
+                priority : "High",
+                status : "In QA",
                 type : "Bug",
                 owner : "pm1",
                 tester : "tester1",
                 developer : "dev1",
-                createdDate : "2016/01/01",
-                dueDate : "2016/01/03"
-            },{
-                id : "124",
-                project : "project 2",
-                title : "title 2",
-                priority : "Medium",
-                status : "In Progress",
-                type : "Bug",
-                owner : "pm2",
-                tester : "tester2",
-                developer : "dev2",
-                createdDate : "2016/01/02",
-                dueDate : "2016/01/03"
-            },{
-                id : "125",
-                project : "project 3",
-                title : "title 3",
-                priority : "High",
-                status : "In QA",
-                type : "Task",
-                owner : "pm3",
-                tester : "tester3",
-                developer : "dev3",
-                createdDate : "2016/01/03",
-                dueDate : "2016/01/03"
-            },{
-                id : "126",
-                project : "project 3",
-                title : "title 4",
-                priority : "Critical",
-                status : "Closed",
-                type : "Task",
-                owner : "pm3",
-                tester : "tester3",
-                developer : "dev3",
-                createdDate : "2016/01/03",
-                dueDate : "2016/01/03"
+                createdDate : "2016/12/01",
+                dueDate : "2016/12/02"
             }]
         };
     },
     componentWillMount: function() {
 
-        this.fetchIssues();
-    },
-    fetchIssues : function(){
-
-
-        HTTPService.get('issue/getIssues', function(res){
-            console.log(res);
-
-        });
     },
     buttonAddIssue : function(){
 
@@ -187,7 +142,7 @@ let AllIssues = React.createClass({
                             <i className="fa fa-lg fa-fw fa-paper-plane" style={{margin:"0px 5px 0px 0px"}}></i>
                             <Msg phrase="Issue" />
                             <i className="fa fa-chevron-right" style={arrow_style}></i>
-                            <a className="txt-color-blueDark" >All Issues</a>
+                            <a className="txt-color-blueDark" >Testing</a>
                         </h1>
                     </div>
                 </div>
@@ -306,4 +261,4 @@ let AllIssues = React.createClass({
     }
 });
 
-export default AllIssues
+export default Testing
