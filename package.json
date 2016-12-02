@@ -52,7 +52,6 @@
     "react-bootstrap-daterangepicker": "^3.2.2",
     "react-bootstrap-table": "^2.5.8",
     "react-dropzone": "^3.7.3",
-    "react-select": "^1.0.0-rc.2",
-    "whatwg-fetch": "^2.0.1"
+    "react-select": "^1.0.0-rc.2"
   }
 }

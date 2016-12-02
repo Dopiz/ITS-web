@@ -1,24 +1,20 @@
-var Fetch = require('whatwg-fetch');
-
 var BASE_URL = "http://140.124.183.89:3000/" ;
-var temp_url = "http://localhost:3000/";
 
 var HTTPService = {
 
-    get: function(url) {
+    get: function(url, callback) {
 
-        var options = {
-            credentials : "include"
-        };
-
-        //return fetch(options)
-        return fetch(BASE_URL + url, options)
-        .then(function(res){
-            return res ;
-        })
-        .catch(function(error) {
-            showFailConnectionMessage();
-        });
+        $.ajax({
+          method: 'GET',
+          url : BASE_URL + url,
+          contentType: 'application/json',
+  				success: function(res) {
+              callback(res);
+  				},
+				  error: function(error) {
+					    showFailConnectionMessage();
+				  }
+			});
 
     },
     post: function(url,body){

@@ -76,12 +76,13 @@ let AllIssues = React.createClass({
     },
     fetchIssues : function(){
 
-        HTTPService.get('issue/getIssues');
-        .then(function(data) {
-
-            console.log(data);
-
-        }.bind(this));
+        HTTPService.get('issue/getIssues', function(res){
+            console.log(res);
+        });
+        // .then(function(data) {
+        //     console.log(data);
+        //
+        // }.bind(this));
     },
     buttonCreateIssue : function(){
 
