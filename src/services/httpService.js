@@ -1,14 +1,15 @@
 var Fetch = require('whatwg-fetch');
 
 var BASE_URL = "http://140.124.183.89:3000/" ;
-var temp_url = "http://localhost:3000/";
 
 var HTTPService = {
 
     get: function(url) {
 
         var options = {
-            credentials : "include"
+            credentials : "include",
+            method : "get",
+            mode : "cors"
         };
 
         //return fetch(options)

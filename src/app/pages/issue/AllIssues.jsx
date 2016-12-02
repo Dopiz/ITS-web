@@ -76,9 +76,8 @@ let AllIssues = React.createClass({
     },
     fetchIssues : function(){
 
-        HTTPService.get('issue/getIssues');
+        HTTPService.get('issue/getIssues')
         .then(function(data) {
-
             console.log(data);
 
         }.bind(this));

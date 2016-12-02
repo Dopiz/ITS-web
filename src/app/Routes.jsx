@@ -3,6 +3,7 @@ import {Route, Redirect, IndexRoute} from 'react-router'
 
 import {
     AllIssues,
+    Development,
     AllUsers,
     AllProjects,
     Layout,
@@ -25,6 +26,7 @@ const Routes = (
 
             <Route path="issue">
                 <Route path="allIssues" component={AllIssues} />
+                <Route path="development" component={Development} />
             </Route>
 
             <Route path="user">

@@ -9,7 +9,7 @@
           "title": "All Issues"
         },
         {
-          "route": "/dashboard",
+          "route": "/issue/development",
           "title": "Development"
         },
         {
