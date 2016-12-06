@@ -9,6 +9,9 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
+import {HTTPService} from '../../../services/index.js'
+
+import ProjectDialogModal from '../../../components/project/ProjectDialogModal.jsx'
 
 let AllProjects = React.createClass({
     getInitialState: function() {
@@ -26,9 +29,14 @@ let AllProjects = React.createClass({
         };
     },
     componentWillMount: function() {
+        this.fetchProject();
+    },
+    fetchProject : function(){
 
-
-
+        HTTPService.get('issue/getProject', function(res){
+            console.log(res);
+            projectList : res;
+        });
     },
     buttonCreateProject : function(){
 
@@ -67,7 +75,7 @@ let AllProjects = React.createClass({
 
         return (
             <div id="content">
-
+              <ProjectDialogModal />
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
                         <h1 className="page-title txt-color-blueDark">
@@ -86,7 +94,7 @@ let AllProjects = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Project </Popover> }>
-                                        <a onClick={this.buttonCreateProject} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateProject} data-toggle="modal" data-target="#ProjectDialogModal"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New

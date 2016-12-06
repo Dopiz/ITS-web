@@ -71,11 +71,9 @@ let AllIssues = React.createClass({
         };
     },
     componentWillMount: function() {
-
         this.fetchIssues();
     },
     fetchIssues : function(){
-
 
         HTTPService.get('issue/getIssues', function(res){
             console.log(res);
