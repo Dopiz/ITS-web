@@ -13,7 +13,8 @@ let ProjectDialogModal = React.createClass({
 
     getInitialState: function() {
         return {
-            title : "",
+            project_name : "",
+            project_description : "",
             isViewState : false,
             formClassName : "input",
             projectOptions : [
@@ -26,21 +27,41 @@ let ProjectDialogModal = React.createClass({
     },
     handleSubmitForm : function(){
 
+        if(this.props.dialogState == "NEW"){
+            console.log("new");
+        }else if(this.props.dialogState == "EDIT"){
+            console.log("edit");
+        }
+
     },
     handleChange : function(item_name, event){
 
+        switch (event) {
+          case 'project_name':
+
+            break;
+          case 'project_description' :
+
+            break;
+        }
     },
     render: function () {
 
         var validationOptions = {
             rules: {
-                title : {
+                project_name : {
+                    required: true
+                },
+                project_description : {
                     required: true
                 }
             },
             messages: {
-                title: {
-                    required: 'title required'
+                project_name : {
+                    required: "project_name required"
+                },
+                project_description : {
+                    required: "project_description required"
                 }
             }
         };
@@ -60,7 +81,7 @@ let ProjectDialogModal = React.createClass({
                     <div className="modal-dialog" style={{width:"50%"}}>
                         <div className="modal-content" style={{padding:"10px"}}>
                             <WidgetGrid>
-                                <UiValidate options={validationOptions}>
+                            <UiValidate options={validationOptions}>
                                 <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm()}>
 
                                     <header>
@@ -68,7 +89,7 @@ let ProjectDialogModal = React.createClass({
                                             &times;
                                         </button>
                                         <h1 className="modal-title" id="myModalLabel">
-                                            Create Project
+                                            {(this.props.dialogState == "NEW")?("Create Project") : ("Edit Project")}
                                         </h1>
                                     </header>
 
@@ -76,11 +97,10 @@ let ProjectDialogModal = React.createClass({
                                         <section>
                                             <label className="label">Project Name</label>
                                             <label className={this.state.formClassName} >
-                                                <input type="text" id='name' name='name'
-                                                  value={this.state.name}
-                                                  onChange={this.handleChange(this, 'name')}
+                                                <input type="text" id='project_name' name='project_name'
+                                                  value={this.state.project_name}
+                                                  onChange={this.handleChange(this, 'project_name')}
                                                   placeholder="Project Name"
-                                                  disabled={this.state.isViewState}
                                                   style={input_style}/>
                                                 <b className="tooltip tooltip-bottom-right">Enter Project Name</b>
                                             </label>
@@ -89,20 +109,12 @@ let ProjectDialogModal = React.createClass({
                                         <section>
                                             <label className="label">Description</label>
                                             <label className="textarea {this.state.formClassName}" >
-                                                <textarea rows="3"  type="text" id='application_name' name='application_name' value={this.state.application_name}
-                                                  onChange={this.handleChange(this, 'title')}
+                                                <textarea rows="3"  type="text" id='project_description' name='project_description' value={this.state.project_description}
+                                                  onChange={this.handleChange(this, 'project_description')}
                                                   placeholder="Description"
-                                                  disabled={this.state.isViewState}
                                                   style={input_style}/>
                                                 <b className="tooltip tooltip-bottom-right">Enter Project Description</b>
                                             </label>
-                                        </section>
-
-                                        <section>
-                                            <label className="label">Picture</label>
-                                            <Dropzone  ref="dropzone"  multiple={false} >
-                                                DropZone
-                                            </Dropzone>
                                         </section>
 
 

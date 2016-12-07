@@ -16,16 +16,8 @@ import ProjectDialogModal from '../../../components/project/ProjectDialogModal.j
 let AllProjects = React.createClass({
     getInitialState: function() {
         return {
-            projectList : [{
-                id : "1",
-                name : "project 1"
-            },{
-                id : "2",
-                name : "project 2"
-            },{
-                id : "3",
-                name : "project 3"
-            }]
+            projectList : [],
+            dialogState : ""
         };
     },
     componentWillMount: function() {
@@ -33,16 +25,23 @@ let AllProjects = React.createClass({
     },
     fetchProject : function(){
 
-        HTTPService.get('issue/getProject', function(res){
-            console.log(res);
-            projectList : res;
-        });
+        HTTPService.get('project/getProjects', function(res){
+
+            this.setState({
+                projectList : res.data
+            })
+
+        }.bind(this));
     },
     buttonCreateProject : function(){
-
+        this.setState({
+            dialogState : "NEW"
+        })
     },
     buttonEditProject : function(){
-
+        this.setState({
+            dialogState : "EDIT"
+        })
     },
     buttonExportCSV: function(){
         this.refs.tbl_allProjectsList.handleExportCSV();
@@ -75,7 +74,9 @@ let AllProjects = React.createClass({
 
         return (
             <div id="content">
-              <ProjectDialogModal />
+              <ProjectDialogModal
+                  dialogState = {this.state.dialogState}
+                />
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
                         <h1 className="page-title txt-color-blueDark">
@@ -94,7 +95,10 @@ let AllProjects = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Project </Popover> }>
-                                        <a onClick={this.buttonCreateProject} data-toggle="modal" data-target="#ProjectDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateProject}
+                                            data-toggle="modal"
+                                            data-target="#ProjectDialogModal"
+                                            className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New
@@ -107,23 +111,11 @@ let AllProjects = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit Project </Popover> }>
                                         <a onClick={this.buttonEditProject}
                                             data-toggle="modal"
+                                            data-target="#ProjectDialogModal"
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
                                             </span>Edit
-                                        </a>
-                                    </OverlayTrigger>
-                                </div>
-
-                                <div className="btn-group" >
-                                    <OverlayTrigger placement="top"
-                                        overlay={<Popover id="popover-activated-on-hover-popover"> View Issue </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
-                                        data-toggle="modal"
-                                        className="btn btn-sm btn-labeled btn-info">
-                                            <span className="btn-label">
-                                                <i className="fa fa-eye"></i>
-                                            </span>View
                                         </a>
                                     </OverlayTrigger>
                                 </div>
