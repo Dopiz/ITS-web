@@ -21,7 +21,7 @@ let AllProjects = React.createClass({
         };
     },
     componentWillMount: function() {
-        this.fetchProject();
+        //this.fetchProject();
     },
     fetchProject : function(){
 

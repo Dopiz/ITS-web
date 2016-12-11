@@ -9,43 +9,88 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 
-let ProjectDialogModal = React.createClass({
+export default class ProjectDialogModal extends Component {
 
-    getInitialState: function() {
-        return {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             project_name : "",
             project_description : "",
-            isViewState : false,
             formClassName : "input",
+            formTextareaClassName : "textarea",
             projectOptions : [
               {value: 'Project name', label: 'Project1'}
             ]
         };
-    },
-    componentWillMount: function() {
+    }
 
-    },
-    handleSubmitForm : function(){
+    componentWillReceiveProps(nextProps){
+
+        switch(nextProps.dialogState){
+            case 'NEW' :
+                this.setState({
+                    project_name : "",
+                    project_description : "",
+                    formClassName : "none",
+                    formTextareaClassName : "none"
+                }, function(){
+                      this.hideErrorMessage();
+                });
+            break;
+            case 'EDIT' :
+                this.setState({
+                    project_name : nextProps.project_name,
+                    project_description : nextProps.project_description,
+                    formClassName : "none",
+                    formTextareaClassName : "none"
+                }, function(){
+                      this.hideErrorMessage();
+                });
+            break;
+        }
+    }
+
+    hideErrorMessage(){
+
+        /*隱藏驗證文字跟把顏色框框拿掉*/
+        this.setState({
+            formClassName : "input",
+            formTextareaClassName : "textarea"
+        }, function(){
+            if(document.getElementById( "project_name-error").style)
+                document.getElementById( "project_name-error").style.display = "none";
+            if(document.getElementById( "project_description-error").style)
+                document.getElementById( "project_description-error").style.display = "none";
+        })
+    }
+
+    handleSubmitForm(e) {
+
+        e.preventDefault();
+
+        if(document.getElementById( "project_name-error" ).value == null)
+            return ;
+        else if(document.getElementById( "project_description-error" ).value == null)
+            return ;
+
 
         if(this.props.dialogState == "NEW"){
-            console.log("new");
+            console.log("call new project api");
         }else if(this.props.dialogState == "EDIT"){
-            console.log("edit");
+            console.log("call edit project api");
         }
 
-    },
-    handleChange : function(item_name, event){
+    }
 
-        switch (event) {
-          case 'project_name':
+    handleChange(item_name, event) {
+        /*根據item_name 更改值*/
+        var nextState = {};
+        nextState[item_name] = event.target.value;
+        this.setState(nextState);
+    }
 
-            break;
-          case 'project_description' :
-
-            break;
-        }
-    },
-    render: function () {
+    render(){
 
         var validationOptions = {
             rules: {
@@ -66,10 +111,6 @@ let ProjectDialogModal = React.createClass({
             }
         };
 
-        var input_style = {
-            backgroundColor:(this.state.isViewState)?("#f9f9f9") : ("")
-        }
-
         var options = [
             { value: 'one', label: 'One' },
             { value: 'two', label: 'Two' }
@@ -82,7 +123,7 @@ let ProjectDialogModal = React.createClass({
                         <div className="modal-content" style={{padding:"10px"}}>
                             <WidgetGrid>
                             <UiValidate options={validationOptions}>
-                                <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm()}>
+                                <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm.bind(this)}>
 
                                     <header>
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
@@ -99,24 +140,21 @@ let ProjectDialogModal = React.createClass({
                                             <label className={this.state.formClassName} >
                                                 <input type="text" id='project_name' name='project_name'
                                                   value={this.state.project_name}
-                                                  onChange={this.handleChange(this, 'project_name')}
-                                                  placeholder="Project Name"
-                                                  style={input_style}/>
+                                                  onChange={this.handleChange.bind(this, 'project_name')}
+                                                  placeholder="Project Name"/>
                                                 <b className="tooltip tooltip-bottom-right">Enter Project Name</b>
                                             </label>
                                         </section>
 
                                         <section>
                                             <label className="label">Description</label>
-                                            <label className="textarea {this.state.formClassName}" >
+                                            <label className={this.state.formTextareaClassName} >
                                                 <textarea rows="3"  type="text" id='project_description' name='project_description' value={this.state.project_description}
-                                                  onChange={this.handleChange(this, 'project_description')}
-                                                  placeholder="Description"
-                                                  style={input_style}/>
+                                                  onChange={this.handleChange.bind(this, 'project_description')}
+                                                  placeholder="Description"/>
                                                 <b className="tooltip tooltip-bottom-right">Enter Project Description</b>
                                             </label>
                                         </section>
-
 
                                     </fieldset>
 
@@ -142,6 +180,4 @@ let ProjectDialogModal = React.createClass({
             </div>
         )
     }
-});
-
-export default ProjectDialogModal
+}
