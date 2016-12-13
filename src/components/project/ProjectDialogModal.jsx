@@ -6,6 +6,7 @@ import UiValidate from '../forms/validation/UiValidate.jsx'
 import WidgetGrid from '../layout/widgets/WidgetGrid.jsx'
 import BigBreadcrumbs from '../layout/navigation/components/BigBreadcrumbs.jsx'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
+import {HTTPService} from '../../services/index.js'
 import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 
@@ -15,13 +16,11 @@ export default class ProjectDialogModal extends Component {
         super(props);
 
         this.state = {
+            project_id : "",
             project_name : "",
             project_description : "",
             formClassName : "input",
-            formTextareaClassName : "textarea",
-            projectOptions : [
-              {value: 'Project name', label: 'Project1'}
-            ]
+            formTextareaClassName : "textarea"
         };
     }
 
@@ -39,9 +38,11 @@ export default class ProjectDialogModal extends Component {
                 });
             break;
             case 'EDIT' :
+                var data = JSON.parse(nextProps.data);
                 this.setState({
-                    project_name : nextProps.project_name,
-                    project_description : nextProps.project_description,
+                    project_id : data.id,
+                    project_name : data.project_name,
+                    project_description : data.project_description,
                     formClassName : "none",
                     formTextareaClassName : "none"
                 }, function(){
@@ -58,9 +59,9 @@ export default class ProjectDialogModal extends Component {
             formClassName : "input",
             formTextareaClassName : "textarea"
         }, function(){
-            if(document.getElementById( "project_name-error").style)
+            if(document.getElementById( "project_name-error"))
                 document.getElementById( "project_name-error").style.display = "none";
-            if(document.getElementById( "project_description-error").style)
+            if(document.getElementById( "project_description-error"))
                 document.getElementById( "project_description-error").style.display = "none";
         })
     }
@@ -69,16 +70,27 @@ export default class ProjectDialogModal extends Component {
 
         e.preventDefault();
 
-        if(document.getElementById( "project_name-error" ).value == null)
+        if(document.getElementById( "project_name" ).value == "")
             return ;
-        else if(document.getElementById( "project_description-error" ).value == null)
+        else if(document.getElementById( "project_description" ).value == "")
             return ;
 
+        var body = {
+            project_name : document.getElementById( "project_name" ).value,
+            project_description : document.getElementById( "project_description" ).value
+        };
 
         if(this.props.dialogState == "NEW"){
-            console.log("call new project api");
+
+            HTTPService.post('project/addProject', body, function(res){
+                this.props.fetchData();
+            }.bind(this));
+
         }else if(this.props.dialogState == "EDIT"){
-            console.log("call edit project api");
+
+            HTTPService.post('project/updateProject', body, function(res){
+                this.props.fetchData();
+            }.bind(this));
         }
 
     }
@@ -91,6 +103,7 @@ export default class ProjectDialogModal extends Component {
     }
 
     render(){
+
 
         var validationOptions = {
             rules: {

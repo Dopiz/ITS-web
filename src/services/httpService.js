@@ -6,37 +6,31 @@ var HTTPService = {
     get: function(url, callback) {
 
         $.ajax({
-          method: 'GET',
-          url : BASE_URL + url,
-          contentType: 'application/json',
-  				success: function(res) {
-              callback(res);
-  				},
-				  error: function(error) {
-					    showFailConnectionMessage();
-				  }
-			});
+            method: 'GET',
+            url : BASE_URL + url,
+            contentType: 'application/json',
+    				success: function(res) {
+                callback(res);
+    				},
+  				  error: function(error) {
+  					    showFailConnectionMessage();
+  				  }
+			  });
 
     },
-    post: function(url,body){
+    post: function(url, body, callback){
 
-        var options = {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+        $.ajax({
+            method: 'POST',
+            url : BASE_URL + url,
+            data : body,
+            success: function(res) {
+                callback(res);
             },
-            body: body,
-            credentials : "include"
-        };
-
-        return fetch(baseUrl + url, options )
-            .then(function(res){
-                return checkStatus(res, "post") ;
-            })
-            .catch(function(error) {
+            error: function(error) {
                 showFailConnectionMessage();
-            });
+            }
+        });
 
     }
 }

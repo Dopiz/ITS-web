@@ -17,7 +17,10 @@ let AllProjects = React.createClass({
     getInitialState: function() {
         return {
             projectList : [],
-            dialogState : ""
+            selectedId : "",
+            selectedData : "",
+            dialogState : "",
+            isSelected : false
         };
     },
     componentWillMount: function() {
@@ -39,15 +42,36 @@ let AllProjects = React.createClass({
         })
     },
     buttonEditProject : function(){
-        this.setState({
-            dialogState : "EDIT"
-        })
+
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.projectList.length ; i++){
+                if(this.state.selectedId == this.state.projectList[i].id){
+
+                    this.setState({
+                        dialogState : "EDIT",
+                        selectedData : JSON.stringify(this.state.projectList[i])
+                    });
+                    break;
+                }
+            }
+        }
     },
     buttonExportCSV: function(){
         this.refs.tbl_allProjectsList.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
 
+        if(!isSelected){
+            this.setState({
+                selectedId : "",
+                isSelected: isSelected,
+             });
+        }else{
+            this.setState({
+                selectedId : row.id,
+                isSelected: isSelected
+            })
+        }
     },
     onSortChange : function(){
         this.forceUpdate();
@@ -74,8 +98,10 @@ let AllProjects = React.createClass({
 
         return (
             <div id="content">
-              <ProjectDialogModal
-                  dialogState = {this.state.dialogState}
+                <ProjectDialogModal
+                    dialogState = {this.state.dialogState}
+                    data = {this.state.selectedData}
+                    fetchData = {this.fetchProjects}
                 />
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -111,7 +137,8 @@ let AllProjects = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit Project </Popover> }>
                                         <a onClick={this.buttonEditProject}
                                             data-toggle="modal"
-                                            data-target="#ProjectDialogModal"
+                                            data-target={(this.state.isSelected) ? "#ProjectDialogModal" : null}
+                                            disabled={!(this.state.isSelected)}
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
@@ -147,8 +174,9 @@ let AllProjects = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allProjectsList" selectRow={selectRowProp} csvFileName="allProjects.csv" data={this.state.projectList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project Name">  <Msg phrase="Project Name" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="project_description" dataSort={true} csvHeader="Project Description">  <Msg phrase="Project Description" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>
