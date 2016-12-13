@@ -1,5 +1,5 @@
-//var BASE_URL = "http://140.124.183.89:3000/" ;
-var BASE_URL = "http://localhost:3000/" ;
+var BASE_URL = "http://140.124.183.89:3000/" ;
+//var BASE_URL = "http://localhost:3000/" ;
 
 var HTTPService = {
 

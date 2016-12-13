@@ -9,37 +9,28 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
+import {HTTPService} from '../../../services/index.js'
 
 import UserDialogModal from '../../../components/user/UserDialogModal.jsx'
 
 let AllUsers = React.createClass({
     getInitialState: function() {
         return {
-            usersList : [{
-                id : "1",
-                name : "user1",
-                project : "Project1",
-                title : "PM",
-                phone : "0912332145",
-                email : "user1@gmail.com"
-            },{
-                id : "2",
-                name : "user2",
-                project : "Project2",
-                title : "Developer",
-                phone : "0912332145",
-                email : "user2@gmail.com"
-            },{
-                id : "3",
-                name : "user3",
-                project : "Project3",
-                title : "QA",
-                phone : "0912332145",
-                email : "user3@gmail.com"
-            }]
+            usersList : []
         };
     },
     componentWillMount: function() {
+        this.fetchUsers();
+    },
+    fetchUsers : function(){
+
+        HTTPService.get('user/getUsers', function(res){
+
+            this.setState({
+                usersList : res.data
+            })
+
+        }.bind(this));
     },
     buttonCreateUser : function(){
 
@@ -99,7 +90,7 @@ let AllUsers = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create User </Popover> }>
-                                        <a onClick={this.buttonCreateIssue} data-toggle="modal" data-target="#UserDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateUser} data-toggle="modal" data-target="#UserDialogModal"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New
@@ -110,7 +101,7 @@ let AllUsers = React.createClass({
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit User </Popover> }>
-                                        <a onClick={this.buttonEditIssue}
+                                        <a onClick={this.buttonEditUser}
                                             data-toggle="modal"
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
@@ -146,7 +137,7 @@ let AllUsers = React.createClass({
 
                                 <header>
                                     <div className="hidden-xs col-sm-2 ">
-                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Issues"/></h2>
+                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Users"/></h2>
                                     </div>
                                     <div className="pull-right">
                                         <OverlayTrigger placement="top"
@@ -158,7 +149,7 @@ let AllUsers = React.createClass({
 
                                 <div>
                                     <div className="widget-body">
-                                        <BootstrapTable ref="tbl_allUsers" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.usersList} options={datatable_options} striped={true} hover={true} pagination>
+                                        <BootstrapTable ref="tbl_allUsers" selectRow={selectRowProp} csvFileName="allUsers.csv" data={this.state.usersList} options={datatable_options} striped={true} hover={true} pagination>
                                             <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Name">  <Msg phrase="Name" />  </TableHeaderColumn>

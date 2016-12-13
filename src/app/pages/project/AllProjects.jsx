@@ -21,9 +21,9 @@ let AllProjects = React.createClass({
         };
     },
     componentWillMount: function() {
-        //this.fetchProject();
+        this.fetchProjects();
     },
-    fetchProject : function(){
+    fetchProjects : function(){
 
         HTTPService.get('project/getProjects', function(res){
 
@@ -134,7 +134,7 @@ let AllProjects = React.createClass({
 
                                 <header>
                                     <div className="hidden-xs col-sm-2 ">
-                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Issues"/></h2>
+                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Projects"/></h2>
                                     </div>
                                     <div className="pull-right">
                                         <OverlayTrigger placement="top"
@@ -148,7 +148,7 @@ let AllProjects = React.createClass({
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allProjectsList" selectRow={selectRowProp} csvFileName="allProjects.csv" data={this.state.projectList} options={datatable_options} striped={true} hover={true} pagination>
                                             <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Project Name">  <Msg phrase="Project Name" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project Name">  <Msg phrase="Project Name" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>

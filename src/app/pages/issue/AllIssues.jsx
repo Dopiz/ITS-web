@@ -19,55 +19,7 @@ let AllIssues = React.createClass({
         return {
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
-            issuesList : [{
-                id : "123",
-                project : "project 1",
-                title : "title 1",
-                priority : "Low",
-                status : "New",
-                type : "Bug",
-                owner : "pm1",
-                tester : "tester1",
-                developer : "dev1",
-                createdDate : "2016/01/01",
-                dueDate : "2016/01/03"
-            },{
-                id : "124",
-                project : "project 2",
-                title : "title 2",
-                priority : "Medium",
-                status : "In Progress",
-                type : "Bug",
-                owner : "pm2",
-                tester : "tester2",
-                developer : "dev2",
-                createdDate : "2016/01/02",
-                dueDate : "2016/01/03"
-            },{
-                id : "125",
-                project : "project 3",
-                title : "title 3",
-                priority : "High",
-                status : "In QA",
-                type : "Task",
-                owner : "pm3",
-                tester : "tester3",
-                developer : "dev3",
-                createdDate : "2016/01/03",
-                dueDate : "2016/01/03"
-            },{
-                id : "126",
-                project : "project 3",
-                title : "title 4",
-                priority : "Critical",
-                status : "Closed",
-                type : "Task",
-                owner : "pm3",
-                tester : "tester3",
-                developer : "dev3",
-                createdDate : "2016/01/03",
-                dueDate : "2016/01/03"
-            }]
+            issuesList : []
         };
     },
     componentWillMount: function() {
@@ -76,9 +28,12 @@ let AllIssues = React.createClass({
     fetchIssues : function(){
 
         HTTPService.get('issue/getIssues', function(res){
-            console.log(res);
 
-        });
+            this.setState({
+                issuesList : res.data
+            })
+
+        }.bind(this));
     },
     buttonAddIssue : function(){
 

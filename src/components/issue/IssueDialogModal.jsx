@@ -8,6 +8,7 @@ import BigBreadcrumbs from '../layout/navigation/components/BigBreadcrumbs.jsx'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import Select from 'react-select'
 import Dropzone from 'react-dropzone'
+import {HTTPService} from '../../services/index.js'
 
 let IssueDialogModal = React.createClass({
 
@@ -16,15 +17,21 @@ let IssueDialogModal = React.createClass({
             title : "",
             isViewState : false,
             formClassName : "input",
-            projectOptions : [
-              {value: 'Project1', label: 'Project1'},
-              {value: 'Project2', label: 'Project2'},
-              {value: 'Project3', label: 'Project3'}
-            ]
+            projectOptions : []
         };
     },
     componentWillMount: function() {
+      this.fetchProjects();
+    },
+    fetchProjects : function(){
 
+        HTTPService.get('project/getProjects', function(res){
+
+            this.setState({
+                projectOptions : res.data
+            })
+
+        }.bind(this));
     },
     handleSubmitForm : function(){
 
