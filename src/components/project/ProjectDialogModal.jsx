@@ -29,6 +29,7 @@ export default class ProjectDialogModal extends Component {
         switch(nextProps.dialogState){
             case 'NEW' :
                 this.setState({
+                    project_id : "",
                     project_name : "",
                     project_description : "",
                     formClassName : "none",
@@ -39,6 +40,7 @@ export default class ProjectDialogModal extends Component {
             break;
             case 'EDIT' :
                 var data = JSON.parse(nextProps.data);
+                console.log();
                 this.setState({
                     project_id : data.id,
                     project_name : data.project_name,
@@ -70,14 +72,15 @@ export default class ProjectDialogModal extends Component {
 
         e.preventDefault();
 
-        if(document.getElementById( "project_name" ).value == "")
+        if(this.state.project_name == "")
             return ;
-        else if(document.getElementById( "project_description" ).value == "")
+        else if(this.state.project_description == "")
             return ;
 
         var body = {
-            project_name : document.getElementById( "project_name" ).value,
-            project_description : document.getElementById( "project_description" ).value
+            id : this.state.project_id,
+            project_name : this.state.project_name,
+            project_description : this.state.project_description
         };
 
         if(this.props.dialogState == "NEW"){
@@ -87,9 +90,10 @@ export default class ProjectDialogModal extends Component {
             }.bind(this));
 
         }else if(this.props.dialogState == "EDIT"){
-
+            console.log(body);
             HTTPService.post('project/updateProject', body, function(res){
                 this.props.fetchData();
+                ProjectDialogModal
             }.bind(this));
         }
 
