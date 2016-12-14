@@ -1,0 +1,17 @@
+.report_transition-enter {
+  opacity: 0.01;
+}
+
+.report_transition-enter.report_transition-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.report_transition-leave {
+  opacity: 1;
+}
+
+.report_transition-leave.report_transition-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

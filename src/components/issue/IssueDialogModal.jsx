@@ -10,27 +10,36 @@ import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 import {HTTPService} from '../../services/index.js'
 
-let IssueDialogModal = React.createClass({
 
-    getInitialState: function() {
+export default class IssueDialogModal extends Component {
 
-        return {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
             title : "",
             isViewState : false,
             formClassName : "input",
-            projectOptions : []
+            projectName : "",
+            priority : "",
+            projectOptions : [],
+            priorityOptions : [{"label" : "Low", "value" : "Low"}, {"label" : "Medium", "value" : "Medium"}, {"label" : "High", "value" : "High"}, {"label" : "Critical", "value" : "Critical"}],
+            typeOptions : [{"label" : "Bug", "value" : "Bug"}, {"label" : "Task", "value" : "Task"}, {"label" : "Feature", "value" : "Feature"}]
         };
 
-    },
-    componentWillMount: function() {
-      this.fetchProjects();
-    },
-    fetchProjects : function(){
+        this.fetchProjects();
+    }
+    componentWillReceiveProps(nextProps){
+
+    }
+
+    fetchProjects(){
         HTTPService.get('project/getProjects', function(res){
 
             var dataList = [];
 
-            for(var i = 0 ; i < res.data.length ;i++){
+            for(var i = 0 ; i < res.data.length ; i++){
 
                 var temp = {
                     value : res.data[i].project_name,
@@ -39,19 +48,42 @@ let IssueDialogModal = React.createClass({
                 };
                 dataList.push(temp);
             }
-
+            console.log(dataList);
             this.setState({
                 projectOptions : dataList
             })
+
         }.bind(this));
-    },
-    handleSubmitForm : function(){
+    }
 
-    },
-    handleChange : function(item_name, event){
+    handleSubmitForm (){
 
-    },
-    render: function () {
+    }
+
+    handleChange(item_name, event){
+
+        /*根據item_name 更改值*/
+        var temp = "";
+        switch (item_name) {
+          case "projectName" :
+            this.setState({projectName : event});
+            break;
+          case "priority" :
+            this.setState({priority : event});
+          break;
+          case "type" :
+            this.setState({type : event});
+          break;
+
+          default:
+            var nextState = {};
+            nextState[item_name] = event.target.value;
+            this.setState(nextState);
+        }
+
+    }
+
+    render() {
 
         var validationOptions = {
             rules: {
@@ -74,6 +106,7 @@ let IssueDialogModal = React.createClass({
             { value: 'one', label: 'One' },
             { value: 'two', label: 'Two' }
         ];
+
 
         return (
             <div>
@@ -99,7 +132,7 @@ let IssueDialogModal = React.createClass({
                                             <label className={this.state.formClassName} >
                                                 <input type="text" id='title' name='title'
                                                   value={this.state.title}
-                                                  onChange={this.handleChange(this, 'title')}
+                                                  onChange={this.handleChange.bind(this, 'title')}
                                                   placeholder="Issue Title"
                                                   disabled={this.state.isViewState}
                                                   style={input_style}/>
@@ -108,71 +141,40 @@ let IssueDialogModal = React.createClass({
                                         </section>
 
                                         <section>
-                                            <label className="label">Test</label>
-                                            <label className={this.state.formClassName}>
-                                            <Select
-                                              options={this.state.projectOptions}
-                                            />
-                                           </label>
-                                        </section>
-
-                                        <section>
-                                            <label className="label">Nielsen Category</label>
-                                            <Select
-                                              ref="selectNielsenCategory"
-                                              value={this.state.selectNielsenCategory}
-                                              placeholder="Select"
-                                              options={this.state.options}
-                                              disabled={this.state.isViewState}>
-                                            </Select>
-                                        </section>
-
-
-                                        <section>
                                             <label className="label">Project</label>
-                                            <label className={this.state.formClassName}>
-                                                <select name="project" id='project' className="form-control"
-                                                    value={this.state.project}
-                                                    onChange={this.handleChange(this, 'project')}
-                                                    disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        <option value="Project1">Project1</option>
-                                                        <option value="Project2">Project2</option>
-                                                        <option value="Project3">Project3</option>
-                                                        <option value="Project4">Project4</option>
-                                                </select>
-                                            </label>
+                                                <Select
+                                                    ref="project"
+                                                    value={this.state.projectName}
+                                                    placeholder="Select"
+                                                    options={options}
+                                                    onChange={this.handleChange.bind(this,"projectName")}
+                                                    disabled={this.state.isViewState}
+                                                />
                                         </section>
+
 
                                         <section>
                                             <label className="label">Priority</label>
-                                            <label className={this.state.formClassName}>
-                                                <select name="priority" id='priority' className="form-control"
+                                                <Select
+                                                    ref="priority"
                                                     value={this.state.priority}
-                                                    onChange={this.handleChange(this, 'priority')}
-                                                    disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        <option value="Low">Low</option>
-                                                        <option value="Medium">Medium</option>
-                                                        <option value="High">High</option>
-                                                        <option value="Critical">Critical</option>
-                                                </select>
-                                            </label>
+                                                    placeholder="Select"
+                                                    options={this.state.priorityOptions}
+                                                    onChange={this.handleChange.bind(this, "priority")}
+                                                    disabled={this.state.isViewState}
+                                                />
                                         </section>
 
                                         <section>
                                             <label className="label">Type</label>
-                                            <label className={this.state.formClassName}>
-                                                <select name="type" id='type' className="form-control"
+                                                <Select
+                                                    ref="type"
                                                     value={this.state.type}
-                                                    onChange={this.handleChange(this, 'type')}
-                                                    disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        <option value="Bug">Bug</option>
-                                                        <option value="Task">Task</option>
-                                                        <option value="Feature">Feature</option>
-                                                </select>
-                                            </label>
+                                                    placeholder="Select"
+                                                    options={this.state.typeOptions}
+                                                    onChange={this.handleChange.bind(this, "type")}
+                                                    disabled={this.state.isViewState}
+                                                />
                                         </section>
 
                                         <section>
@@ -180,7 +182,6 @@ let IssueDialogModal = React.createClass({
                                             <label className={this.state.formClassName}>
                                                 <select name="developer" id='developer' className="form-control"
                                                     value={this.state.developer}
-                                                    onChange={this.handleChange(this, 'developer')}
                                                     disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         <option value="Dev1">Dev1</option>
@@ -196,7 +197,7 @@ let IssueDialogModal = React.createClass({
                                               <label className={this.state.formClassName}>
                                               <select name="tester" id='tester' className="form-control"
                                                   value={this.state.tester}
-                                                  onChange={this.handleChange(this, 'tester')}
+                                                  onChange={this.handleChange.bind(this, 'tester')}
                                                   disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
                                                       <option disabled hidden value="">Choose here...</option>
                                                       <option value="Tester1">Tester1</option>
@@ -211,7 +212,7 @@ let IssueDialogModal = React.createClass({
                                             <label className="label">Description</label>
                                             <label className="textarea {this.state.formClassName}" >
                                                 <textarea rows="3"  type="text" id='application_name' name='application_name' value={this.state.application_name}
-                                                  onChange={this.handleChange(this, 'title')}
+                                                  onChange={this.handleChange.bind(this, 'title')}
                                                   placeholder="Description"
                                                   disabled={this.state.isViewState}
                                                   style={input_style}/>
@@ -259,6 +260,4 @@ let IssueDialogModal = React.createClass({
             </div>
         )
     }
-});
-
-export default IssueDialogModal
+}
