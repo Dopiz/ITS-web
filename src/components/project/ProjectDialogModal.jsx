@@ -92,8 +92,10 @@ export default class ProjectDialogModal extends Component {
         }else if(this.props.dialogState == "EDIT"){
             console.log(body);
             HTTPService.post('project/updateProject', body, function(res){
+
+                $('#ProjectDialogModal').modal('hide');
                 this.props.fetchData();
-                ProjectDialogModal
+
             }.bind(this));
         }
 

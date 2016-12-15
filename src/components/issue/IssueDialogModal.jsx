@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, {Component, PropTypes} from 'react'
 
 import _ from 'lodash'
 import JarvisWidget from '../layout/widgets/JarvisWidget.jsx'
@@ -10,23 +10,21 @@ import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 import {HTTPService} from '../../services/index.js'
 
-
 export default class IssueDialogModal extends Component {
-
 
     constructor(props) {
         super(props);
 
         this.state = {
-            title : "",
-            isViewState : false,
-            formClassName : "input",
-            projectName : "",
-            priority : "",
-            type : "",
-            projectOptions : [],
-            devOptions : [],
-            testerOptions : [],
+            title: "",
+            isViewState: false,
+            formClassName: "input",
+            projectName: "",
+            priority: "",
+            type: "",
+            projectOptions: [],
+            devOptions: [],
+            testerOptions: [],
             priorityOptions : [{"label" : "Low", "value" : "Low"}, {"label" : "Medium", "value" : "Medium"}, {"label" : "High", "value" : "High"}, {"label" : "Critical", "value" : "Critical"}],
             typeOptions : [{"label" : "Bug", "value" : "Bug"}, {"label" : "Task", "value" : "Task"}, {"label" : "Feature", "value" : "Feature"}]
         };
@@ -34,26 +32,24 @@ export default class IssueDialogModal extends Component {
         this.fetchProjects();
         this.fetchUsers();
     }
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {}
 
-    }
-
-    fetchProjects(){
-        HTTPService.get('project/getProjects', function(res){
+    fetchProjects() {
+        HTTPService.get('project/getProjects', function(res) {
 
             var dataList = [];
 
-            for(var i = 0 ; i < res.data.length ; i++){
+            for (var i = 0; i < res.data.length; i++) {
 
                 var temp = {
-                    value : res.data[i].project_name,
-                    label : res.data[i].project_name,
-                    id : res.data[i].id
+                    value: res.data[i].project_name,
+                    label: res.data[i].project_name,
+                    id: res.data[i].id
                 };
                 dataList.push(temp);
             }
             this.setState({
-                projectOptions : dataList
+              projectOptions: dataList
             })
 
         }.bind(this));
@@ -62,37 +58,33 @@ export default class IssueDialogModal extends Component {
     fetchUsers() {
         HTTPService.get('user/getUsers', function(res) {
 
-          var devUsers = [];
-          var testerUsers = [];
+            var devUsers = [];
+            var testerUsers = [];
 
-          for(var i = 0 ; i < res.data.length ; i++) {
-              var temp = {
-                  value : res.data[i].name,
-                  label : res.data[i].name,
-                  id : res.data[i].id
-              }
+            for (var i = 0; i < res.data.length; i++) {
+                var temp = {
+                    value: res.data[i].name,
+                    label: res.data[i].name,
+                    id: res.data[i].id
+                }
 
-              if(res.data[i].title == 'Tester') {
-                  testerUsers.push(temp);
-              }
-
-              else if(res.data[i].title == 'Developer') {
-                  devUsers.push(temp);
-              }
-          }
-          this.setState({
-              devOptions : devUsers,
-              testerOptions : testerUsers
-          })
+                if (res.data[i].title == 'Tester') {
+                    testerUsers.push(temp);
+                } else if (res.data[i].title == 'Developer') {
+                    devUsers.push(temp);
+                }
+            }
+            this.setState({
+              devOptions: devUsers,
+              testerOptions: testerUsers
+            })
 
         }.bind(this));
     }
 
-    handleSubmitForm (){
+    handleSubmitForm() {}
 
-    }
-
-    handleChange(item_name, event){
+    handleChange(item_name, event) {
 
         /*根據item_name 更改值*/
         var nextState = {};
@@ -105,7 +97,7 @@ export default class IssueDialogModal extends Component {
 
         var validationOptions = {
             rules: {
-                title : {
+                title: {
                     required: true
                 }
             },
@@ -117,161 +109,136 @@ export default class IssueDialogModal extends Component {
         };
 
         var input_style = {
-            backgroundColor:(this.state.isViewState)?("#f9f9f9") : ("")
+            backgroundColor: (this.state.isViewState) ? ("#f9f9f9") : ("")
         }
-
-        var options = [
-            { value: 'one', label: 'One' },
-            { value: 'two', label: 'Two' }
-        ];
-
 
         return (
             <div>
                 <div className="modal fade" id="IssueDialogModal" tabIndex="-1" role="dialog" aria-labelledby="IssueDialogModal" aria-hidden="true">
-                    <div className="modal-dialog" style={{width:"50%"}}>
-                        <div className="modal-content" style={{padding:"10px"}}>
+                    <div className="modal-dialog" style={{width: "50%"}}>
+                        <div className="modal-content" style={{padding: "10px"}}>
                             <WidgetGrid>
                                 <UiValidate options={validationOptions}>
-                                <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm()}>
+                                    <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm()}>
 
-                                    <header>
-                                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
-                                        <h1 className="modal-title" id="myModalLabel">
-                                            Create Issue
-                                        </h1>
-                                    </header>
+                                        <header>
+                                            <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h1 className="modal-title" id="myModalLabel">
+                                                Create Issue
+                                            </h1>
+                                        </header>
 
-                                    <fieldset>
-                                        <section>
-                                            <label className="label">Issue Title</label>
-                                            <label className={this.state.formClassName} >
-                                                <input type="text" id='title' name='title'
-                                                  value={this.state.title}
-                                                  onChange={this.handleChange.bind(this, 'title')}
-                                                  placeholder="Issue Title"
-                                                  disabled={this.state.isViewState}
-                                                  style={input_style}/>
-                                                <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
-                                            </label>
-                                        </section>
+                                        <fieldset>
+                                            <section>
+                                                <label className="label">Issue Title</label>
+                                                <label className={this.state.formClassName}>
+                                                    <input type="text" id='title' name='title' value={this.state.title} onChange={this.handleChange.bind(this, 'title')} placeholder="Issue Title" disabled={this.state.isViewState} style={input_style}/>
+                                                    <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
+                                                </label>
+                                            </section>
 
-                                        <section>
-                                            <label className="label">Project</label>
-                                              <label className={this.state.formClassName}>
-                                                <select name="project" id='project' className="form-control"
-                                                    value={this.state.project}>
+                                            <section>
+                                                <label className="label">Project</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="project" id='project' className="form-control" value={this.state.project}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.projectOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
                                                         ))}
-                                                </select>
-                                              </label>
-                                        </section>
+                                                    </select>
+                                                </label>
+                                            </section>
 
-                                        <section>
-                                            <label className="label">Priority</label>
-                                              <label className={this.state.formClassName}>
-                                                <select name="priority" id='priority' className="form-control"
-                                                    onChange={this.handleChange.bind(this, 'priority')}
-                                                    value={this.state.priority}>
+                                            <section>
+                                                <label className="label">Priority</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="priority" id='priority' className="form-control" onChange={this.handleChange.bind(this, 'priority')} value={this.state.priority}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.priorityOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
                                                         ))}
-                                                </select>
-                                              </label>
-                                        </section>
+                                                    </select>
+                                                </label>
+                                            </section>
 
-                                        <section>
-                                            <label className="label">Type</label>
-                                              <label className={this.state.formClassName}>
-                                                <select name="type" id='type' className="form-control"
-                                                    onChange={this.handleChange.bind(this, 'type')}
-                                                    value={this.state.type}>
+                                            <section>
+                                                <label className="label">Type</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="type" id='type' className="form-control" onChange={this.handleChange.bind(this, 'type')} value={this.state.type}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.typeOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
                                                         ))}
-                                                </select>
-                                              </label>
-                                        </section>
+                                                    </select>
+                                                </label>
+                                            </section>
 
-                                        <section>
-                                            <label className="label">Developer</label>
-                                            <label className={this.state.formClassName}>
-                                              <select name="developer" id='developer' className="form-control"
-                                                  onChange={this.handleChange.bind(this, 'developer')}
-                                                  value={this.state.developer}>
-                                                      <option disabled hidden value="">Choose here...</option>
-                                                      {this.state.devOptions.map((item, index) => (
-                                                          <option value={item.value} key={index}>{item.label}</option>
-                                                      ))}
-                                              </select>
-                                            </label>
-                                        </section>
+                                            <section>
+                                                <label className="label">Developer</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="developer" id='developer' className="form-control" onChange={this.handleChange.bind(this, 'developer')} value={this.state.developer}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {this.state.devOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
+                                                    </select>
+                                                </label>
+                                            </section>
 
-                                        <section>
-                                            <label className="label">Tester</label>
-                                              <label className={this.state.formClassName}>
-                                                <select name="tester" id='tester' className="form-control"
-                                                    onChange={this.handleChange.bind(this, 'tester')}
-                                                    value={this.state.tester}>
+                                            <section>
+                                                <label className="label">Tester</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="tester" id='tester' className="form-control" onChange={this.handleChange.bind(this, 'tester')} value={this.state.tester}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.testerOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
                                                         ))}
-                                                </select>
-                                          </label>
-                                        </section>
+                                                    </select>
+                                                </label>
+                                            </section>
+
+                                            <section>
+                                                <label className="label">Description</label>
+                                                <label className="textarea {this.state.formClassName}">
+                                                    <textarea rows="3" type="text" id='application_name' name='application_name' value={this.state.application_name} onChange={this.handleChange.bind(this, 'Description')} placeholder="Description" disabled={this.state.isViewState} style={input_style}/>
+                                                    <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
+                                                </label>
+                                            </section>
+
+                                            <section>
+                                                <label className="label">Due Date</label>
+                                                <label className="input state-success">
+                                                    <i className="icon-append fa fa-calendar"></i>
+                                                    <input type="date" name="finishdate" id="finishdate" placeholder="Expected finish date" className="hasDatepicker valid"/>
+                                                </label>
+                                            </section>
+
+                                            <section>
+                                                <label className="label">Picture</label>
+                                                <Dropzone ref="dropzone" multiple={false}>
+                                                    DropZone
+                                                </Dropzone>
+                                            </section>
+
+                                        </fieldset>
 
                                         <section>
-                                            <label className="label">Description</label>
-                                            <label className="textarea {this.state.formClassName}" >
-                                                <textarea rows="3"  type="text" id='application_name' name='application_name' value={this.state.application_name}
-                                                  onChange={this.handleChange.bind(this, 'title')}
-                                                  placeholder="Description"
-                                                  disabled={this.state.isViewState}
-                                                  style={input_style}/>
-                                                <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
-                                            </label>
+                                            <footer style={{background: "#ffffff"}}>
+                                                <div className="form-group pull-right">
+                                                    <button type="button" className="btn btn-default " data-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                    <button type="submit" className="btn btn-success">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </footer>
                                         </section>
 
-                                        <section>
-                                            <label className="label">Due Date</label>
-                                              <label className="input state-success"> <i className="icon-append fa fa-calendar"></i>
-                          											<input type="text" name="finishdate" id="finishdate" placeholder="Expected finish date" className="hasDatepicker valid"/>
-                          										</label>
-                                        </section>
-
-
-                                        <section>
-                                            <label className="label">Picture</label>
-                                            <Dropzone  ref="dropzone"  multiple={false} >
-                                                DropZone
-                                            </Dropzone>
-                                        </section>
-
-
-                                    </fieldset>
-
-                                    <section>
-                                        <footer style={{background:"#ffffff"}}>
-                                            <div className="form-group pull-right">
-                                                <button type="button" className="btn btn-default " data-dismiss="modal">
-                                                    Cancel
-                                                </button>
-                                                <button type="submit" className="btn btn-success">
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </footer>
-                                    </section>
-
-                                </form>
-                            </UiValidate>
+                                    </form>
+                                </UiValidate>
                             </WidgetGrid>
                         </div>
                     </div>
