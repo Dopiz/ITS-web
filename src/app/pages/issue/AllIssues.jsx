@@ -235,15 +235,15 @@ let AllIssues = React.createClass({
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allIssuesList" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
                                             <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} filter={statusFilter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="owner" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="tester" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="developer" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="createdDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="owner_id" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="tester_id" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="developer_id" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="createDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='120' dataField="dueDate" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
