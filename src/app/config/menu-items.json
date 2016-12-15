@@ -13,6 +13,10 @@
           "title": "All Issues"
         },
         {
+          "route": "/issue/allIssues",
+          "title": "New"
+        },
+        {
           "route": "/issue/development",
           "title": "Development"
         },
@@ -21,8 +25,12 @@
           "title" : "Testing"
         },
         {
+          "route": "/issue/allIssues",
+          "title": "Done"
+        },
+        {
           "route" : "/issue/closedIssues",
-          "title" : "Closed Issues"
+          "title" : "Closed"
         }
       ]
     },{

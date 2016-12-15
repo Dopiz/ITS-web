@@ -152,7 +152,6 @@ export default class IssueDialogModal extends Component {
                                                 />
                                         </section>
 
-
                                         <section>
                                             <label className="label">Priority</label>
                                                 <Select
@@ -175,6 +174,19 @@ export default class IssueDialogModal extends Component {
                                                     onChange={this.handleChange.bind(this, "type")}
                                                     disabled={this.state.isViewState}
                                                 />
+                                        </section>
+
+                                        <section>
+                                            <label className="label">test</label>
+                                            <label className={this.state.formClassName}>
+                                                <select name="test" id='test' className="form-control"
+                                                    value={this.state.developer}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {options.map((item, index) => (
+                                                						<option value={item.value} key={index}>{item.label}</option>
+                                              					))}
+                                                </select>
+                                            </label>
                                         </section>
 
                                         <section>
