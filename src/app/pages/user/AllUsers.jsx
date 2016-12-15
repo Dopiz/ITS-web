@@ -16,7 +16,11 @@ import UserDialogModal from '../../../components/user/UserDialogModal.jsx'
 let AllUsers = React.createClass({
     getInitialState: function() {
         return {
-            usersList : []
+            usersList : [],
+            selectedId : "",
+            selectedData : "",
+            dialogState : "",
+            isSelected : false
         };
     },
     componentWillMount: function() {
@@ -33,16 +37,40 @@ let AllUsers = React.createClass({
         }.bind(this));
     },
     buttonCreateUser : function(){
-
+        this.setState({
+            dialogState : "NEW"
+        })
     },
     buttonEditUser : function(){
 
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.usersList.length ; i++){
+                if(this.state.selectedId == this.state.usersList[i].id){
+                    this.setState({
+                        dialogState : "EDIT",
+                        selectedData : JSON.stringify(this.state.usersList[i])
+                    });
+                    break;
+                }
+            }
+        }
     },
     buttonExportCSV: function(){
         this.refs.tbl_allUsers.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
 
+        if(!isSelected) {
+          this.setState({
+              selectedID : "",
+              isSelected : isSelected
+          });
+        } else {
+          this.setState({
+              selectedID : row.id,
+              isSelected : isSelected
+          });
+        }
     },
     onSortChange : function(){
         this.forceUpdate();
@@ -70,7 +98,11 @@ let AllUsers = React.createClass({
         return (
             <div id="content">
 
-                <UserDialogModal />
+                <UserDialogModal
+                    dialogState = {this.state.dialogState}
+                    data = {this.state.selectedData}
+                    fetchData = {this.fetchProjects}
+                />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -90,7 +122,10 @@ let AllUsers = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create User </Popover> }>
-                                        <a onClick={this.buttonCreateUser} data-toggle="modal" data-target="#UserDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonCreateUser}
+                                           data-toggle="modal"
+                                           data-target="#UserDialogModal"
+                                           className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New
@@ -103,6 +138,8 @@ let AllUsers = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit User </Popover> }>
                                         <a onClick={this.buttonEditUser}
                                             data-toggle="modal"
+                                            data-target={(this.state.isSelected) ? "#UserDialogModal" : null}
+                                            disabled={!(this.state.isSelected)}
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
