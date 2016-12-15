@@ -23,6 +23,7 @@ export default class IssueDialogModal extends Component {
             formClassName : "input",
             projectName : "",
             priority : "",
+            type : "",
             projectOptions : [],
             devOptions : [],
             testerOptions : [],
@@ -94,23 +95,9 @@ export default class IssueDialogModal extends Component {
     handleChange(item_name, event){
 
         /*根據item_name 更改值*/
-        var temp = "";
-        switch (item_name) {
-          case "projectName" :
-            this.setState({projectName : event});
-            break;
-          case "priority" :
-            this.setState({priority : event});
-          break;
-          case "type" :
-            this.setState({type : event});
-          break;
-
-          default:
-            var nextState = {};
-            nextState[item_name] = event.target.value;
-            this.setState(nextState);
-        }
+        var nextState = {};
+        nextState[item_name] = event.target.value;
+        this.setState(nextState);
 
     }
 
@@ -188,6 +175,7 @@ export default class IssueDialogModal extends Component {
                                             <label className="label">Priority</label>
                                               <label className={this.state.formClassName}>
                                                 <select name="priority" id='priority' className="form-control"
+                                                    onChange={this.handleChange.bind(this, 'priority')}
                                                     value={this.state.priority}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.priorityOptions.map((item, index) => (
@@ -201,6 +189,7 @@ export default class IssueDialogModal extends Component {
                                             <label className="label">Type</label>
                                               <label className={this.state.formClassName}>
                                                 <select name="type" id='type' className="form-control"
+                                                    onChange={this.handleChange.bind(this, 'type')}
                                                     value={this.state.type}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.typeOptions.map((item, index) => (
@@ -214,6 +203,7 @@ export default class IssueDialogModal extends Component {
                                             <label className="label">Developer</label>
                                             <label className={this.state.formClassName}>
                                               <select name="developer" id='developer' className="form-control"
+                                                  onChange={this.handleChange.bind(this, 'developer')}
                                                   value={this.state.developer}>
                                                       <option disabled hidden value="">Choose here...</option>
                                                       {this.state.devOptions.map((item, index) => (
@@ -227,6 +217,7 @@ export default class IssueDialogModal extends Component {
                                             <label className="label">Tester</label>
                                               <label className={this.state.formClassName}>
                                                 <select name="tester" id='tester' className="form-control"
+                                                    onChange={this.handleChange.bind(this, 'tester')}
                                                     value={this.state.tester}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.testerOptions.map((item, index) => (

@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "title": "Home Page",
-      "route": "/",
-      "icon": "fa fa-lg fa-fw fa fa-home"
-    },{
       "title": "Issues",
       "icon": "fa fa-lg fa-fw fa-paper-plane",
       "items": [
