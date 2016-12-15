@@ -24,11 +24,14 @@ export default class IssueDialogModal extends Component {
             projectName : "",
             priority : "",
             projectOptions : [],
+            devOptions : [],
+            testerOptions : [],
             priorityOptions : [{"label" : "Low", "value" : "Low"}, {"label" : "Medium", "value" : "Medium"}, {"label" : "High", "value" : "High"}, {"label" : "Critical", "value" : "Critical"}],
             typeOptions : [{"label" : "Bug", "value" : "Bug"}, {"label" : "Task", "value" : "Task"}, {"label" : "Feature", "value" : "Feature"}]
         };
 
         this.fetchProjects();
+        this.fetchUsers();
     }
     componentWillReceiveProps(nextProps){
 
@@ -48,10 +51,38 @@ export default class IssueDialogModal extends Component {
                 };
                 dataList.push(temp);
             }
-            console.log(dataList);
             this.setState({
                 projectOptions : dataList
             })
+
+        }.bind(this));
+    }
+
+    fetchUsers() {
+        HTTPService.get('user/getUsers', function(res) {
+
+          var devUsers = [];
+          var testerUsers = [];
+
+          for(var i = 0 ; i < res.data.length ; i++) {
+              var temp = {
+                  value : res.data[i].name,
+                  label : res.data[i].name,
+                  id : res.data[i].id
+              }
+
+              if(res.data[i].title == 'Tester') {
+                  testerUsers.push(temp);
+              }
+
+              else if(res.data[i].title == 'Developer') {
+                  devUsers.push(temp);
+              }
+          }
+          this.setState({
+              devOptions : devUsers,
+              testerOptions : testerUsers
+          })
 
         }.bind(this));
     }
@@ -142,81 +173,66 @@ export default class IssueDialogModal extends Component {
 
                                         <section>
                                             <label className="label">Project</label>
-                                                <Select
-                                                    ref="project"
-                                                    value={this.state.projectName}
-                                                    placeholder="Select"
-                                                    options={options}
-                                                    onChange={this.handleChange.bind(this,"projectName")}
-                                                    disabled={this.state.isViewState}
-                                                />
+                                              <label className={this.state.formClassName}>
+                                                <select name="project" id='project' className="form-control"
+                                                    value={this.state.project}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {this.state.projectOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
+                                                </select>
+                                              </label>
                                         </section>
 
                                         <section>
                                             <label className="label">Priority</label>
-                                                <Select
-                                                    ref="priority"
-                                                    value={this.state.priority}
-                                                    placeholder="Select"
-                                                    options={this.state.priorityOptions}
-                                                    onChange={this.handleChange.bind(this, "priority")}
-                                                    disabled={this.state.isViewState}
-                                                />
+                                              <label className={this.state.formClassName}>
+                                                <select name="priority" id='priority' className="form-control"
+                                                    value={this.state.priority}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {this.state.priorityOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
+                                                </select>
+                                              </label>
                                         </section>
 
                                         <section>
                                             <label className="label">Type</label>
-                                                <Select
-                                                    ref="type"
-                                                    value={this.state.type}
-                                                    placeholder="Select"
-                                                    options={this.state.typeOptions}
-                                                    onChange={this.handleChange.bind(this, "type")}
-                                                    disabled={this.state.isViewState}
-                                                />
-                                        </section>
-
-                                        <section>
-                                            <label className="label">test</label>
-                                            <label className={this.state.formClassName}>
-                                                <select name="test" id='test' className="form-control"
-                                                    value={this.state.developer}>
+                                              <label className={this.state.formClassName}>
+                                                <select name="type" id='type' className="form-control"
+                                                    value={this.state.type}>
                                                         <option disabled hidden value="">Choose here...</option>
-                                                        {options.map((item, index) => (
-                                                						<option value={item.value} key={index}>{item.label}</option>
-                                              					))}
+                                                        {this.state.typeOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
                                                 </select>
-                                            </label>
+                                              </label>
                                         </section>
 
                                         <section>
                                             <label className="label">Developer</label>
                                             <label className={this.state.formClassName}>
-                                                <select name="developer" id='developer' className="form-control"
-                                                    value={this.state.developer}
-                                                    disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        <option value="Dev1">Dev1</option>
-                                                        <option value="Dev2">Dev2</option>
-                                                        <option value="Dev3">Dev3</option>
-                                                        <option value="Dev4">Dev4</option>
-                                                </select>
+                                              <select name="developer" id='developer' className="form-control"
+                                                  value={this.state.developer}>
+                                                      <option disabled hidden value="">Choose here...</option>
+                                                      {this.state.devOptions.map((item, index) => (
+                                                          <option value={item.value} key={index}>{item.label}</option>
+                                                      ))}
+                                              </select>
                                             </label>
                                         </section>
 
                                         <section>
                                             <label className="label">Tester</label>
                                               <label className={this.state.formClassName}>
-                                              <select name="tester" id='tester' className="form-control"
-                                                  value={this.state.tester}
-                                                  onChange={this.handleChange.bind(this, 'tester')}
-                                                  disabled={this.state.isViewState || (this.props.dialogState === "EDIT")}>
-                                                      <option disabled hidden value="">Choose here...</option>
-                                                      <option value="Tester1">Tester1</option>
-                                                      <option value="Tester2">Tester2</option>
-                                                      <option value="Tester3">Tester3</option>
-                                                      <option value="Tester4">Tester4</option>
-                                              </select>
+                                                <select name="tester" id='tester' className="form-control"
+                                                    value={this.state.tester}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {this.state.testerOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
+                                                </select>
                                           </label>
                                         </section>
 
