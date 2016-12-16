@@ -20,6 +20,19 @@ exports.ClosedIssues = ClosedIssues;
 /*user*/
 import AllUsers from './user/AllUsers.jsx' ;
 exports.AllUsers = AllUsers;
+/*Manager*/
+import Manager from './user/Manager.jsx' ;
+exports.Manager = Manager;
+/*Developer*/
+import Developer from './user/Developer.jsx' ;
+exports.Developer = Developer;
+/*Tester*/
+import Tester from './user/Tester.jsx' ;
+exports.Tester = Tester;
+/*Customer*/
+import Customer from './user/Customer.jsx' ;
+exports.Customer = Customer;
+
 /*Layout*/
 import Layout from './layout/Layout.jsx' ;
 exports.Layout = Layout;

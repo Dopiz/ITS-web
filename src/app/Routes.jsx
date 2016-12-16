@@ -9,6 +9,10 @@ import {
     DoneIssues,
     ClosedIssues,
     AllUsers,
+    Manager,
+    Developer,
+    Tester,
+    Customer,
     AllProjects,
     Layout,
     Page404,
@@ -39,6 +43,10 @@ const Routes = (
 
             <Route path="user">
                 <Route path="allUsers" component={AllUsers} />
+                <Route path="manager" component={Manager} />
+                <Route path="developer" component={Developer} />
+                <Route path="tester" component={Tester} />
+                <Route path="customer" component={Customer} />
             </Route>
 
             <Route path="project">

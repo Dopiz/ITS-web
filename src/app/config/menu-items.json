@@ -38,19 +38,19 @@
           "title": "All Users"
         },
         {
-          "route": "/dashboard",
+          "route": "/user/Manager",
           "title": "Manager"
         },
         {
-          "route": "/dashboard",
+          "route": "/user/Developer",
           "title": "Developer"
         },
         {
-          "route": "/dashboard",
+          "route": "/user/Tester",
           "title": "Tester"
         },
         {
-          "route": "/dashboard",
+          "route": "/user/Customer",
           "title": "Customer"
         }
       ]
