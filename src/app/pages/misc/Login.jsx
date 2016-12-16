@@ -10,8 +10,31 @@ export default class Login extends Component {
 
         this.state = {
             email : "",
-            password : ""
+            password : "",
+            formClassName : "input"
         };
+    }
+    componentWillReceiveProps(nextProps){
+
+      this.setState({
+          email : "",
+          password : "",
+          formClassName : "none"
+      }, function(){
+            this.hideErrorMessage();
+      });
+    }
+    hideErrorMessage(){
+
+        /*隱藏驗證文字跟把顏色框框拿掉*/
+        this.setState({
+            formClassName : "input"
+        }, function(){
+            if(document.getElementById( "email-error"))
+                document.getElementById( "email-error").style.display = "none";
+            if(document.getElementById( "password-error"))
+                document.getElementById( "password-error").style.display = "none";
+        })
     }
     handleSubmitForm(e){
 
@@ -21,7 +44,30 @@ export default class Login extends Component {
         else if(this.state.password == "")
             return ;
 
-        //HTTPService.post('')
+        var body = {
+            email : this.state.email,
+            password : this.state.password
+        }
+
+        HTTPService.post('user/login', body, function(res){
+
+            console.log(res);
+            // if(res){
+            //     localStorage.setItem("title", res.data[0]);
+            // }
+            //     console.log(res.data);
+            // var test =
+            // {
+            //     statusXXX : "asdasd"
+            //     data : {
+            //         title : "XXX",
+            //         name : "XXX"
+            //     }
+            // }
+            ;
+            console.log(test.data.qwe);
+
+        })
 
 
 
@@ -33,6 +79,26 @@ export default class Login extends Component {
         this.setState(nextState);
     }
     render() {
+
+        var validationOptions = {
+            rules: {
+                email : {
+                    required: true
+                },
+                password : {
+                    required: true
+                }
+            },
+            messages: {
+                email : {
+                    required: "email required"
+                },
+                password : {
+                    required: "password required"
+                }
+            }
+        };
+
         return (
             <div id="extr-page" >
                 <header id="header" className="animated fadeInDown">
@@ -49,7 +115,7 @@ export default class Login extends Component {
 
                             <div className="col-md-offset-4 col-md-4">
                                 <div className="well no-padding">
-                                    <UiValidate>
+                                    <UiValidate options={validationOptions}>
                                     <form onSubmit={this.handleSubmitForm.bind(this)} action="#/issue/AllIssues" id="login-form" className="smart-form client-form">
                                         <header>
                                             Sign In
@@ -57,26 +123,20 @@ export default class Login extends Component {
                                         <fieldset>
                                             <section>
                                                 <label className="label">E-Mail</label>
-                                                <label className="input"> <i className="icon-append fa fa-user"/>
-                                                    <input type="email" name="email"
-                                                        data-smart-validate-input="" data-required=""
-                                                        data-email=""
+                                                <label className={this.state.formClassName}> <i className="icon-append fa fa-user"/>
+                                                    <input  name="email"
                                                         value = {this.state.email}
-                                                        onChange={this.handleChange.bind(this, 'email')}
-                                                        data-message-required="Please enter your email address"
-                                                        data-message-email="Please enter a VALID email address"/>
+                                                        onChange={this.handleChange.bind(this, 'email')}/>
                                                     <b className="tooltip tooltip-top-right"><i className="fa fa-user txt-color-teal"/>
                                                         Please enter email address/username</b></label>
                                             </section>
                                             <section>
                                                 <label className="label">Password</label>
-                                                <label className="input"> <i className="icon-append fa fa-lock"/>
+                                                <label className={this.state.formClassName}> <i className="icon-append fa fa-lock"/>
                                                     <input
                                                         type="password" name="password"
                                                         value={this.state.password}
-                                                        onChange={this.handleChange.bind(this, 'password')}
-                                                        data-smart-validate-input="" data-required="" data-minlength="3" data-maxnlength="20"
-                                                        data-message="Please enter your email password"/>
+                                                        onChange={this.handleChange.bind(this, 'password')}/>
                                                     <b className="tooltip tooltip-top-right"><i className="fa fa-lock txt-color-teal"/> Enter
                                                         your password</b> </label>
                                             </section>
