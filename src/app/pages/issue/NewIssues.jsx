@@ -14,7 +14,7 @@ import {HTTPService} from '../../../services/index.js'
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
 
-let ClosedIssues = React.createClass({
+let NewIssues = React.createClass({
     getInitialState: function() {
         return {
             startDate : moment().startOf('day'),
@@ -23,14 +23,14 @@ let ClosedIssues = React.createClass({
         };
     },
     componentWillMount: function() {
-        this.fetchClosedIssues();
+        this.fetchNewIssues();
     },
-    fetchClosedIssues : function(){
+    fetchNewIssues : function(){
 
         HTTPService.get('issue/getIssues', function(res){
             var dataList = [];
             for(var i = 0; i < res.data.length; i++) {
-              if(res.data[i].status == 'Closed')
+              if(res.data[i].status == 'New')
                   dataList.push(res.data[i])
             }
 
@@ -137,7 +137,7 @@ let ClosedIssues = React.createClass({
                             <i className="fa fa-lg fa-fw fa-paper-plane" style={{margin:"0px 5px 0px 0px"}}></i>
                             <Msg phrase="Issue" />
                             <i className="fa fa-chevron-right" style={arrow_style}></i>
-                            <a className="txt-color-blueDark" >Closed Issues</a>
+                            <a className="txt-color-blueDark" >New Issues</a>
                         </h1>
                     </div>
                 </div>
@@ -256,4 +256,4 @@ let ClosedIssues = React.createClass({
     }
 });
 
-export default ClosedIssues
+export default NewIssues

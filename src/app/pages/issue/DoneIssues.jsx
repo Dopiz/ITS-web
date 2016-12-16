@@ -14,28 +14,31 @@ import {HTTPService} from '../../../services/index.js'
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
 
-let Testing = React.createClass({
+let DoneIssues = React.createClass({
     getInitialState: function() {
         return {
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
-            issuesList : [{
-                id : "1",
-                project : "Testing Test",
-                title : "title",
-                priority : "High",
-                status : "In QA",
-                type : "Bug",
-                owner : "pm1",
-                tester : "tester1",
-                developer : "dev1",
-                createdDate : "2016/12/01",
-                dueDate : "2016/12/02"
-            }]
+            issuesList : []
         };
     },
     componentWillMount: function() {
+        this.fetchDoneIssues();
+    },
+    fetchDoneIssues : function(){
 
+        HTTPService.get('issue/getIssues', function(res){
+            var dataList = [];
+            for(var i = 0; i < res.data.length; i++) {
+              if(res.data[i].status == 'Done')
+                  dataList.push(res.data[i])
+            }
+
+            this.setState({
+                issuesList : dataList
+            })
+
+        }.bind(this));
     },
     buttonAddIssue : function(){
 
@@ -64,16 +67,19 @@ let Testing = React.createClass({
         function statusFormatter(cell, row){
             switch (cell) {
                 case "New" :
-                    return '<span class="center-block padding-5 label bg-color-blueDark txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label btn-info">'+ cell +'</span>';
                     break;
-                case "In Progress" :
-                    return '<span class="center-block padding-5 label btn-primary">'+ cell +'</span>';
+                case "Development" :
+                    return '<span class="center-block padding-5 label btn-primary">'+ "In Progress" +'</span>';
                     break;
-                case "In QA" :
-                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
+                case "Testing" :
+                    return '<span class="center-block padding-5 label btn-warning">'+ "In QA" +'</span>';
+                    break;
+                case "Done" :
+                    return '<span class="center-block padding-5 label btn-success">'+ cell +'</span>';
                     break;
                 case "Closed" :
-                    return '<span class="center-block padding-5 label bg-color-blueLight txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label btn-danger">'+ cell +'</span>';
                     break;
             }
         }
@@ -81,10 +87,10 @@ let Testing = React.createClass({
         function priorityFormatter(cell, row){
             switch (cell) {
                 case "Low" :
-                    return '<span class="center-block padding-5 label bg-color-greenLight txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label bg-color-green txt-color-white">'+ cell +'</span>';
                     break;
                 case "Medium" :
-                    return '<span class="center-block padding-5 label bg-color-yellow txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
                     break;
                 case "High" :
                     return '<span class="center-block padding-5 label bg-color-orange txt-color-white">'+ cell +'</span>';
@@ -94,17 +100,6 @@ let Testing = React.createClass({
                     break;
             }
         }
-
-        var statusFilter = {
-            type: "SelectFilter",
-            placeholder: "Filter Status",
-            options: {
-                "New" : "New",
-                "In Progress" : "In Progress",
-                "In QA" : "In QA",
-                "Closed" : "Closed"
-            }
-        };
 
         var priorityFilter = {
             type: "SelectFilter",
@@ -142,7 +137,7 @@ let Testing = React.createClass({
                             <i className="fa fa-lg fa-fw fa-paper-plane" style={{margin:"0px 5px 0px 0px"}}></i>
                             <Msg phrase="Issue" />
                             <i className="fa fa-chevron-right" style={arrow_style}></i>
-                            <a className="txt-color-blueDark" >Testing</a>
+                            <a className="txt-color-blueDark" >Done Issues</a>
                         </h1>
                     </div>
                 </div>
@@ -237,15 +232,15 @@ let Testing = React.createClass({
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allIssuesList" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
                                             <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} filter={statusFilter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="owner" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="tester" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="developer" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="createdDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="createDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='120' dataField="dueDate" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
@@ -261,4 +256,4 @@ let Testing = React.createClass({
     }
 });
 
-export default Testing
+export default DoneIssues

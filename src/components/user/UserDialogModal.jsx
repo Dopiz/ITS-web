@@ -10,6 +10,7 @@ import Select from 'react-select'
 import Dropzone from 'react-dropzone'
 import {HTTPService} from '../../services/index.js'
 
+/* PM 登入後可以選擇新增或修改 User，但只能選擇自己擁有的 Project 下的 Users。 */
 export default class UserDialogModal extends Component {
 
     constructor(props) {
@@ -23,9 +24,9 @@ export default class UserDialogModal extends Component {
             user_phone: "",
             user_project: "",
             user_password: "",
+            projectOptions: [], // PM 的 project
             formClassName: "input",
             formTextareaClassName: "textarea",
-            projectOptions: []
         };
     }
 
@@ -49,7 +50,6 @@ export default class UserDialogModal extends Component {
                 break;
             case 'EDIT':
                 var data = JSON.parse(nextProps.data);
-                console.log();
                 this.setState({
                     user_id: data.id,
                     user_name: data.name,
@@ -104,7 +104,7 @@ export default class UserDialogModal extends Component {
 
         } else if (this.props.dialogState == "EDIT") {
             console.log(body);
-            HTTPService.post('user/updateUser', body, function(res) {
+            HTTPService.post('user/updateUserInfo', body, function(res) {
                 $('#UserDialogModal').modal('hide');
                 this.props.fetchData();
             }.bind(this));

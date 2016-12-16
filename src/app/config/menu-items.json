@@ -5,27 +5,27 @@
       "icon": "fa fa-lg fa-fw fa-paper-plane",
       "items": [
         {
-          "route": "/issue/allIssues",
+          "route": "/issue/AllIssues",
           "title": "All Issues"
         },
         {
-          "route": "/issue/allIssues",
+          "route": "/issue/NewIssues",
           "title": "New"
         },
         {
-          "route": "/issue/development",
+          "route": "/issue/DevelopmentIssues",
           "title": "Development"
         },
         {
-          "route" : "/issue/testing",
+          "route" : "/issue/TestingIssues",
           "title" : "Testing"
         },
         {
-          "route": "/issue/allIssues",
+          "route": "/issue/DoneIssues",
           "title": "Done"
         },
         {
-          "route" : "/issue/closedIssues",
+          "route" : "/issue/ClosedIssues",
           "title" : "Closed"
         }
       ]

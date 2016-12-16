@@ -62,16 +62,19 @@ let AllIssues = React.createClass({
         function statusFormatter(cell, row){
             switch (cell) {
                 case "New" :
-                    return '<span class="center-block padding-5 label bg-color-blueDark txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label btn-info">'+ cell +'</span>';
                     break;
-                case "In Progress" :
-                    return '<span class="center-block padding-5 label btn-primary">'+ cell +'</span>';
+                case "Development" :
+                    return '<span class="center-block padding-5 label btn-primary">'+ "In Progress" +'</span>';
                     break;
-                case "In QA" :
-                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
+                case "Testing" :
+                    return '<span class="center-block padding-5 label btn-warning">'+ "In QA" +'</span>';
+                    break;
+                case "Done" :
+                    return '<span class="center-block padding-5 label btn-success">'+ cell +'</span>';
                     break;
                 case "Closed" :
-                    return '<span class="center-block padding-5 label bg-color-blueLight txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label btn-danger">'+ cell +'</span>';
                     break;
             }
         }
@@ -79,10 +82,10 @@ let AllIssues = React.createClass({
         function priorityFormatter(cell, row){
             switch (cell) {
                 case "Low" :
-                    return '<span class="center-block padding-5 label bg-color-greenLight txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label bg-color-green txt-color-white">'+ cell +'</span>';
                     break;
                 case "Medium" :
-                    return '<span class="center-block padding-5 label bg-color-yellow txt-color-white">'+ cell +'</span>';
+                    return '<span class="center-block padding-5 label bg-color-blue txt-color-white">'+ cell +'</span>';
                     break;
                 case "High" :
                     return '<span class="center-block padding-5 label bg-color-orange txt-color-white">'+ cell +'</span>';
@@ -92,17 +95,6 @@ let AllIssues = React.createClass({
                     break;
             }
         }
-
-        var statusFilter = {
-            type: "SelectFilter",
-            placeholder: "Filter Status",
-            options: {
-                "New" : "New",
-                "In Progress" : "In Progress",
-                "In QA" : "In QA",
-                "Closed" : "Closed"
-            }
-        };
 
         var priorityFilter = {
             type: "SelectFilter",
@@ -239,7 +231,7 @@ let AllIssues = React.createClass({
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} filter={statusFilter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="owner_id" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="tester_id" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="developer_id" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>

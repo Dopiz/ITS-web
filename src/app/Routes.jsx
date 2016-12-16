@@ -3,8 +3,10 @@ import {Route, Redirect, IndexRoute} from 'react-router'
 
 import {
     AllIssues,
-    Development,
-    Testing,
+    NewIssues,
+    DevelopmentIssues,
+    TestingIssues,
+    DoneIssues,
     ClosedIssues,
     AllUsers,
     AllProjects,
@@ -28,8 +30,10 @@ const Routes = (
 
             <Route path="issue">
                 <Route path="allIssues" component={AllIssues} />
-                <Route path="development" component={Development} />
-                <Route path="testing" component={Testing} />
+                <Route path="newIssues" component={NewIssues} />
+                <Route path="developmentIssues" component={DevelopmentIssues} />
+                <Route path="testingIssues" component={TestingIssues} />
+                <Route path="doneIssues" component={DoneIssues} />
                 <Route path="closedIssues" component={ClosedIssues} />
             </Route>
 

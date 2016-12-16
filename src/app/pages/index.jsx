@@ -1,12 +1,18 @@
 /*issue*/
 import AllIssues from './issue/AllIssues.jsx' ;
 exports.AllIssues = AllIssues;
+/*New*/
+import NewIssues from './issue/NewIssues.jsx' ;
+exports.NewIssues = NewIssues;
 /*Development*/
-import Development from './issue/Development.jsx' ;
-exports.Development = Development;
+import DevelopmentIssues from './issue/DevelopmentIssues.jsx' ;
+exports.DevelopmentIssues = DevelopmentIssues;
 /*Testing*/
-import Testing from './issue/Testing.jsx' ;
-exports.Testing = Testing;
+import TestingIssues from './issue/TestingIssues.jsx' ;
+exports.TestingIssues = TestingIssues;
+/*Done*/
+import DoneIssues from './issue/DoneIssues.jsx' ;
+exports.DoneIssues = DoneIssues;
 /*ClosedIssues*/
 import ClosedIssues from './issue/ClosedIssues.jsx' ;
 exports.ClosedIssues = ClosedIssues;
