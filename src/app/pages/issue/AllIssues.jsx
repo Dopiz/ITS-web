@@ -9,7 +9,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import Select from 'react-select'
-import {HTTPService} from '../../../services/index.js'
+import {HTTPService, Authorization} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
@@ -23,7 +23,11 @@ let AllIssues = React.createClass({
         };
     },
     componentWillMount: function() {
-        this.fetchIssues();
+        /*check user is authorized*/
+        Authorization(this.props, function(){
+            /*after login, do something...*/
+            this.fetchIssues();
+        }.bind(this));
     },
     fetchIssues : function(){
 

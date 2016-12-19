@@ -8,6 +8,10 @@ import ToggleMenu from '../../../components/layout/actions/ToggleMenu.jsx'
 
 
 let Header = React.createClass({
+
+    signOut:function(){
+        window.localStorage.clear();
+    },
     render: function () {
         return <header id="header">
             <div id="logo-group">
@@ -22,7 +26,7 @@ let Header = React.createClass({
 
                 {/* logout button */}
                 <div id="logout" className="btn-header transparent pull-right">
-                    <span> <a href="#/login" title="Sign Out"
+                    <span> <a href="#/login" title="Sign Out" onClick={this.signOut}
                               data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i
                         className="fa fa-sign-out"/></a> </span>
                 </div>

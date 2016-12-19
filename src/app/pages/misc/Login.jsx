@@ -51,25 +51,10 @@ export default class Login extends Component {
 
         HTTPService.post('user/login', body, function(res){
 
-            console.log(res);
-            // if(res){
-            //     localStorage.setItem("title", res.data[0]);
-            // }
-            //     console.log(res.data);
-            // var test =
-            // {
-            //     statusXXX : "asdasd"
-            //     data : {
-            //         title : "XXX",
-            //         name : "XXX"
-            //     }
-            // }
-            ;
-            console.log(test.data.qwe);
-
-        })
-
-
+            window.localStorage.setItem("title", res.results[0]["title"]);
+            window.localStorage.setItem("name", res.results[0]["name"]);
+            this.props.history.push('/issue/AllIssues');
+        }.bind(this));
 
     }
     handleChange(item_name, event) {

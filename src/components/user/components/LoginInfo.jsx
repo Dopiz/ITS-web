@@ -6,7 +6,7 @@ import ToggleShortcut from './ToggleShortcut.jsx'
 let LoginInfo = React.createClass({
     getInitialState: function () {
         return {
-            username : "",
+            username : (window.localStorage.getItem("name"))?(window.localStorage.getItem("name")):("Username"),
             avatar : ""
         }
     },

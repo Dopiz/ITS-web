@@ -14,7 +14,7 @@ let Navigation = React.createClass({
         return (
             <aside id="left-panel">
                 <LoginInfo
-                    username="WayneZhang"
+                    username={(window.localStorage.getItem("name"))?(window.localStorage.getItem("name")):("Username")}
                     avatar="styles/img/ITS_logo_black.png" />
                 <nav>
                     <SmartMenu rawItems={rawItems} />

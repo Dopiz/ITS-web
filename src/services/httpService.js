@@ -13,7 +13,7 @@ var HTTPService = {
                 callback(res);
     				},
   				  error: function(error) {
-  					    showFailConnectionMessage();
+  					    showFailConnectionMessage(error);
   				  }
 			  });
 
@@ -28,17 +28,31 @@ var HTTPService = {
                 callback(res);
             },
             error: function(error) {
-                showFailConnectionMessage();
+                showFailConnectionMessage(error);
             }
         });
     }
 }
 
-function showFailConnectionMessage(){
-    /*API Server Connection Failed*/
+function showFailConnectionMessage(error){
+
+    var title = "";
+    var content = "";
+
+    switch(error.status){
+        case 401 :
+            title = "Login Failed.";
+            content = "Please check your email and password and try again."
+        break;
+        default :
+            title = "Server Connection Failed.";
+            content = "Server connection failed please retry connecting.";
+        break;
+    }
+
     $.bigBox({
-       title: "Server Connection Failed.",
-       content: "Server connection failed please retry connecting.",
+       title: title,
+       content: content,
        color: "#C46A69",
        icon: "fa fa-warning shake animated",
        number: "1",
