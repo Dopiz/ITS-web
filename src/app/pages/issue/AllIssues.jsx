@@ -23,11 +23,7 @@ let AllIssues = React.createClass({
         };
     },
     componentWillMount: function() {
-        /*check user is authorized*/
-        Authorization(this.props, function(){
-            /*after login, do something...*/
-            this.fetchIssues();
-        }.bind(this));
+        this.fetchIssues();
     },
     fetchIssues : function(){
 
