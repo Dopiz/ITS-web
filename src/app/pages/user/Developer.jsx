@@ -16,6 +16,7 @@ import UserDialogModal from '../../../components/user/UserDialogModal.jsx'
 let Developer = React.createClass({
     getInitialState: function() {
         return {
+            identity : "Customer",
             usersList : [],
             selectedId : "",
             selectedData : "",
@@ -24,6 +25,11 @@ let Developer = React.createClass({
         };
     },
     componentWillMount: function() {
+
+      this.setState({
+          identity : window.localStorage.getItem("title")
+      })
+
         this.fetchUsers();
     },
     fetchUsers : function(){
@@ -47,8 +53,8 @@ let Developer = React.createClass({
         })
     },
     buttonEditUser : function(){
-
         if(this.state.selectedId){
+
             for(var i = 0 ; i < this.state.usersList.length ; i++){
                 if(this.state.selectedId == this.state.usersList[i].id){
                     this.setState({
@@ -115,7 +121,7 @@ let Developer = React.createClass({
                             <i className="fa fa-lg fa-fw fa-paper-plane" style={{margin:"0px 5px 0px 0px"}}></i>
                             <Msg phrase="User" />
                             <i className="fa fa-chevron-right" style={arrow_style}></i>
-                            <a className="txt-color-blueDark" >All Users</a>
+                            <a className="txt-color-blueDark" >Developer</a>
                         </h1>
                     </div>
                 </div>
@@ -129,7 +135,8 @@ let Developer = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create User </Popover> }>
                                         <a onClick={this.buttonCreateUser}
                                            data-toggle="modal"
-                                           data-target="#UserDialogModal"
+                                           data-target={(this.state.identity == "PM") ? "#UserDialogModal" : null}
+                                           disabled={!(this.state.identity == "PM")}
                                            className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
@@ -143,8 +150,8 @@ let Developer = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit User </Popover> }>
                                         <a onClick={this.buttonEditUser}
                                             data-toggle="modal"
-                                            data-target={(this.state.isSelected) ? "#UserDialogModal" : null}
-                                            disabled={!(this.state.isSelected)}
+                                            data-target={(this.state.isSelected) && (this.state.identity == "PM") ? "#UserDialogModal" : null}
+                                            disabled={!((this.state.isSelected) && (this.state.identity == "PM"))}
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
@@ -158,6 +165,8 @@ let Developer = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View User </Popover> }>
                                         <a onClick={this.buttonViewEvent}
                                         data-toggle="modal"
+                                        data-target={(this.state.isSelected) ? "#UserDialogModal" : null}
+                                        disabled={!(this.state.isSelected)}
                                         className="btn btn-sm btn-labeled btn-info">
                                             <span className="btn-label">
                                                 <i className="fa fa-eye"></i>
@@ -179,7 +188,7 @@ let Developer = React.createClass({
 
                                 <header>
                                     <div className="hidden-xs col-sm-2 ">
-                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Users"/></h2>
+                                        <h2><span className="widget-icon"> <i className="fa fa-child"/></span><Msg phrase=" Developer"/></h2>
                                     </div>
                                     <div className="pull-right">
                                         <OverlayTrigger placement="top"
@@ -192,7 +201,7 @@ let Developer = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allUsers" selectRow={selectRowProp} csvFileName="allUsers.csv" data={this.state.usersList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Name">  <Msg phrase="Name" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
