@@ -40,7 +40,6 @@ export default class ProjectDialogModal extends Component {
             break;
             case 'EDIT' :
                 var data = JSON.parse(nextProps.data);
-                console.log();
                 this.setState({
                     project_id : data.id,
                     project_name : data.project_name,
@@ -84,8 +83,9 @@ export default class ProjectDialogModal extends Component {
         };
 
         if(this.props.dialogState == "NEW"){
-
+            console.log(body);
             HTTPService.post('project/addProject', body, function(res){
+                $('#ProjectDialogModal').modal('hide');
                 this.props.fetchData();
             }.bind(this));
 
