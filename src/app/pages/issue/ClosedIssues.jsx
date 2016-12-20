@@ -137,7 +137,7 @@ let ClosedIssues = React.createClass({
                             <i className="fa fa-lg fa-fw fa-paper-plane" style={{margin:"0px 5px 0px 0px"}}></i>
                             <Msg phrase="Issue" />
                             <i className="fa fa-chevron-right" style={arrow_style}></i>
-                            <a className="txt-color-blueDark" >Closed Issues</a>
+                            <a className="txt-color-blueDark" >Closed</a>
                         </h1>
                     </div>
                 </div>
