@@ -20,7 +20,8 @@ let AllProjects = React.createClass({
             selectedId : "",
             selectedData : "",
             dialogState : "",
-            isSelected : false
+            isSelected : false,
+            isAdmin : (window.localStorage.getItem('title')=='Admin')
         };
     },
     componentWillMount: function() {
@@ -42,7 +43,6 @@ let AllProjects = React.createClass({
         })
     },
     buttonEditProject : function(){
-
         if(this.state.selectedId){
             for(var i = 0 ; i < this.state.projectList.length ; i++){
                 if(this.state.selectedId == this.state.projectList[i].id){
@@ -123,7 +123,8 @@ let AllProjects = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Project </Popover> }>
                                         <a onClick={this.buttonCreateProject}
                                             data-toggle="modal"
-                                            data-target="#ProjectDialogModal"
+                                            data-target={(this.state.isAdmin) ?"#ProjectDialogModal" :null}
+                                            disabled={!(this.state.isAdmin)}
                                             className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
@@ -137,8 +138,8 @@ let AllProjects = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit Project </Popover> }>
                                         <a onClick={this.buttonEditProject}
                                             data-toggle="modal"
-                                            data-target={(this.state.isSelected) ? "#ProjectDialogModal" : null}
-                                            disabled={!(this.state.isSelected)}
+                                            data-target={(this.state.isSelected && this.state.isAdmin) ? "#ProjectDialogModal" : null}
+                                            disabled={(!this.state.isAdmin || !this.state.isSelected)}
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
