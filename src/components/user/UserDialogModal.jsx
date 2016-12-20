@@ -24,14 +24,18 @@ export default class UserDialogModal extends Component {
             user_phone: "",
             user_project: "",
             user_password: "",
+            project : [],
+            all_projects : [],
             projectOptions: [], // PM 的 project
             formClassName: "input",
             formTextareaClassName: "textarea",
         };
+
+        this.fetchProjects();
+
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.dialogState);
         switch (nextProps.dialogState) {
             case 'NEW':
                 this.setState({
@@ -66,6 +70,22 @@ export default class UserDialogModal extends Component {
                 });
                 break;
         }
+    }
+
+    fetchProjects() {
+        HTTPService.get('project/getProjects', function(res){
+
+            var dataList = [] ;
+            for(var i = 0 ; i < res.data.length ; i++){
+                var temp = {
+                    value : res.data[i].id,
+                    label : res.data[i].project_name
+                }
+                dataList.push(temp);
+            }
+
+            this.setState({all_projects : dataList});
+        }.bind(this));
     }
 
     hideErrorMessage() {
@@ -117,9 +137,18 @@ export default class UserDialogModal extends Component {
 
     handleChange(item_name, event) {
         /*根據item_name 更改值*/
-        var nextState = {};
-        nextState[item_name] = event.target.value;
-        this.setState(nextState);
+        switch (item_name) {
+          case "project" :
+            var temp = this.state.project ;
+            this.setState({project : temp.push(event)})
+            break;
+          default:
+            var nextState = {};
+            nextState[item_name] = event.target.value;
+            this.setState(nextState);
+            break;
+        }
+
     }
 
     render() {
@@ -200,14 +229,14 @@ export default class UserDialogModal extends Component {
 
                                             <section>
                                                 <label className="label">Project</label>
-                                                <label className={this.state.formClassName}>
-                                                    <select name="project" id='project' className="form-control" value={this.state.project}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        {this.state.projectOptions.map((item, index) => (
-                                                            <option value={item.value} key={index}>{item.label}</option>
-                                                        ))}
-                                                    </select>
-                                                </label>
+                                                <Select
+                                                  className="select"
+                                                  value={this.state.project}
+                                                  multi={true}
+                                                  options={this.state.all_projects}
+                                                  onChange={this.handleChange.bind(this, 'project')}
+                                                  clearable={false} />
+
                                             </section>
 
                                         </fieldset>
