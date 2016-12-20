@@ -53,8 +53,8 @@ let Developer = React.createClass({
         })
     },
     buttonEditUser : function(){
-        if(this.state.selectedId){
 
+        if(this.state.selectedId){
             for(var i = 0 ; i < this.state.usersList.length ; i++){
                 if(this.state.selectedId == this.state.usersList[i].id){
                     this.setState({
@@ -66,21 +66,34 @@ let Developer = React.createClass({
             }
         }
     },
+    buttonViewEvent : function(){
+      if(this.state.selectedId){
+          for(var i = 0 ; i < this.state.usersList.length ; i++){
+              if(this.state.selectedId == this.state.usersList[i].id){
+                  this.setState({
+                      dialogState : "VIEW",
+                      selectedData : JSON.stringify(this.state.usersList[i])
+                  });
+                  break;
+              }
+          }
+      }
+    },
     buttonExportCSV: function(){
         this.refs.tbl_allUsers.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
 
-        if(!isSelected) {
-          this.setState({
-              selectedID : "",
-              isSelected : isSelected
-          });
-        } else {
-          this.setState({
-              selectedID : row.id,
-              isSelected : isSelected
-          });
+        if(!isSelected){
+            this.setState({
+                selectedId : "",
+                isSelected: isSelected,
+             });
+        }else{
+            this.setState({
+                selectedId : row.id,
+                isSelected: isSelected
+            })
         }
     },
     onSortChange : function(){
@@ -112,7 +125,7 @@ let Developer = React.createClass({
                 <UserDialogModal
                     dialogState = {this.state.dialogState}
                     data = {this.state.selectedData}
-                    fetchData = {this.fetchProjects}
+                    fetchData = {this.fetchUsers}
                 />
 
                 <div className="row hidden-xs">

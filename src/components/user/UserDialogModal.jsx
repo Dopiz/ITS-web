@@ -31,7 +31,7 @@ export default class UserDialogModal extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
+        console.log(nextProps.dialogState);
         switch (nextProps.dialogState) {
             case 'NEW':
                 this.setState({
@@ -49,6 +49,7 @@ export default class UserDialogModal extends Component {
                 });
                 break;
             case 'EDIT':
+            case 'VIEW':
                 var data = JSON.parse(nextProps.data);
                 this.setState({
                     user_id: data.id,
@@ -92,8 +93,10 @@ export default class UserDialogModal extends Component {
 
         var body = {
             id: this.state.user_id,
-            user_name: this.state.user_name,
-            user_description: this.state.user_description
+            name: this.state.user_name,
+            phone: this.state.user_phone,
+            project: this.state.user_project,
+            password: this.state.user_password
         };
 
         if (this.props.dialogState == "NEW") {
@@ -158,7 +161,7 @@ export default class UserDialogModal extends Component {
                                                 &times;
                                             </button>
                                             <h1 className="modal-title" id="myModalLabel">
-                                                {(this.props.dialogState == "NEW") ? ("Create User") : ("Edit User")}
+                                                {(this.props.dialogState == "NEW") ? ("Create User") : (this.props.dialogState == "EDIT") ? ("Edit User") : ("View User")}
                                             </h1>
                                         </header>
 

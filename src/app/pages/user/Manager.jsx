@@ -53,7 +53,6 @@ let Manager = React.createClass({
         })
     },
     buttonEditUser : function(){
-
         if(this.state.selectedId){
             for(var i = 0 ; i < this.state.usersList.length ; i++){
                 if(this.state.selectedId == this.state.usersList[i].id){
@@ -66,21 +65,34 @@ let Manager = React.createClass({
             }
         }
     },
+    buttonViewEvent : function(){
+      if(this.state.selectedId){
+          for(var i = 0 ; i < this.state.usersList.length ; i++){
+              if(this.state.selectedId == this.state.usersList[i].id){
+                  this.setState({
+                      dialogState : "VIEW",
+                      selectedData : JSON.stringify(this.state.usersList[i])
+                  });
+                  break;
+              }
+          }
+      }
+    },
     buttonExportCSV: function(){
         this.refs.tbl_allUsers.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
 
-        if(!isSelected) {
-          this.setState({
-              selectedID : "",
-              isSelected : isSelected
-          });
-        } else {
-          this.setState({
-              selectedID : row.id,
-              isSelected : isSelected
-          });
+        if(!isSelected){
+            this.setState({
+                selectedId : "",
+                isSelected: isSelected,
+             });
+        }else{
+            this.setState({
+                selectedId : row.id,
+                isSelected: isSelected
+            })
         }
     },
     onSortChange : function(){
@@ -112,7 +124,7 @@ let Manager = React.createClass({
                 <UserDialogModal
                     dialogState = {this.state.dialogState}
                     data = {this.state.selectedData}
-                    fetchData = {this.fetchProjects}
+                    fetchData = {this.fetchUsers}
                 />
 
                 <div className="row hidden-xs">
@@ -201,7 +213,7 @@ let Manager = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allUsers" selectRow={selectRowProp} csvFileName="allUsers.csv" data={this.state.usersList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={false} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Name">  <Msg phrase="Name" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>

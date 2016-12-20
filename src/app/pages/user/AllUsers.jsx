@@ -34,8 +34,12 @@ let AllUsers = React.createClass({
     fetchUsers: function() {
 
         HTTPService.get('user/getUsers', function(res) {
-            this.setState({usersList: res.data})
+            this.setState({
+              usersList: res.data
+            })
         }.bind(this));
+
+
     },
     buttonExportCSV: function() {
         this.refs.tbl_allUsers.handleExportCSV();
@@ -79,7 +83,11 @@ let AllUsers = React.createClass({
 
         return (
           <div id="content">
-              <UserDialogModal dialogState={this.state.dialogState} data={this.state.selectedData} fetchData={this.fetchProjects} />
+              <UserDialogModal
+                dialogState={this.state.dialogState}
+                data={this.state.selectedData}
+                fetchData={this.fetchUsers} />
+
               <div className="row hidden-xs">
                   <div className='col-md-12 big-breadcrumbs'>
                       <h1 className="page-title txt-color-blueDark">
