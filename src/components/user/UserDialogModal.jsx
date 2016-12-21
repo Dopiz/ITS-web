@@ -20,15 +20,11 @@ export default class UserDialogModal extends Component {
             user_id: "",
             user_name: "",
             user_email: "",
-            user_title: "",
             user_phone: "",
-            user_project: "",
             user_password: "",
-            project : [],
-            all_projects : [],
-            projectOptions: [], // PM 的 project
-            formClassName: "input",
-            formTextareaClassName: "textarea",
+            user_project: "",
+            projectOptions: [],
+            formClassName: "input"
         };
 
         this.fetchProjects();
@@ -42,9 +38,8 @@ export default class UserDialogModal extends Component {
                     user_id: "",
                     user_name: "",
                     user_email: "",
-                    user_title: "",
                     user_phone: "",
-                    user_project: "",
+                    user_project: [],
                     user_password: "",
                     formClassName: "none",
                     formTextareaClassName: "none"
@@ -73,18 +68,18 @@ export default class UserDialogModal extends Component {
     }
 
     fetchProjects() {
-        HTTPService.get('project/getProjects', function(res){
+        HTTPService.get('project/getProjects', function(res) {
 
-            var dataList = [] ;
-            for(var i = 0 ; i < res.data.length ; i++){
+            var dataList = [];
+            for (var i = 0; i < res.data.length; i++) {
                 var temp = {
-                    value : res.data[i].id,
-                    label : res.data[i].project_name
+                    value: res.data[i].id,
+                    label: res.data[i].project_name
                 }
                 dataList.push(temp);
             }
 
-            this.setState({all_projects : dataList});
+            this.setState({projectOptions: dataList});
         }.bind(this));
     }
 
@@ -92,41 +87,57 @@ export default class UserDialogModal extends Component {
 
         /*隱藏驗證文字跟把顏色框框拿掉*/
         this.setState({
-            formClassName: "input",
-            formTextareaClassName: "textarea"
+            formClassName: "input"
         }, function() {
-            // if(document.getElementById( "user_name-error"))
-            //     document.getElementById( "user_name-error").style.display = "none";
-            // if(document.getElementById( "user_description-error"))
-            //     document.getElementById( "user_description-error").style.display = "none";
-        })
+            if (document.getElementById("user_name-error"))
+                document.getElementById("user_name-error").style.display = "none";
+            if (document.getElementById("user_email-error"))
+                document.getElementById("user_email-error").style.display = "none";
+            if (document.getElementById("user_password-error"))
+                document.getElementById("user_password-error").style.display = "none";
+            if (document.getElementById("user_email-error"))
+                document.getElementById("user_email-error").style.display = "none";
+            if (document.getElementById("user_phone-error"))
+                document.getElementById("user_phone-error").style.display = "none";
+            }
+        )
     }
 
     handleSubmitForm(e) {
 
         e.preventDefault();
 
-        // if(this.state.user_name == "")
-        //     return ;
-        // else if(this.state.user_description == "")
-        //     return ;
+        if (this.state.user_name == "")
+            return;
+        else if (this.state.user_email == "")
+            return;
+        else if (this.state.user_password == "")
+            return;
+        else if (this.state.user_phone == "")
+            return;
+        else if (this.state.user_project == "") {
+            this.refs.user_project.focus();
+            return;
+        }
 
         var body = {
-            id: this.state.user_id,
-            name: this.state.user_name,
-            phone: this.state.user_phone,
-            project: this.state.user_project,
-            password: this.state.user_password
+            id : this.state.user_id,
+            name : this.state.user_name,
+            phone : this.state.user_phone,
+            title : this.props.title,
+            project : this.state.user_project,
+            password : this.state.user_password
         };
 
-        if (this.props.dialogState == "NEW") {
+        console.log(body);
 
+        if (this.props.dialogState == "NEW") {
             HTTPService.post('user/addUser', body, function(res) {
+                $('#UserDialogModal').modal('hide');
                 this.props.fetchData();
             }.bind(this));
 
         } else if (this.props.dialogState == "EDIT") {
-            console.log(body);
             HTTPService.post('user/updateUserInfo', body, function(res) {
                 $('#UserDialogModal').modal('hide');
                 this.props.fetchData();
@@ -137,16 +148,17 @@ export default class UserDialogModal extends Component {
 
     handleChange(item_name, event) {
         /*根據item_name 更改值*/
+        var nextState = {};
+
         switch (item_name) {
-          case "project" :
-            var temp = this.state.project ;
-            this.setState({project : temp.push(event)})
-            break;
-          default:
-            var nextState = {};
-            nextState[item_name] = event.target.value;
-            this.setState(nextState);
-            break;
+            case "user_project":
+                nextState[item_name] = event;
+                this.setState(nextState);
+                break;
+            default:
+                nextState[item_name] = event.target.value;
+                this.setState(nextState);
+                break;
         }
 
     }
@@ -158,7 +170,13 @@ export default class UserDialogModal extends Component {
                 user_name: {
                     required: true
                 },
-                user_description: {
+                user_email: {
+                    required: true
+                },
+                user_password: {
+                    required: true
+                },
+                user_phone: {
                     required: true
                 }
             },
@@ -166,8 +184,14 @@ export default class UserDialogModal extends Component {
                 user_name: {
                     required: "user_name required"
                 },
-                user_description: {
-                    required: "user_description required"
+                user_email: {
+                    required: "user_email required"
+                },
+                user_password: {
+                    required: "user_password required"
+                },
+                user_phone: {
+                    required: "user_phone required"
                 }
             }
         };
@@ -190,7 +214,11 @@ export default class UserDialogModal extends Component {
                                                 &times;
                                             </button>
                                             <h1 className="modal-title" id="myModalLabel">
-                                                {(this.props.dialogState == "NEW") ? ("Create User") : (this.props.dialogState == "EDIT") ? ("Edit User") : ("View User")}
+                                                {(this.props.dialogState == "NEW")
+                                                    ? ("Create User")
+                                                    : (this.props.dialogState == "EDIT")
+                                                        ? ("Edit User")
+                                                        : ("View User")}
                                             </h1>
                                         </header>
 
@@ -229,13 +257,7 @@ export default class UserDialogModal extends Component {
 
                                             <section>
                                                 <label className="label">Project</label>
-                                                <Select
-                                                  className="select"
-                                                  value={this.state.project}
-                                                  multi={true}
-                                                  options={this.state.all_projects}
-                                                  onChange={this.handleChange.bind(this, 'project')}
-                                                  clearable={false} />
+                                                <Select className="select" ref="user_project" value={this.state.user_project} multi={true} options={this.state.projectOptions} onChange={this.handleChange.bind(this, 'user_project')} clearable={false}/>
 
                                             </section>
 

@@ -123,6 +123,7 @@ let Manager = React.createClass({
 
                 <UserDialogModal
                     dialogState = {this.state.dialogState}
+                    title = "PM"
                     data = {this.state.selectedData}
                     fetchData = {this.fetchUsers}
                 />
