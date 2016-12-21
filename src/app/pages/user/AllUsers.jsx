@@ -32,14 +32,28 @@ let AllUsers = React.createClass({
         this.fetchUsers();
     },
     fetchUsers: function() {
-
         HTTPService.get('user/getUsers', function(res) {
+          console.log(res.data);
             this.setState({
-              usersList: res.data
+                usersList: res.data
             })
         }.bind(this));
 
 
+    },
+    buttonViewEvent : function() {
+      var selectedId = this.state.selectedId;
+      var usersList = this.state.usersList;
+      for(var i=0; i<usersList.length ,selectedId; i++){
+
+          if(selectedId == usersList[i].id){
+              this.setState({
+                  dialogState : "VIEW",
+                  selectedData : JSON.stringify(usersList[i])
+              });
+              break;
+          }
+      }
     },
     buttonExportCSV: function() {
         this.refs.tbl_allUsers.handleExportCSV();
@@ -48,12 +62,12 @@ let AllUsers = React.createClass({
 
         if (!isSelected) {
             this.setState({
-                selectedID: "",
+                selectedId: "",
                 isSelected: isSelected
             });
         } else {
             this.setState({
-                selectedID: row.id,
+                selectedId: row.id,
                 isSelected: isSelected
             });
         }
@@ -105,13 +119,16 @@ let AllUsers = React.createClass({
                       <div className="col-xs-12">
                           <div className="btn-toolbar">
                               <div className="btn-group">
-                                  <OverlayTrigger placement="top" overlay={<Popover id="popover-activated-on-hover-popover"> View User </Popover> }>
+                                  <OverlayTrigger placement="top"
+                                    overlay={<Popover id="popover-activated-on-hover-popover"> View User </Popover> }>
                                       <a onClick={this.buttonViewEvent}
                                          data-toggle="modal"
                                          data-target={(this.state.isSelected) ? "#UserDialogModal" : null}
                                          disabled={!(this.state.isSelected)}
                                          className="btn btn-sm btn-labeled btn-info">
-                                      <span className="btn-label"><i className="fa fa-eye"></i></span>View
+                                        <span className="btn-label">
+                                          <i className="fa fa-eye"></i>
+                                        </span>View
                                       </a>
                                   </OverlayTrigger>
                               </div>

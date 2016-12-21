@@ -43,6 +43,7 @@ let AllProjects = React.createClass({
         })
     },
     buttonEditProject : function(){
+      console.log(this.state.selectedId);
         if(this.state.selectedId){
             for(var i = 0 ; i < this.state.projectList.length ; i++){
                 if(this.state.selectedId == this.state.projectList[i].id){

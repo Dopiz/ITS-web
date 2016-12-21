@@ -22,6 +22,7 @@ export default class UserDialogModal extends Component {
             user_email: "",
             user_phone: "",
             user_password: "",
+            user_title : "",
             user_project: "",
             projectOptions: [],
             formClassName: "input"
@@ -39,6 +40,7 @@ export default class UserDialogModal extends Component {
                     user_name: "",
                     user_email: "",
                     user_phone: "",
+                    user_title : "",
                     user_project: [],
                     user_password: "",
                     formClassName: "none",
@@ -225,43 +227,42 @@ export default class UserDialogModal extends Component {
 
                                         <fieldset>
                                             <section>
+                                                <label className="label">Project</label>
+                                                <Select className="select" ref="user_project" value={this.state.user_project} multi={true} options={this.state.projectOptions} onChange={this.handleChange.bind(this, 'user_project')} clearable={false} disabled={(this.props.dialogState)=="VIEW"}/>
+
+                                            </section>
+
+                                            <section>
                                                 <label className="label">User Name</label>
                                                 <label className={this.state.formClassName}>
-                                                    <input type="text" id='user_name' name='user_name' value={this.state.user_name} onChange={this.handleChange.bind(this, 'user_name')} placeholder="user_name"/>
+                                                    <input type="text" id='user_name' name='user_name' value={this.state.user_name} onChange={this.handleChange.bind(this, 'user_name')} placeholder="user_name" disabled={(this.props.dialogState)=="VIEW"}/>
                                                     <b className="tooltip tooltip-bottom-right">Enter User Name</b>
                                                 </label>
                                             </section>
 
                                             <section>
-                                                <label className="label">E-Mail</label>
+                                                <label className="label">Title</label>
                                                 <label className={this.state.formClassName}>
-                                                    <input type="text" id='user_email' name='user_email' value={this.state.user_email} onChange={this.handleChange.bind(this, 'user_email')} placeholder="user_email"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User E-Mail</b>
-                                                </label>
-                                            </section>
-
-                                            <section>
-                                                <label className="label">Password</label>
-                                                <label className={this.state.formClassName}>
-                                                    <input type="password" id='user_password' name='user_password' value={this.state.user_password} onChange={this.handleChange.bind(this, 'user_password')} placeholder="user_password"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User Password</b>
+                                                    <input type="title" id='user_title' name='user_title' value={this.state.user_title} onChange={this.handleChange.bind(this, 'user_title')} placeholder="user_title" disabled={(this.props.dialogState)=="VIEW"}/>
+                                                    <b className="tooltip tooltip-bottom-right">Enter User Title</b>
                                                 </label>
                                             </section>
 
                                             <section>
                                                 <label className="label">Phone Number</label>
                                                 <label className={this.state.formClassName}>
-                                                    <input type="text" id='user_phone' name='user_phone' value={this.state.user_phone} onChange={this.handleChange.bind(this, 'user_phone')} placeholder="user_phone"/>
+                                                    <input type="text" id='user_phone' name='user_phone' value={this.state.user_phone} onChange={this.handleChange.bind(this, 'user_phone')} placeholder="user_phone" disabled={(this.props.dialogState)=="VIEW"}/>
                                                     <b className="tooltip tooltip-bottom-right">Enter User Phone Number</b>
                                                 </label>
                                             </section>
 
                                             <section>
-                                                <label className="label">Project</label>
-                                                <Select className="select" ref="user_project" value={this.state.user_project} multi={true} options={this.state.projectOptions} onChange={this.handleChange.bind(this, 'user_project')} clearable={false}/>
-
+                                                <label className="label">E-Mail</label>
+                                                <label className={this.state.formClassName}>
+                                                    <input type="text" id='user_email' name='user_email' value={this.state.user_email} onChange={this.handleChange.bind(this, 'user_email')} placeholder="user_email" disabled={(this.props.dialogState)=="VIEW"}/>
+                                                    <b className="tooltip tooltip-bottom-right">Enter User E-Mail</b>
+                                                </label>
                                             </section>
-
                                         </fieldset>
 
                                         <section>
@@ -269,12 +270,22 @@ export default class UserDialogModal extends Component {
                                                 background: "#ffffff"
                                             }}>
                                                 <div className="form-group pull-right">
-                                                    <button type="button" className="btn btn-default " data-dismiss="modal">
-                                                        Cancel
-                                                    </button>
-                                                    <button type="submit" className="btn btn-success">
-                                                        Save
-                                                    </button>
+                                                    {(this.props.dialogState == "VIEW") ?(
+                                                        <div>
+                                                          <button type="button" className="btn btn-default " data-dismiss="modal">
+                                                              Cancel
+                                                          </button>
+                                                        </div>
+                                                      ):(
+                                                        <div>
+                                                          <button type="button" className="btn btn-default " data-dismiss="modal">
+                                                              Cancel
+                                                          </button>
+                                                          <button type="submit" className="btn btn-success">
+                                                              Save
+                                                          </button>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </footer>
                                         </section>
