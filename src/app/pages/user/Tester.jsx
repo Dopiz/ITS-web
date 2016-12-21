@@ -34,7 +34,7 @@ let Tester = React.createClass({
     },
     fetchUsers : function(){
 
-        HTTPService.get('user/getUsers', function(res){
+        HTTPService.get('user/getUsers?title=Tester', function(res){
             var dataList = [];
             for(var i = 0; i < res.data.length; i++) {
                 if(res.data[i].title == 'Tester') {

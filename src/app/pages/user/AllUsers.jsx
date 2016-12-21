@@ -32,7 +32,7 @@ let AllUsers = React.createClass({
         this.fetchUsers();
     },
     fetchUsers: function() {
-        HTTPService.get('user/getUsers', function(res) {
+        HTTPService.get('user/getUsers?title=all', function(res) {
           console.log(res.data);
             this.setState({
                 usersList: res.data
