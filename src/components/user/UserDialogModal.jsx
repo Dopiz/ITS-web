@@ -123,6 +123,7 @@ export default class UserDialogModal extends Component {
         var body = {
             id : this.state.user_id,
             name : this.state.user_name,
+            email : this.state.user_email,
             phone : this.state.user_phone,
             title : this.props.title,
             project : this.state.user_project,

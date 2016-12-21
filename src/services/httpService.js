@@ -28,6 +28,7 @@ var HTTPService = {
                 callback(res);
             },
             error: function(error) {
+                console.log(error);
                 showFailConnectionMessage(error);
             }
         });
