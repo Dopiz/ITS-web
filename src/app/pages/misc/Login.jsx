@@ -52,7 +52,29 @@ export default class Login extends Component {
         HTTPService.post('user/login', body, function(res){
             window.localStorage.setItem("title", res.results[0]["title"]);
             window.localStorage.setItem("name", res.results[0]["name"]);
-            window.localStorage.setItem("project", res.results[0]["project"]);
+
+            if(res.results[0]["title"] == "Admin"){
+
+                HTTPService.get('project/getProjects', function(res){
+
+                    var projectOptions = [];
+
+                    for(var i = 0 ; i < res.data.length ; i++){
+                        var temp = {
+                            value : res.data[i].id,
+                            label : res.data[i].project_name
+                        }
+                        projectOptions.push(temp);
+                    }
+
+                    window.localStorage.setItem("project", JSON.stringify(projectOptions));
+
+
+                }.bind(this));
+
+            }else
+                window.localStorage.setItem("project", res.results[0]["project"]);
+
             this.props.history.push('/issue/AllIssues');
         }.bind(this));
 
