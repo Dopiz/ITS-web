@@ -17,6 +17,8 @@ import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx
 let AllIssues = React.createClass({
     getInitialState: function() {
         return {
+            // startDate : moment().startOf('day'),
+            // endDate : moment().endOf('day'),
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             issuesList : []

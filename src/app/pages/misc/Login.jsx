@@ -50,9 +50,9 @@ export default class Login extends Component {
         }
 
         HTTPService.post('user/login', body, function(res){
-
             window.localStorage.setItem("title", res.results[0]["title"]);
             window.localStorage.setItem("name", res.results[0]["name"]);
+            window.localStorage.setItem("project", res.results[0]["project"]);
             this.props.history.push('/issue/AllIssues');
         }.bind(this));
 

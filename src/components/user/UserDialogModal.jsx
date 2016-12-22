@@ -25,11 +25,9 @@ export default class UserDialogModal extends Component {
             user_password: "",
             user_title : "",
             user_project: "",
-            projectOptions: [],
+            projectOptions: JSON.parse(window.localStorage.getItem("project")),
             formClassName: "input"
         };
-
-        this.fetchProjects();
 
     }
 
