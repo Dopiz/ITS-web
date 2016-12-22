@@ -163,24 +163,12 @@ let AllUsers = React.createClass({
                               <div>
                                   <div className="widget-body">
                                       <BootstrapTable ref="tbl_allUsers" selectRow={selectRowProp} csvFileName="allUsers.csv" data={this.state.usersList} options={datatable_options} striped={true} hover={true} pagination>
-                                          <TableHeaderColumn width='50' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID">
-                                              <Msg phrase="ID" />
-                                          </TableHeaderColumn>
-                                          <TableHeaderColumn width='100' dataField="project" dataSort={true} csvHeader="Project">
-                                              <Msg phrase="Project" />
-                                          </TableHeaderColumn>
-                                          <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Name">
-                                              <Msg phrase="Name" />
-                                          </TableHeaderColumn>
-                                          <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">
-                                              <Msg phrase="Title" />
-                                          </TableHeaderColumn>
-                                          <TableHeaderColumn width='150' dataField="phone" dataSort={true} csvHeader="Phone">
-                                              <Msg phrase="Phone" />
-                                          </TableHeaderColumn>
-                                          <TableHeaderColumn width='200' dataField="email" dataSort={true} csvHeader="Email">
-                                              <Msg phrase="Email" />
-                                          </TableHeaderColumn>
+                                          <TableHeaderColumn width='50' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"><Msg phrase="ID" /></TableHeaderColumn>
+                                          <TableHeaderColumn width='350' dataField="project_list" dataSort={true} csvHeader="Project"><Msg phrase="Project" /></TableHeaderColumn>
+                                          <TableHeaderColumn width='100' dataField="name" dataSort={true} csvHeader="Name"><Msg phrase="Name" /></TableHeaderColumn>
+                                          <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title"><Msg phrase="Title" /></TableHeaderColumn>
+                                          <TableHeaderColumn width='150' dataField="phone" dataSort={true} csvHeader="Phone"><Msg phrase="Phone" /></TableHeaderColumn>
+                                          <TableHeaderColumn width='200' dataField="email" dataSort={true} csvHeader="Email"><Msg phrase="Email" /></TableHeaderColumn>
                                       </BootstrapTable>
                                   </div>
                               </div>
