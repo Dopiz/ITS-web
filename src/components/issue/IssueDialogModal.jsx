@@ -19,66 +19,50 @@ export default class IssueDialogModal extends Component {
             title: "",
             isViewState: false,
             formClassName: "input",
-            projectName: "",
+            project : "",
+            developer : "",
+            tester : "",
             priority: "",
             type: "",
-            projectOptions: [],
+            projectOptions : JSON.parse(window.localStorage.getItem('project')),
             devOptions: [],
             testerOptions: [],
             priorityOptions : [{"label" : "Low", "value" : "Low"}, {"label" : "Medium", "value" : "Medium"}, {"label" : "High", "value" : "High"}, {"label" : "Critical", "value" : "Critical"}],
             typeOptions : [{"label" : "Bug", "value" : "Bug"}, {"label" : "Task", "value" : "Task"}, {"label" : "Feature", "value" : "Feature"}]
         };
 
-        this.fetchProjects();
-        this.fetchUsers();
     }
     componentWillReceiveProps(nextProps) {}
 
-    fetchProjects() {
-        HTTPService.get('project/getProjects', function(res) {
+    fetchUsers(projectId) {
+        HTTPService.get('user/getUsers?projectId=' + projectId, function(res) {
 
-            var dataList = [];
+            var devOptions = [];
+            var testerOptions = [];
 
-            for (var i = 0; i < res.data.length; i++) {
+            for(var i = 0 ; i < res.length ; i++){
 
-                var temp = {
-                    value: res.data[i].project_name,
-                    label: res.data[i].project_name,
-                    id: res.data[i].id
+                console.log(res[i]);
+
+                var tmp = {
+                    value : res[i].id,
+                    label : res[i].name
                 };
-                dataList.push(temp);
-            }
-            this.setState({
-              projectOptions: dataList
-            })
 
-        }.bind(this));
-    }
-
-    fetchUsers() {
-        HTTPService.get('user/getUsers', function(res) {
-
-            var devUsers = [];
-            var testerUsers = [];
-
-            for (var i = 0; i < res.data.length; i++) {
-                var temp = {
-                    value: res.data[i].name,
-                    label: res.data[i].name,
-                    id: res.data[i].id
-                }
-
-                if (res.data[i].title == 'Tester') {
-                    testerUsers.push(temp);
-                } else if (res.data[i].title == 'Developer') {
-                    devUsers.push(temp);
+                if(res[i].title == "Developer"){
+                    devOptions.push(tmp);
+                }else if(res[i].title == "Tester"){
+                    testerOptions.push(tmp);
                 }
             }
-            this.setState({
-              devOptions: devUsers,
-              testerOptions: testerUsers
-            })
 
+            this.setState({
+                devOptions : devOptions,
+                testerOptions : testerOptions
+            }, function(){
+                console.log(this.state.devOptions);
+                console.log(this.state.testerOptions);
+            })
         }.bind(this));
     }
 
@@ -87,6 +71,12 @@ export default class IssueDialogModal extends Component {
     handleChange(item_name, event) {
 
         /*根據item_name 更改值*/
+        switch(item_name){
+            case 'project' :
+                this.fetchUsers(event.target.value);
+            break ;
+        }
+
         var nextState = {};
         nextState[item_name] = event.target.value;
         this.setState(nextState);
@@ -142,7 +132,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Project</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="project" id='project' className="form-control" value={this.state.project}>
+                                                    <select name="project" id='project' className="form-control" value={this.state.project} onChange={this.handleChange.bind(this, 'project')}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.projectOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
