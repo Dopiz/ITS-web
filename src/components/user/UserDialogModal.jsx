@@ -146,7 +146,7 @@ export default class UserDialogModal extends Component {
             email : this.state.user_email,
             phone : this.state.user_phone,
             title : this.props.title,
-            project : this.state.user_project,
+            project : JSON.stringify(this.state.user_project),
             password : this.state.user_password
         };
 
@@ -221,102 +221,89 @@ export default class UserDialogModal extends Component {
         }
 
         return (
-            <div>
-                <div className="modal fade" id="UserDialogModal" tabIndex="-1" role="dialog" aria-labelledby="UserDialogModal" aria-hidden="true">
-                    <div className="modal-dialog" style={{
-                        width: "50%"
-                    }}>
-                        <div className="modal-content" style={{
-                            padding: "10px"
-                        }}>
-                            <WidgetGrid>
-                                <UiValidate options={validationOptions}>
-                                    <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm.bind(this)}>
+          <div>
+              <div className="modal fade" id="UserDialogModal" tabIndex="-1" role="dialog" aria-labelledby="UserDialogModal" aria-hidden="true">
+                  <div className="modal-dialog" style={{ width: "50%" }}>
+                      <div className="modal-content" style={{ padding: "10px" }}>
+                          <WidgetGrid>
+                              <UiValidate options={validationOptions}>
+                                  <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm.bind(this)}>
 
-                                        <header>
-                                            <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h1 className="modal-title" id="myModalLabel">
-                                                {(this.props.dialogState == "NEW")
-                                                    ? ("Create User")
-                                                    : (this.props.dialogState == "EDIT")
-                                                        ? ("Edit User")
-                                                        : ("View User")}
-                                            </h1>
-                                        </header>
+                                      <header>
+                                          <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
+                                              &times;
+                                          </button>
+                                          <h1 className="modal-title" id="myModalLabel">
+                                              {(this.props.dialogState == "NEW") ?
+                                                  ("Create User") : (this.props.dialogState == "EDIT") ?
+                                                      ("Edit User") : ("View User")}
+                                          </h1>
+                                      </header>
 
-                                        <fieldset>
-                                            <section>
-                                                <label className="label">User Name</label>
-                                                <label className={this.state.formClassName}>
-                                                    <input type="text" style={input_style} disabled={this.state.isViewState} id='user_name' name='user_name' value={this.state.user_name} onChange={this.handleChange.bind(this, 'user_name')} placeholder="user_name"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User Name</b>
-                                                </label>
-                                            </section>
+                                      <fieldset>
+                                          <section>
+                                              <label className="label">User Name</label>
+                                              <label className={this.state.formClassName}>
+                                                  <input type="text" style={input_style} disabled={this.state.isViewState} id='user_name' name='user_name' value={this.state.user_name} onChange={this.handleChange.bind(this, 'user_name')} placeholder="user_name"/>
+                                                  <b className="tooltip tooltip-bottom-right">Enter User Name</b>
+                                              </label>
+                                          </section>
 
-                                            <section>
-                                                <label className="label">E-Mail</label>
-                                                <label className={this.state.formClassName}>
-                                                    <input type="text" style={{backgroundColor:(this.props.dialogState == "NEW")?(""):("#f9f9f9")}} disabled={(this.props.dialogState == "NEW")?false:true} id='user_email' name='user_email' value={this.state.user_email} onChange={this.handleChange.bind(this, 'user_email')} placeholder="user_email"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User E-Mail</b>
-                                                </label>
-                                            </section>
+                                          <section>
+                                              <label className="label">E-Mail</label>
+                                              <label className={this.state.formClassName}>
+                                                  <input type="text" style={{backgroundColor:(this.props.dialogState == "NEW")?(""):("#f9f9f9")}} disabled={(this.props.dialogState == "NEW")?false:true} id='user_email' name='user_email' value={this.state.user_email} onChange={this.handleChange.bind(this, 'user_email')} placeholder="user_email"/>
+                                                  <b className="tooltip tooltip-bottom-right">Enter User E-Mail</b>
+                                              </label>
+                                          </section>
 
-                                            <section>
-                                                <label className="label">Password</label>
-                                                <label className={this.state.formClassName}>
-                                                    <input type="password" style={input_style} disabled={this.state.isViewState} id='user_password' name='user_password' value={this.state.user_password} onChange={this.handleChange.bind(this, 'user_password')} placeholder="user_password"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User Password</b>
-                                                </label>
-                                            </section>
+                                          {(this.props.dialogState == "VIEW") ? "" : (
+                                          <section>
+                                              <label className="label">Password</label>
+                                              <label className={this.state.formClassName}>
+                                                  <input type="password" style={input_style} disabled={this.state.isViewState} id='user_password' name='user_password' value={this.state.user_password} onChange={this.handleChange.bind(this, 'user_password')} placeholder="user_password"/>
+                                                  <b className="tooltip tooltip-bottom-right">Enter User Password</b>
+                                              </label>
+                                          </section>
+                                          )}
 
-                                            <section>
-                                                <label className="label">Phone Number</label>
-                                                <label className={this.state.formClassName}>
-                                                    <input type="text" id='user_phone' style={input_style} disabled={this.state.isViewState} name='user_phone' value={this.state.user_phone} onChange={this.handleChange.bind(this, 'user_phone')} placeholder="user_phone"/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter User Phone Number</b>
-                                                </label>
-                                            </section>
+                                          <section>
+                                              <label className="label">Phone Number</label>
+                                              <label className={this.state.formClassName}>
+                                                  <input type="text" id='user_phone' style={input_style} disabled={this.state.isViewState} name='user_phone' value={this.state.user_phone} onChange={this.handleChange.bind(this, 'user_phone')} placeholder="user_phone"/>
+                                                  <b className="tooltip tooltip-bottom-right">Enter User Phone Number</b>
+                                              </label>
+                                          </section>
 
-                                            <section>
-                                                <label className="label">Project</label>
-                                                <Select className="select" ref="user_project" style={input_style} disabled={this.state.isViewState} value={this.state.user_project} multi={true} options={this.state.projectOptions} onChange={this.handleChange.bind(this, 'user_project')} clearable={false}/>
-                                            </section>
-                                        </fieldset>
+                                          <section>
+                                              <label className="label">Project</label>
+                                              <Select className="select" ref="user_project" style={input_style} disabled={this.state.isViewState} value={this.state.user_project} multi={true} options={this.state.projectOptions} onChange={this.handleChange.bind(this, 'user_project')} clearable={false}/>
+                                          </section>
+                                      </fieldset>
 
-                                        <section>
-                                            <footer style={{
-                                                background: "#ffffff"
-                                            }}>
-                                                <div className="form-group pull-right">
-                                                    {(this.props.dialogState == "VIEW") ?(
-                                                        <div>
-                                                          <button type="button" className="btn btn-default " data-dismiss="modal">
-                                                              Cancel
-                                                          </button>
-                                                        </div>
-                                                      ):(
-                                                        <div>
-                                                          <button type="button" className="btn btn-default " data-dismiss="modal">
-                                                              Cancel
-                                                          </button>
-                                                          <button type="submit" className="btn btn-success">
-                                                              Save
-                                                          </button>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </footer>
-                                        </section>
-
-                                    </form>
-                                </UiValidate>
-                            </WidgetGrid>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                      <section>
+                                          <footer style={{ background: "#ffffff" }}>
+                                              <div className="form-group pull-right">
+                                                  <div>
+                                                      <button type="button" className="btn btn-default " data-dismiss="modal">
+                                                          Cancel
+                                                      </button>
+                                                      {(this.props.dialogState == "VIEW") ? "" : (
+                                                      <button type="submit" className="btn btn-success">
+                                                            Save
+                                                      </button>
+                                                      )}
+                                                  </div>
+                                              </div>
+                                          </footer>
+                                      </section>
+                                  </form>
+                              </UiValidate>
+                          </WidgetGrid>
+                      </div>
+                  </div>
+              </div>
+          </div>
         )
     }
 }
