@@ -122,8 +122,8 @@ let Manager = React.createClass({
             <div id="content">
 
                 <UserDialogModal
-                    dialogState = {this.state.dialogState}
                     title = "PM"
+                    dialogState = {this.state.dialogState}
                     data = {this.state.selectedData}
                     fetchData = {this.fetchUsers}
                 />

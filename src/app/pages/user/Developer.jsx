@@ -123,6 +123,7 @@ let Developer = React.createClass({
             <div id="content">
 
                 <UserDialogModal
+                    title = "Developer"
                     dialogState = {this.state.dialogState}
                     data = {this.state.selectedData}
                     fetchData = {this.fetchUsers}

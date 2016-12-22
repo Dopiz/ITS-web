@@ -98,6 +98,7 @@ let AllUsers = React.createClass({
         return (
           <div id="content">
               <UserDialogModal
+                title = "all"
                 dialogState={this.state.dialogState}
                 data={this.state.selectedData}
                 fetchData={this.fetchUsers} />
