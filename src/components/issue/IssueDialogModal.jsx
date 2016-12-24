@@ -35,23 +35,22 @@ export default class IssueDialogModal extends Component {
     componentWillReceiveProps(nextProps) {}
 
     fetchUsers(projectId) {
+
         HTTPService.get('user/getUsers?projectId=' + projectId, function(res) {
 
             var devOptions = [];
             var testerOptions = [];
 
-            for(var i = 0 ; i < res.length ; i++){
-
-                console.log(res[i]);
+            for(var i = 0 ; i < res.data.length ; i++){
 
                 var tmp = {
-                    value : res[i].id,
-                    label : res[i].name
+                    value : res.data[i].id,
+                    label : res.data[i].name
                 };
 
-                if(res[i].title == "Developer"){
+                if(res.data[i].title == "Developer"){
                     devOptions.push(tmp);
-                }else if(res[i].title == "Tester"){
+                }else if(res.data[i].title == "Tester"){
                     testerOptions.push(tmp);
                 }
             }
@@ -59,10 +58,8 @@ export default class IssueDialogModal extends Component {
             this.setState({
                 devOptions : devOptions,
                 testerOptions : testerOptions
-            }, function(){
-                console.log(this.state.devOptions);
-                console.log(this.state.testerOptions);
-            })
+            });
+            
         }.bind(this));
     }
 
