@@ -19,6 +19,7 @@ let AllIssues = React.createClass({
         return {
             // startDate : moment().startOf('day'),
             // endDate : moment().endOf('day'),
+            dialogState : "",
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             issuesList : []
@@ -37,8 +38,10 @@ let AllIssues = React.createClass({
 
         }.bind(this));
     },
-    buttonAddIssue : function(){
-
+    buttonNewIssue : function(){
+        this.setState({
+            dialogState : "NEW"
+        })
     },
     buttonEditIssue : function(){
 
@@ -125,7 +128,9 @@ let AllIssues = React.createClass({
         return (
             <div id="content">
 
-                <IssueDialogModal />
+                <IssueDialogModal
+                    dialogState = {this.state.dialogState}
+                />
                 <IssueHistoryDialog />
 
                 <div className="row hidden-xs">
@@ -146,7 +151,7 @@ let AllIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonAddIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonNewIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New

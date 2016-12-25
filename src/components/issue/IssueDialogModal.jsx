@@ -8,6 +8,7 @@ import BigBreadcrumbs from '../layout/navigation/components/BigBreadcrumbs.jsx'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import Select from 'react-select'
 import Dropzone from 'react-dropzone'
+import Superagent from 'superagent';
 import {HTTPService} from '../../services/index.js'
 
 export default class IssueDialogModal extends Component {
@@ -16,14 +17,19 @@ export default class IssueDialogModal extends Component {
         super(props);
 
         this.state = {
-            title: "",
             isViewState: false,
             formClassName: "input",
+            formTextareaClassName : "textarea",
+            id : "",
+            title: "",
+            priority: "",
+            type: "",
             project : "",
             developer : "",
             tester : "",
-            priority: "",
-            type: "",
+            description : "",
+            dueDate : "",
+            imageURL : "",
             projectOptions : JSON.parse(window.localStorage.getItem('project')),
             devOptions: [],
             testerOptions: [],
@@ -32,7 +38,51 @@ export default class IssueDialogModal extends Component {
         };
 
     }
-    componentWillReceiveProps(nextProps) {}
+    componentWillReceiveProps(nextProps) {
+
+        switch(nextProps.dialogState){
+            case 'NEW' :
+                this.setState({
+                    id : "",
+                    title : "",
+                    priority : "",
+                    type : "",
+                    project : "",
+                    developer : "",
+                    tester : "",
+                    description : "",
+                    dueDate : "",
+                    imageURL : "",
+                    formClassName : "none",
+                    formTextareaClassName : "none"
+                }, function(){
+                      this.hideErrorMessage();
+                });
+            break;
+            case 'EDIT' :
+                var data = JSON.parse(nextProps.data);
+                this.setState({
+
+                }, function(){
+                      this.hideErrorMessage();
+                });
+            break;
+        }
+    }
+
+    hideErrorMessage(){
+
+        /*隱藏驗證文字跟把顏色框框拿掉*/
+        this.setState({
+            formClassName : "input",
+            formTextareaClassName : "textarea"
+        }, function(){
+            if(document.getElementById( "project_name-error"))
+                document.getElementById( "project_name-error").style.display = "none";
+            if(document.getElementById( "project_description-error"))
+                document.getElementById( "project_description-error").style.display = "none";
+        })
+    }
 
     fetchUsers(projectId) {
 
@@ -59,11 +109,48 @@ export default class IssueDialogModal extends Component {
                 devOptions : devOptions,
                 testerOptions : testerOptions
             });
-            
+
         }.bind(this));
     }
 
-    handleSubmitForm() {}
+    handleSubmitForm(e) {
+        e.preventDefault();
+
+        var attributeList = ['title', 'priority', 'type', 'project', 'developer', 'tester', 'description', 'dueDate', 'imageURL'];
+        for(var i = 0 ; i < attributeList.length - 1 ; i++){
+            if(this.state[attributeList[i]] == "")
+                return;
+        }
+
+        var body = {
+            id : this.state.id,
+            owner_id : window.localStorage.getItem('id'),
+            title : this.state.title,
+            priority : this.state.priority,
+            type : this.state.type,
+            project_id : this.state.project,
+            developer_id : this.state.developer,
+            tester_id : this.state.tester,
+            description :this.state.description,
+            create_date : '2016-12-25',
+            due_date : this.state.dueDate,
+            image : this.state.imageURL
+        }
+
+        console.log(body);
+
+        if(this.props.dialogState == 'NEW'){
+            HTTPService.post('issue/addIssue', body, function(res){
+                console.log(res);
+            })
+        }else{
+
+        }
+
+
+
+        return ;
+    }
 
     handleChange(item_name, event) {
 
@@ -80,18 +167,85 @@ export default class IssueDialogModal extends Component {
 
     }
 
+    handleUploadImage(acceptedFiles) {
+
+      const CLOUDINARY_UPLOAD_PRESET = 'lfksd938';
+      const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dr5ndcjx5/upload';
+
+
+        let upload = Superagent.post(CLOUDINARY_UPLOAD_URL)
+            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+            .field('file', acceptedFiles[0]);
+
+        upload.end((err, response) => {
+            if (err) {
+              console.error(err);
+            }
+
+            if (response.body.secure_url !== '') {
+                this.setState({
+                    imageURL: response.body.secure_url
+                });
+            }
+        });
+
+    }
+
     render() {
 
         var validationOptions = {
             rules: {
                 title: {
                     required: true
+                },
+                priority : {
+                    required: true
+                },
+                type : {
+                    required: true
+                },
+                project : {
+                    required : true
+                },
+                developer : {
+                    required: true
+                },
+                tester : {
+                    required: true
+                },
+                description : {
+                    required: true
+                },
+                dueDate : {
+                    required: true
                 }
             },
             messages: {
                 title: {
                     required: 'title required'
+                },
+                priority : {
+                    required: 'priority required'
+                },
+                type : {
+                    required: 'type required'
+                },
+                project : {
+                    required : 'project required'
+                },
+                developer : {
+                    required: 'developer required'
+                },
+                tester : {
+                    required: 'tester required'
+                },
+                description : {
+                    required: 'description required'
+                },
+                dueDate : {
+                    required: 'dueDate required'
                 }
+
             }
         };
 
@@ -106,7 +260,7 @@ export default class IssueDialogModal extends Component {
                         <div className="modal-content" style={{padding: "10px"}}>
                             <WidgetGrid>
                                 <UiValidate options={validationOptions}>
-                                    <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm()}>
+                                    <form className="smart-form" noValidate="noValidate" onSubmit={this.handleSubmitForm.bind(this)}>
 
                                         <header>
                                             <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
@@ -123,18 +277,6 @@ export default class IssueDialogModal extends Component {
                                                 <label className={this.state.formClassName}>
                                                     <input type="text" id='title' name='title' value={this.state.title} onChange={this.handleChange.bind(this, 'title')} placeholder="Issue Title" disabled={this.state.isViewState} style={input_style}/>
                                                     <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
-                                                </label>
-                                            </section>
-
-                                            <section>
-                                                <label className="label">Project</label>
-                                                <label className={this.state.formClassName}>
-                                                    <select name="project" id='project' className="form-control" value={this.state.project} onChange={this.handleChange.bind(this, 'project')}>
-                                                        <option disabled hidden value="">Choose here...</option>
-                                                        {this.state.projectOptions.map((item, index) => (
-                                                            <option value={item.value} key={index}>{item.label}</option>
-                                                        ))}
-                                                    </select>
                                                 </label>
                                             </section>
 
@@ -156,6 +298,18 @@ export default class IssueDialogModal extends Component {
                                                     <select name="type" id='type' className="form-control" onChange={this.handleChange.bind(this, 'type')} value={this.state.type}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.typeOptions.map((item, index) => (
+                                                            <option value={item.value} key={index}>{item.label}</option>
+                                                        ))}
+                                                    </select>
+                                                </label>
+                                            </section>
+
+                                            <section>
+                                                <label className="label">Project</label>
+                                                <label className={this.state.formClassName}>
+                                                    <select name="project" id='project' className="form-control" value={this.state.project} onChange={this.handleChange.bind(this, 'project')}>
+                                                        <option disabled hidden value="">Choose here...</option>
+                                                        {this.state.projectOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
                                                         ))}
                                                     </select>
@@ -188,9 +342,9 @@ export default class IssueDialogModal extends Component {
 
                                             <section>
                                                 <label className="label">Description</label>
-                                                <label className="textarea {this.state.formClassName}">
-                                                    <textarea rows="3" type="text" id='application_name' name='application_name' value={this.state.application_name} onChange={this.handleChange.bind(this, 'Description')} placeholder="Description" disabled={this.state.isViewState} style={input_style}/>
-                                                    <b className="tooltip tooltip-bottom-right">Enter Issue Title</b>
+                                                <label className="textarea {this.state.formTextareaClassName}">
+                                                    <textarea rows="3" type="text" id='description' name='description' value={this.state.description} onChange={this.handleChange.bind(this, 'description')} placeholder="Description" disabled={this.state.isViewState} style={input_style}/>
+                                                    <b className="tooltip tooltip-bottom-right">Enter Issue Description</b>
                                                 </label>
                                             </section>
 
@@ -198,14 +352,21 @@ export default class IssueDialogModal extends Component {
                                                 <label className="label">Due Date</label>
                                                 <label className="input state-success">
                                                     <i className="icon-append fa fa-calendar"></i>
-                                                    <input type="date" name="finishdate" id="finishdate" placeholder="Expected finish date" className="hasDatepicker valid"/>
+                                                    <input type="date" name="dueDate" id="dueDate" value={this.state.dueDate}  onChange={this.handleChange.bind(this, 'dueDate')} placeholder="Expected finish date" className="hasDatepicker valid"/>
                                                 </label>
                                             </section>
 
                                             <section>
                                                 <label className="label">Picture</label>
-                                                <Dropzone ref="dropzone" multiple={false}>
-                                                    DropZone
+                                                <Dropzone
+                                                    onDrop={this.handleUploadImage.bind(this)} //<= Here
+                                                    accept="image/*"
+                                                    className='dropzone'
+                                                    activeClassName='active-dropzone'
+                                                    style = {{padding : "10px"}}
+                                                    multiple={false}>
+                                                        <div>Drag and drop or click to select a file to upload.</div>
+                                                        <div >{(this.state.imageURL != "")?(<img id="picture" style={{width:"100%"}} src={this.state.imageURL} />) : null}</div>
                                                 </Dropzone>
                                             </section>
 

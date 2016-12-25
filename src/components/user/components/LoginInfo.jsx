@@ -31,7 +31,7 @@ let LoginInfo = React.createClass({
   			    <span>
   			        <ToggleShortcut>
   			            <img src="styles/img/avatars/4.png" alt="me"
-  							 className="online" /><span>{ this.state.username }</span><i/>
+  							 className="online" /><span>{ this.state.username + " - " +  window.localStorage.getItem("title")}</span><i/>
   			        </ToggleShortcut>
   			     </span>
   			</div>

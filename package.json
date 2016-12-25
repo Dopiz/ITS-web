@@ -47,11 +47,14 @@
   },
   "dependencies": {
     "babel-core": "^6.18.2",
+    "cloudinary": "^1.4.6",
     "graceful-fs": "^4.1.9",
     "lodash": "^4.2.1",
+    "react": "^0.14.8",
     "react-bootstrap-daterangepicker": "^3.2.2",
     "react-bootstrap-table": "^2.5.8",
-    "react-dropzone": "^3.7.3",
-    "react-select": "^1.0.0-rc.2"
+    "react-dropzone": "^3.8.0",
+    "react-select": "^1.0.0-rc.2",
+    "superagent": "^3.3.1"
   }
 }

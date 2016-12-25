@@ -50,32 +50,44 @@ export default class Login extends Component {
         }
 
         HTTPService.post('user/login', body, function(res){
+
             window.localStorage.setItem("title", res.results[0]["title"]);
             window.localStorage.setItem("name", res.results[0]["name"]);
+            window.localStorage.setItem("id", res.results[0]["id"]);
 
-            if(res.results[0]["title"] == "Admin"){
+            var login = new Promise(function(resolve, reject) {
 
-                HTTPService.get('project/getProjects', function(res){
+                if(res.results[0]["title"] == "Admin"){
 
-                    var projectOptions = [];
+                    HTTPService.get('project/getProjects', function(res){
 
-                    for(var i = 0 ; i < res.data.length ; i++){
-                        var temp = {
-                            value : res.data[i].id,
-                            label : res.data[i].project_name
+                        var projectOptions = [];
+
+                        for(var i = 0 ; i < res.data.length ; i++){
+                            var temp = {
+                                value : res.data[i].id,
+                                label : res.data[i].project_name
+                            }
+                            projectOptions.push(temp);
                         }
-                        projectOptions.push(temp);
-                    }
 
-                    window.localStorage.setItem("project", JSON.stringify(projectOptions));
+                        window.localStorage.setItem("project", JSON.stringify(projectOptions));
+                        resolve();
 
+                    }.bind(this));
 
-                }.bind(this));
+                }else{
+                    window.localStorage.setItem("project", res.results[0]["project"]);
+                    resolve();
+                }
+            });
 
-            }else
-                window.localStorage.setItem("project", res.results[0]["project"]);
+            login.then(function() {
+                this.props.history.push('/issue/AllIssues');
+            }.bind(this), function(reason) {
+                console.log(reason); // Error!
+            });
 
-            this.props.history.push('/issue/AllIssues');
         }.bind(this));
 
     }
