@@ -198,14 +198,6 @@ let AllIssues = React.createClass({
                                         </a>
                                     </OverlayTrigger>
                                 </div>
-
-                                <div className="btn-group pull-right">
-                                    <DateRangePicker ranges={this.state.ranges}  onApply={this.handleCalendarChange} startDate={this.state.startDate} endDate={this.state.endDate} >
-                                        <button type="button" className="btn btn-sm btn-default">
-                                            <span className="widget-icon"> <i className="fa fa-calendar"/> </span> { this.state.startDate.format('YYYY-MM-DD') } - { this.state.endDate.format('YYYY-MM-DD') }
-                                        </button>
-                                    </DateRangePicker>
-                                </div>
                             </div>
                         </div>
                     </div>

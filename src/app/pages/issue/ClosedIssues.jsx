@@ -40,13 +40,10 @@ let ClosedIssues = React.createClass({
 
         }.bind(this));
     },
-    buttonAddIssue : function(){
+    buttonViewIssue : function(){
 
     },
-    buttonEditIssue : function(){
-
-    },
-    butoonViewEvent : function(){
+    buttonViewHistory : function(){
 
     },
     buttonExportCSV: function(){
@@ -146,35 +143,11 @@ let ClosedIssues = React.createClass({
                     <div className="row">
                         <div className="col-xs-12">
                             <div className="btn-toolbar">
-                                <div className="btn-group">
-                                    <OverlayTrigger placement="top"
-                                        overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonAddIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
-                                            <span className="btn-label">
-                                                <i className="glyphicon glyphicon-plus"></i>
-                                            </span>New
-                                        </a>
-                                    </OverlayTrigger>
-                                </div>
-
-
-                                <div className="btn-group" >
-                                    <OverlayTrigger placement="top"
-                                        overlay={<Popover id="popover-activated-on-hover-popover"> Edit Issue </Popover> }>
-                                        <a onClick={this.buttonEditIssue}
-                                            data-toggle="modal"
-                                            className="btn btn-sm btn-labeled btn-primary">
-                                            <span className="btn-label">
-                                                <i className="fa fa-edit"></i>
-                                            </span>Edit
-                                        </a>
-                                    </OverlayTrigger>
-                                </div>
 
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View Issue </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
+                                        <a onClick={this.buttonViewIssue}
                                         data-toggle="modal"
                                         className="btn btn-sm btn-labeled btn-info">
                                             <span className="btn-label">
@@ -187,7 +160,7 @@ let ClosedIssues = React.createClass({
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
+                                        <a onClick={this.buttonViewHistory}
                                         data-toggle="modal" data-target="#IssueHistoryDialog"
                                         className="btn btn-sm btn-labeled btn-warning">
                                             <span className="btn-label">
@@ -195,14 +168,6 @@ let ClosedIssues = React.createClass({
                                             </span>History
                                         </a>
                                     </OverlayTrigger>
-                                </div>
-
-                                <div className="btn-group pull-right">
-                                    <DateRangePicker ranges={this.state.ranges}  onApply={this.handleCalendarChange} startDate={this.state.startDate} endDate={this.state.endDate} >
-                                        <button type="button" className="btn btn-sm btn-default">
-                                            <span className="widget-icon"> <i className="fa fa-calendar"/> </span> { this.state.startDate.format('YYYY-MM-DD') } - { this.state.endDate.format('YYYY-MM-DD') }
-                                        </button>
-                                    </DateRangePicker>
                                 </div>
                             </div>
                         </div>

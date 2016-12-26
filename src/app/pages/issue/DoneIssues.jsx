@@ -40,13 +40,16 @@ let DoneIssues = React.createClass({
 
         }.bind(this));
     },
-    buttonAddIssue : function(){
-
-    },
     buttonEditIssue : function(){
 
     },
     butoonViewEvent : function(){
+
+    },
+    buttonFinishIssue : function(){
+
+    },
+    buttonRejectIssue : function(){
 
     },
     buttonExportCSV: function(){
@@ -146,18 +149,6 @@ let DoneIssues = React.createClass({
                     <div className="row">
                         <div className="col-xs-12">
                             <div className="btn-toolbar">
-                                <div className="btn-group">
-                                    <OverlayTrigger placement="top"
-                                        overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonAddIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
-                                            <span className="btn-label">
-                                                <i className="glyphicon glyphicon-plus"></i>
-                                            </span>New
-                                        </a>
-                                    </OverlayTrigger>
-                                </div>
-
-
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit Issue </Popover> }>
@@ -197,12 +188,19 @@ let DoneIssues = React.createClass({
                                     </OverlayTrigger>
                                 </div>
 
-                                <div className="btn-group pull-right">
-                                    <DateRangePicker ranges={this.state.ranges}  onApply={this.handleCalendarChange} startDate={this.state.startDate} endDate={this.state.endDate} >
-                                        <button type="button" className="btn btn-sm btn-default">
-                                            <span className="widget-icon"> <i className="fa fa-calendar"/> </span> { this.state.startDate.format('YYYY-MM-DD') } - { this.state.endDate.format('YYYY-MM-DD') }
-                                        </button>
-                                    </DateRangePicker>
+                                <div className="btn-group">
+                                    <OverlayTrigger placement="top"
+                                        overlay={<Popover id="popover-activated-on-hover-popover"> Finish Issue </Popover> }>
+                                        <a onClick={this.buttonFinishIssue}  className="btn btn-sm btn-default"  >
+                                            <i className="fa fa-check"></i>
+                                        </a>
+                                    </OverlayTrigger>
+                                    <OverlayTrigger placement="top"
+                                        overlay={<Popover id="popover-activated-on-hover-popover"> Reject Issue </Popover> }>
+                                        <a onClick={this.buttonRejectIssue}  className="btn btn-sm btn-default"  >
+                                            <i className="fa fa-reply"></i>
+                                        </a>
+                                    </OverlayTrigger>
                                 </div>
                             </div>
                         </div>

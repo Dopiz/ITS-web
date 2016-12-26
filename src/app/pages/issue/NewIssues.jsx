@@ -46,7 +46,10 @@ let NewIssues = React.createClass({
     buttonEditIssue : function(){
 
     },
-    butoonViewEvent : function(){
+    buttonViewEvent : function(){
+
+    },
+    buttonAcceptIssue : function(){
 
     },
     buttonExportCSV: function(){
@@ -197,12 +200,13 @@ let NewIssues = React.createClass({
                                     </OverlayTrigger>
                                 </div>
 
-                                <div className="btn-group pull-right">
-                                    <DateRangePicker ranges={this.state.ranges}  onApply={this.handleCalendarChange} startDate={this.state.startDate} endDate={this.state.endDate} >
-                                        <button type="button" className="btn btn-sm btn-default">
-                                            <span className="widget-icon"> <i className="fa fa-calendar"/> </span> { this.state.startDate.format('YYYY-MM-DD') } - { this.state.endDate.format('YYYY-MM-DD') }
-                                        </button>
-                                    </DateRangePicker>
+                                <div className="btn-group">
+                                    <OverlayTrigger placement="top"
+                                        overlay={<Popover id="popover-activated-on-hover-popover"> Accept Issue </Popover> }>
+                                        <a onClick={this.buttonAcceptIssue}  className="btn btn-sm btn-default"  >
+                                            <i className="fa fa-check"></i>
+                                        </a>
+                                    </OverlayTrigger>
                                 </div>
                             </div>
                         </div>
