@@ -19,6 +19,8 @@ let NewIssues = React.createClass({
         return {
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
+            isSelected : false,
+            identity: window.localStorage.getItem("title"),
             issuesList : []
         };
     },
@@ -56,7 +58,17 @@ let NewIssues = React.createClass({
         this.refs.tbl_allIssuesList.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
-
+        if (!isSelected) {
+            this.setState({
+                selectedId: "",
+                isSelected: isSelected
+            });
+        } else {
+            this.setState({
+                selectedId: row.id,
+                isSelected: isSelected
+            });
+        }
     },
     onSortChange : function(){
         this.forceUpdate();
@@ -152,7 +164,11 @@ let NewIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Create Issue </Popover> }>
-                                        <a onClick={this.buttonAddIssue} data-toggle="modal" data-target="#IssueDialogModal"  className="btn btn-labeled btn-success"  >
+                                        <a onClick={this.buttonNewIssue}
+                                           data-toggle="modal"
+                                           data-target={(this.state.identity == "PM") ? "#IssueDialogModal" : null}
+                                           disabled={(!(this.state.identity == "PM"))}
+                                           className="btn btn-labeled btn-success"  >
                                             <span className="btn-label">
                                                 <i className="glyphicon glyphicon-plus"></i>
                                             </span>New
@@ -166,6 +182,8 @@ let NewIssues = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Edit Issue </Popover> }>
                                         <a onClick={this.buttonEditIssue}
                                             data-toggle="modal"
+                                            data-target={(this.state.isSelected) && (this.state.identity == "PM") ? "#IssueDialogModal" : null}
+                                            disabled={!(this.state.isSelected) || !(this.state.identity == "PM")}
                                             className="btn btn-sm btn-labeled btn-primary">
                                             <span className="btn-label">
                                                 <i className="fa fa-edit"></i>
@@ -178,8 +196,10 @@ let NewIssues = React.createClass({
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View Issue </Popover> }>
                                         <a onClick={this.buttonViewEvent}
-                                        data-toggle="modal"
-                                        className="btn btn-sm btn-labeled btn-info">
+                                           data-toggle="modal"
+                                           data-target={(this.state.isSelected) ? "#IssueDialogModal" : null}
+                                           disabled={!(this.state.isSelected)}
+                                           className="btn btn-sm btn-labeled btn-info">
                                             <span className="btn-label">
                                                 <i className="fa fa-eye"></i>
                                             </span>View
@@ -191,8 +211,10 @@ let NewIssues = React.createClass({
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
                                         <a onClick={this.buttonViewEvent}
-                                        data-toggle="modal" data-target="#IssueHistoryDialog"
-                                        className="btn btn-sm btn-labeled btn-warning">
+                                           data-toggle="modal"
+                                           data-target={(this.state.isSelected) ? "#IssueHistoryDialog" : null}
+                                           disabled={!(this.state.isSelected)}
+                                           className="btn btn-sm btn-labeled btn-warning">
                                             <span className="btn-label">
                                                 <i className="fa fa-history"></i>
                                             </span>History
