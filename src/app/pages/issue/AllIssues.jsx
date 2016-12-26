@@ -12,13 +12,14 @@ import Select from 'react-select'
 import {HTTPService, Authorization} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
-import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
+import IssueHistoryModal from '../../../components/issue/IssueHistoryModal.jsx'
 
 let AllIssues = React.createClass({
     getInitialState: function() {
         return {
             dialogState : "",
             isSelected : false,
+            selectedHistoryData : [],
             identity: window.localStorage.getItem("title"),
             issuesList : []
         };
@@ -42,17 +43,17 @@ let AllIssues = React.createClass({
     },
     buttonEditIssue : function(){
 
-          if(this.state.selectedId){
-              for(var i = 0 ; i < this.state.issuesList.length ; i++){
-                  if(this.state.selectedId == this.state.issuesList[i].id){
-                      this.setState({
-                          dialogState : "EDIT",
-                          selectedData : JSON.stringify(this.state.issuesList[i])
-                      });
-                      break;
-                  }
-              }
-          }
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                if(this.state.selectedId == this.state.issuesList[i].id){
+                    this.setState({
+                        dialogState : "EDIT",
+                        selectedData : JSON.stringify(this.state.issuesList[i])
+                    });
+                    break;
+                }
+            }
+        }
     },
     buttonViewEvent : function() {
         var selectedId = this.state.selectedId;
@@ -63,9 +64,20 @@ let AllIssues = React.createClass({
                 this.setState({
                     dialogState : "VIEW",
                     selectedData : JSON.stringify(issuesList[i])
-                });
+                }.bind(this));
                 break;
             }
+        }
+    },
+    buttonViewHistory : function(){
+
+        if(this.state.isSelected){
+            HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
+
+                this.setState({
+                    selectedHistoryData : (res.data.length > 0) ? (JSON.stringify(res.data)) : ([])
+                });
+            }.bind(this))
         }
     },
     buttonExportCSV: function(){
@@ -158,11 +170,13 @@ let AllIssues = React.createClass({
             <div id="content">
 
                 <IssueDialogModal
-                  dialogState={this.state.dialogState}
-                  data={this.state.selectedData}
-                  fetchData={this.fetchIssues}
+                    dialogState={this.state.dialogState}
+                    data={this.state.selectedData}
+                    fetchData={this.fetchIssues}
                 />
-                <IssueHistoryDialog />
+                <IssueHistoryModal
+                    data={this.state.selectedHistoryData}
+                />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -228,9 +242,9 @@ let AllIssues = React.createClass({
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
+                                        <a onClick={this.buttonViewHistory}
                                            data-toggle="modal"
-                                           data-target={(this.state.isSelected) ? "#IssueHistoryDialog" : null}
+                                           data-target={(this.state.isSelected) ? "#IssueHistoryModal" : null}
                                            disabled={!(this.state.isSelected)}
                                            className="btn btn-sm btn-labeled btn-warning">
                                             <span className="btn-label">

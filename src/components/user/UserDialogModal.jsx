@@ -223,7 +223,7 @@ export default class UserDialogModal extends Component {
         return (
           <div>
               <div className="modal fade" id="UserDialogModal" tabIndex="-1" role="dialog" aria-labelledby="UserDialogModal" aria-hidden="true">
-                  <div className="modal-dialog" style={{ width: "50%" }}>
+                  <div className="modal-dialog" >
                       <div className="modal-content" style={{ padding: "10px" }}>
                           <WidgetGrid>
                               <UiValidate options={validationOptions}>

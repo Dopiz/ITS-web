@@ -12,7 +12,8 @@ import Select from 'react-select'
 import {HTTPService} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
-import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
+import IssueHistoryModal from '../../../components/issue/IssueHistoryModal.jsx'
+import IssueChangeStatusModal from '../../../components/issue/IssueChangeStatusModal.jsx'
 
 let NewIssues = React.createClass({
     getInitialState: function() {
@@ -20,6 +21,7 @@ let NewIssues = React.createClass({
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             isSelected : false,
+            isAcceptable : false,
             identity: window.localStorage.getItem("title"),
             issuesList : []
         };
@@ -28,7 +30,6 @@ let NewIssues = React.createClass({
         this.fetchNewIssues();
     },
     fetchNewIssues : function(){
-
         HTTPService.get("issue/getIssues?status='New'", function(res){
             this.setState({
                 issuesList : res.data
@@ -43,34 +44,43 @@ let NewIssues = React.createClass({
     },
     buttonEditIssue : function(){
 
-          if(this.state.selectedId){
-              for(var i = 0 ; i < this.state.issuesList.length ; i++){
-                  if(this.state.selectedId == this.state.issuesList[i].id){
-                      this.setState({
-                          dialogState : "EDIT",
-                          selectedData : JSON.stringify(this.state.issuesList[i])
-                      });
-                      break;
-                  }
-              }
-          }
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                if(this.state.selectedId == this.state.issuesList[i].id){
+                    this.setState({
+                        dialogState : "EDIT",
+                        selectedData : JSON.stringify(this.state.issuesList[i])
+                    });
+                    break;
+                }
+            }
+        }
     },
     buttonViewEvent : function() {
-      var selectedId = this.state.selectedId;
-      var issuesList = this.state.issuesList;
-      for(var i=0; i<issuesList.length ,selectedId; i++){
+        var selectedId = this.state.selectedId;
+        var issuesList = this.state.issuesList;
+        for(var i=0; i< issuesList.length ,selectedId; i++){
 
-          if(selectedId == issuesList[i].id){
-              this.setState({
-                  dialogState : "VIEW",
-                  selectedData : JSON.stringify(issuesList[i])
-              });
-              break;
-          }
-      }
+            if(selectedId == issuesList[i].id){
+                this.setState({
+                    dialogState : "VIEW",
+                    selectedData : JSON.stringify(issuesList[i])
+                });
+                break;
+            }
+        }
     },
     buttonAcceptIssue : function(){
-
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                if(this.state.selectedId == this.state.issuesList[i].id){
+                    this.setState({
+                        selectedData : JSON.stringify(this.state.issuesList[i])
+                    });
+                    break;
+                }
+            }
+        }
     },
     buttonExportCSV: function(){
         this.refs.tbl_allIssuesList.handleExportCSV();
@@ -79,11 +89,13 @@ let NewIssues = React.createClass({
         if (!isSelected) {
             this.setState({
                 selectedId: "",
+                isAcceptable : false,
                 isSelected: isSelected
             });
         } else {
             this.setState({
                 selectedId: row.id,
+                isAcceptable : (row.developer_id == window.localStorage.getItem("id"))?true:false,
                 isSelected: isSelected
             });
         }
@@ -96,26 +108,6 @@ let NewIssues = React.createClass({
             fontSize:"5px",
             margin:"0px 7px 0px 7px"
         };
-
-        function statusFormatter(cell, row){
-            switch (cell) {
-                case "New" :
-                    return '<span class="center-block padding-5 label btn-info">'+ cell +'</span>';
-                    break;
-                case "Development" :
-                    return '<span class="center-block padding-5 label btn-primary">'+ "In Progress" +'</span>';
-                    break;
-                case "Testing" :
-                    return '<span class="center-block padding-5 label btn-warning">'+ "In QA" +'</span>';
-                    break;
-                case "Done" :
-                    return '<span class="center-block padding-5 label btn-success">'+ cell +'</span>';
-                    break;
-                case "Closed" :
-                    return '<span class="center-block padding-5 label btn-danger">'+ cell +'</span>';
-                    break;
-            }
-        }
 
         function priorityFormatter(cell, row){
             switch (cell) {
@@ -161,12 +153,20 @@ let NewIssues = React.createClass({
         return (
             <div id="content">
 
-              <IssueDialogModal
-                dialogState={this.state.dialogState}
-                data={this.state.selectedData}
-                fetchData={this.fetchUsers}
+              <IssueChangeStatusModal
+                  title="Accept Issue"
+                  data={this.state.selectedData}
+                  status="New"
+                  action="Accept"
+                  fetchData={this.fetchNewIssues}
               />
-              <IssueHistoryDialog />
+
+              <IssueDialogModal
+                  dialogState={this.state.dialogState}
+                  data={this.state.selectedData}
+                  fetchData={this.fetchNewIssues}
+              />
+              <IssueHistoryModal />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -234,7 +234,7 @@ let NewIssues = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
                                         <a onClick={this.buttonViewEvent}
                                            data-toggle="modal"
-                                           data-target={(this.state.isSelected) ? "#IssueHistoryDialog" : null}
+                                           data-target={(this.state.isSelected) ? "#IssueHistoryModal" : null}
                                            disabled={!(this.state.isSelected)}
                                            className="btn btn-sm btn-labeled btn-warning">
                                             <span className="btn-label">
@@ -247,7 +247,7 @@ let NewIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Accept Issue </Popover> }>
-                                        <a onClick={this.buttonAcceptIssue}  className="btn btn-sm btn-default"  >
+                                        <a onClick={this.buttonAcceptIssue} disabled={!(this.state.isAcceptable)} className="btn btn-sm btn-default" data-toggle="modal" data-target={(this.state.isAcceptable)?("#IssueChangeStatusModal"):null}>
                                             <i className="fa fa-check"></i>
                                         </a>
                                     </OverlayTrigger>
@@ -279,15 +279,14 @@ let NewIssues = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allIssuesList" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="owner_name" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="tester_name" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="developer_name" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="tester_name" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='120' dataField="create_date" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='120' dataField="due_date" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>

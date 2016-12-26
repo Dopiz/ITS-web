@@ -12,7 +12,7 @@ import Select from 'react-select'
 import {HTTPService} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
-import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx'
+import IssueHistoryModal from '../../../components/issue/IssueHistoryModal.jsx'
 
 let TestingIssues = React.createClass({
     getInitialState: function() {
@@ -165,7 +165,7 @@ let TestingIssues = React.createClass({
                 data={this.state.selectedData}
                 fetchData={this.fetchUsers}
               />
-              <IssueHistoryDialog />
+              <IssueHistoryModal />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -217,7 +217,7 @@ let TestingIssues = React.createClass({
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
                                         <a onClick={this.buttonViewEvent}
                                            data-toggle="modal"
-                                           data-target={(this.state.isSelected) ? "#IssueHistoryDialog" : null}
+                                           data-target={(this.state.isSelected) ? "#IssueHistoryModal" : null}
                                            disabled={!(this.state.isSelected)}
                                            className="btn btn-sm btn-labeled btn-warning">
                                             <span className="btn-label">

@@ -138,7 +138,7 @@ export default class ProjectDialogModal extends Component {
         return (
             <div>
                 <div className="modal fade" id="ProjectDialogModal" tabIndex="-1" role="dialog" aria-labelledby="ProjectDialogModal" aria-hidden="true">
-                    <div className="modal-dialog" style={{width:"50%"}}>
+                    <div className="modal-dialog">
                         <div className="modal-content" style={{padding:"10px"}}>
                             <WidgetGrid>
                             <UiValidate options={validationOptions}>

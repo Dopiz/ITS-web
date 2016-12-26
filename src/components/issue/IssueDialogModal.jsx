@@ -73,7 +73,7 @@ export default class IssueDialogModal extends Component {
                     tester : data.tester_id,
                     description : data.description,
                     dueDate : data.due_date,
-                    imageURL : data.imageURL,
+                    imageURL : data.image,
                     formClassName : "none",
                     formTextareaClassName : "none"
                 }, function(){
@@ -93,7 +93,7 @@ export default class IssueDialogModal extends Component {
                     tester : data.tester_id,
                     description : data.description,
                     dueDate : data.due_date,
-                    imageURL : data.imageURL,
+                    imageURL : data.image,
                     formClassName : "none",
                     formTextareaClassName : "none"
                 }, function(){
@@ -165,12 +165,12 @@ export default class IssueDialogModal extends Component {
             tester_id : this.state.tester,
             description :this.state.description,
             due_date : this.state.dueDate,
-            image : this.state.imageURL
+            image : this.state.imageURL,
+            owner_id : window.localStorage.getItem('id'),
+            owner_name : window.localStorage.getItem("name")
         }
 
         if (this.props.dialogState == "NEW") {
-            body.owner_id = window.localStorage.getItem('id');
-
             HTTPService.post('issue/addIssue', body, function(res) {
                 $('#IssueDialogModal').modal('hide');
                 this.props.fetchData();
@@ -291,7 +291,7 @@ export default class IssueDialogModal extends Component {
         return (
             <div>
                 <div className="modal fade" id="IssueDialogModal" tabIndex="-1" role="dialog" aria-labelledby="IssueDialogModal" aria-hidden="true">
-                    <div className="modal-dialog" style={{width: "50%"}}>
+                    <div className="modal-dialog">
                         <div className="modal-content" style={{padding: "10px"}}>
                             <WidgetGrid>
                                 <UiValidate options={validationOptions}>
