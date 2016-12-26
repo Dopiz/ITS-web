@@ -30,14 +30,8 @@ let DoneIssues = React.createClass({
     fetchDoneIssues : function(){
 
         HTTPService.get('issue/getIssues', function(res){
-            var dataList = [];
-            for(var i = 0; i < res.data.length; i++) {
-              if(res.data[i].status == 'Done')
-                  dataList.push(res.data[i])
-            }
-
             this.setState({
-                issuesList : dataList
+                issuesList : res.data
             })
 
         }.bind(this));

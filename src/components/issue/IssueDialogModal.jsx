@@ -157,7 +157,6 @@ export default class IssueDialogModal extends Component {
 
         var body = {
             id : this.state.id,
-            owner_id : window.localStorage.getItem('id'),
             title : this.state.title,
             priority : this.state.priority,
             type : this.state.type,
@@ -165,14 +164,13 @@ export default class IssueDialogModal extends Component {
             developer_id : this.state.developer,
             tester_id : this.state.tester,
             description :this.state.description,
-            create_date : '2016-12-25',
             due_date : this.state.dueDate,
             image : this.state.imageURL
         }
 
-        console.log(body);
-
         if (this.props.dialogState == "NEW") {
+            body.owner_id = window.localStorage.getItem('id');
+
             HTTPService.post('issue/addIssue', body, function(res) {
                 $('#IssueDialogModal').modal('hide');
                 this.props.fetchData();
@@ -180,6 +178,10 @@ export default class IssueDialogModal extends Component {
 
         } else if (this.props.dialogState == "EDIT") {
 
+            HTTPService.post('issue/updateIssue', body, function(res) {
+                $('#IssueDialogModal').modal('hide');
+                this.props.fetchData();
+            }.bind(this));
         }
 
         return ;

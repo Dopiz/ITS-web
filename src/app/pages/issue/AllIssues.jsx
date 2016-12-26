@@ -17,13 +17,9 @@ import IssueHistoryDialog from '../../../components/issue/IssueHistoryDialog.jsx
 let AllIssues = React.createClass({
     getInitialState: function() {
         return {
-            // startDate : moment().startOf('day'),
-            // endDate : moment().endOf('day'),
             dialogState : "",
             isSelected : false,
             identity: window.localStorage.getItem("title"),
-            startDate : moment().startOf('day'),
-            endDate : moment().endOf('day'),
             issuesList : []
         };
     },
@@ -33,7 +29,6 @@ let AllIssues = React.createClass({
     fetchIssues : function(){
 
         HTTPService.get('issue/getIssues', function(res){
-
             this.setState({
                 issuesList : res.data
             })
@@ -60,18 +55,18 @@ let AllIssues = React.createClass({
           }
     },
     buttonViewEvent : function() {
-      var selectedId = this.state.selectedId;
-      var issuesList = this.state.issuesList;
-      for(var i=0; i<issuesList.length ,selectedId; i++){
+        var selectedId = this.state.selectedId;
+        var issuesList = this.state.issuesList;
+        for(var i=0; i<issuesList.length ,selectedId; i++){
 
-          if(selectedId == issuesList[i].id){
-              this.setState({
-                  dialogState : "VIEW",
-                  selectedData : JSON.stringify(issuesList[i])
-              });
-              break;
-          }
-      }
+            if(selectedId == issuesList[i].id){
+                this.setState({
+                    dialogState : "VIEW",
+                    selectedData : JSON.stringify(issuesList[i])
+                });
+                break;
+            }
+        }
     },
     buttonExportCSV: function(){
         this.refs.tbl_allIssuesList.handleExportCSV();
@@ -165,7 +160,7 @@ let AllIssues = React.createClass({
                 <IssueDialogModal
                   dialogState={this.state.dialogState}
                   data={this.state.selectedData}
-                  fetchData={this.fetchUsers}
+                  fetchData={this.fetchIssues}
                 />
                 <IssueHistoryDialog />
 
@@ -277,11 +272,11 @@ let AllIssues = React.createClass({
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="owner_id" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="tester_id" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="developer_id" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="create_Date" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="due_Date" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="owner_name" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="tester_name" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="developer_name" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="create_date" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="due_date" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>

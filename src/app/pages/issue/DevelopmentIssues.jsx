@@ -29,17 +29,10 @@ let DevelopmentIssues = React.createClass({
     },
     fetchDevelopmentIssues : function(){
 
-        HTTPService.get('issue/getIssues', function(res){
-            var dataList = [];
-            for(var i = 0; i < res.data.length; i++) {
-              if(res.data[i].status == 'Development')
-                  dataList.push(res.data[i])
-            }
-
+        HTTPService.get("issue/getIssues?status='Development'", function(res){
             this.setState({
-                issuesList : dataList
+                issuesList : res.data
             })
-
         }.bind(this));
     },
     buttonEditIssue : function(){
@@ -270,11 +263,11 @@ let DevelopmentIssues = React.createClass({
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="owner" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="tester" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="developer" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="createDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="dueDate" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="owner_name" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="tester_name" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="developer_name" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="create_date" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="due_date" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>
