@@ -42,8 +42,19 @@ let ClosedIssues = React.createClass({
 
         }.bind(this));
     },
-    buttonViewIssue : function(){
+    buttonViewEvent : function() {
+      var selectedId = this.state.selectedId;
+      var issuesList = this.state.issuesList;
+      for(var i=0; i<issuesList.length ,selectedId; i++){
 
+          if(selectedId == issuesList[i].id){
+              this.setState({
+                  dialogState : "VIEW",
+                  selectedData : JSON.stringify(issuesList[i])
+              });
+              break;
+          }
+      }
     },
     buttonViewHistory : function(){
 
@@ -137,8 +148,12 @@ let ClosedIssues = React.createClass({
         return (
             <div id="content">
 
-                <IssueDialogModal />
-                <IssueHistoryDialog />
+              <IssueDialogModal
+                dialogState={this.state.dialogState}
+                data={this.state.selectedData}
+                fetchData={this.fetchUsers}
+              />
+              <IssueHistoryDialog />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>

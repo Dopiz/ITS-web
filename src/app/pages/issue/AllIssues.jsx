@@ -47,9 +47,31 @@ let AllIssues = React.createClass({
     },
     buttonEditIssue : function(){
 
+          if(this.state.selectedId){
+              for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                  if(this.state.selectedId == this.state.issuesList[i].id){
+                      this.setState({
+                          dialogState : "EDIT",
+                          selectedData : JSON.stringify(this.state.issuesList[i])
+                      });
+                      break;
+                  }
+              }
+          }
     },
-    butoonViewEvent : function(){
+    buttonViewEvent : function() {
+      var selectedId = this.state.selectedId;
+      var issuesList = this.state.issuesList;
+      for(var i=0; i<issuesList.length ,selectedId; i++){
 
+          if(selectedId == issuesList[i].id){
+              this.setState({
+                  dialogState : "VIEW",
+                  selectedData : JSON.stringify(issuesList[i])
+              });
+              break;
+          }
+      }
     },
     buttonExportCSV: function(){
         this.refs.tbl_allIssuesList.handleExportCSV();
@@ -141,7 +163,9 @@ let AllIssues = React.createClass({
             <div id="content">
 
                 <IssueDialogModal
-                    dialogState = {this.state.dialogState}
+                  dialogState={this.state.dialogState}
+                  data={this.state.selectedData}
+                  fetchData={this.fetchUsers}
                 />
                 <IssueHistoryDialog />
 

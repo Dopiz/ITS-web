@@ -43,6 +43,7 @@ export default class IssueDialogModal extends Component {
         switch(nextProps.dialogState){
             case 'NEW' :
                 this.setState({
+                    isViewState : false,
                     id : "",
                     title : "",
                     priority : "",
@@ -62,7 +63,39 @@ export default class IssueDialogModal extends Component {
             case 'EDIT' :
                 var data = JSON.parse(nextProps.data);
                 this.setState({
-
+                    isViewState : false,
+                    id : data.id,
+                    title : data.title,
+                    priority : data.priority,
+                    type : data.type,
+                    project : data.project_id,
+                    developer : data.developer_id,
+                    tester : data.tester_id,
+                    description : data.description,
+                    dueDate : data.due_date,
+                    imageURL : data.imageURL,
+                    formClassName : "none",
+                    formTextareaClassName : "none"
+                }, function(){
+                      this.hideErrorMessage();
+                });
+            break;
+            case 'VIEW' :
+                var data = JSON.parse(nextProps.data);
+                this.setState({
+                    isViewState : true,
+                    id : data.id,
+                    title : data.title,
+                    priority : data.priority,
+                    type : data.type,
+                    project : data.project_id,
+                    developer : data.developer_id,
+                    tester : data.tester_id,
+                    description : data.description,
+                    dueDate : data.due_date,
+                    imageURL : data.imageURL,
+                    formClassName : "none",
+                    formTextareaClassName : "none"
                 }, function(){
                       this.hideErrorMessage();
                 });
@@ -139,15 +172,15 @@ export default class IssueDialogModal extends Component {
 
         console.log(body);
 
-        if(this.props.dialogState == 'NEW'){
-            HTTPService.post('issue/addIssue', body, function(res){
-                console.log(res);
-            })
-        }else{
+        if (this.props.dialogState == "NEW") {
+            HTTPService.post('issue/addIssue', body, function(res) {
+                $('#IssueDialogModal').modal('hide');
+                this.props.fetchData();
+            }.bind(this));
+
+        } else if (this.props.dialogState == "EDIT") {
 
         }
-
-
 
         return ;
     }
@@ -267,7 +300,9 @@ export default class IssueDialogModal extends Component {
                                                 &times;
                                             </button>
                                             <h1 className="modal-title" id="myModalLabel">
-                                                Create Issue
+                                              {(this.props.dialogState == "NEW") ?
+                                                  ("Create Issue") : (this.props.dialogState == "EDIT") ?
+                                                      ("Edit Issue") : ("View Issue")}
                                             </h1>
                                         </header>
 
@@ -283,7 +318,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Priority</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="priority" id='priority' className="form-control" onChange={this.handleChange.bind(this, 'priority')} value={this.state.priority}>
+                                                    <select name="priority" id='priority' className="form-control" onChange={this.handleChange.bind(this, 'priority')} value={this.state.priority} disabled={this.state.isViewState}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.priorityOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
@@ -295,7 +330,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Type</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="type" id='type' className="form-control" onChange={this.handleChange.bind(this, 'type')} value={this.state.type}>
+                                                    <select name="type" id='type' className="form-control" onChange={this.handleChange.bind(this, 'type')} value={this.state.type} disabled={this.state.isViewState}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.typeOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
@@ -307,7 +342,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Project</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="project" id='project' className="form-control" value={this.state.project} onChange={this.handleChange.bind(this, 'project')}>
+                                                    <select name="project" id='project' className="form-control" value={this.state.project} onChange={this.handleChange.bind(this, 'project')} disabled={this.state.isViewState}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.projectOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
@@ -319,7 +354,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Developer</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="developer" id='developer' className="form-control" onChange={this.handleChange.bind(this, 'developer')} value={this.state.developer}>
+                                                    <select name="developer" id='developer' className="form-control" onChange={this.handleChange.bind(this, 'developer')} value={this.state.developer} disabled={this.state.isViewState}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.devOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
@@ -331,7 +366,7 @@ export default class IssueDialogModal extends Component {
                                             <section>
                                                 <label className="label">Tester</label>
                                                 <label className={this.state.formClassName}>
-                                                    <select name="tester" id='tester' className="form-control" onChange={this.handleChange.bind(this, 'tester')} value={this.state.tester}>
+                                                    <select name="tester" id='tester' className="form-control" onChange={this.handleChange.bind(this, 'tester')} value={this.state.tester} disabled={this.state.isViewState}>
                                                         <option disabled hidden value="">Choose here...</option>
                                                         {this.state.testerOptions.map((item, index) => (
                                                             <option value={item.value} key={index}>{item.label}</option>
@@ -352,7 +387,7 @@ export default class IssueDialogModal extends Component {
                                                 <label className="label">Due Date</label>
                                                 <label className="input state-success">
                                                     <i className="icon-append fa fa-calendar"></i>
-                                                    <input type="date" name="dueDate" id="dueDate" value={this.state.dueDate}  onChange={this.handleChange.bind(this, 'dueDate')} placeholder="Expected finish date" className="hasDatepicker valid"/>
+                                                    <input type="date" name="dueDate" id="dueDate" value={this.state.dueDate}  onChange={this.handleChange.bind(this, 'dueDate')} placeholder="Expected finish date" className="hasDatepicker valid" disabled={this.state.isViewState}/>
                                                 </label>
                                             </section>
 

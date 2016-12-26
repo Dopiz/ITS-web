@@ -44,9 +44,31 @@ let DevelopmentIssues = React.createClass({
     },
     buttonEditIssue : function(){
 
+          if(this.state.selectedId){
+              for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                  if(this.state.selectedId == this.state.issuesList[i].id){
+                      this.setState({
+                          dialogState : "EDIT",
+                          selectedData : JSON.stringify(this.state.issuesList[i])
+                      });
+                      break;
+                  }
+              }
+          }
     },
-    butoonViewEvent : function(){
+    buttonViewEvent : function() {
+      var selectedId = this.state.selectedId;
+      var issuesList = this.state.issuesList;
+      for(var i=0; i<issuesList.length ,selectedId; i++){
 
+          if(selectedId == issuesList[i].id){
+              this.setState({
+                  dialogState : "VIEW",
+                  selectedData : JSON.stringify(issuesList[i])
+              });
+              break;
+          }
+      }
     },
     buttonFinishIssue : function(){
 
@@ -140,8 +162,12 @@ let DevelopmentIssues = React.createClass({
         return (
             <div id="content">
 
-                <IssueDialogModal />
-                <IssueHistoryDialog />
+              <IssueDialogModal
+                dialogState={this.state.dialogState}
+                data={this.state.selectedData}
+                fetchData={this.fetchUsers}
+              />
+              <IssueHistoryDialog />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
