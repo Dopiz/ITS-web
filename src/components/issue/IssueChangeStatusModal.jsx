@@ -22,7 +22,7 @@ export default class IssueChangeStatusModal extends Component {
 
         var data = (nextProps.data)?(JSON.parse(nextProps.data)) : [];
         var user_id, user_name;
-
+        
         switch(nextProps.status){
             case 'New' :
                 user_id = data.developer_id;
@@ -47,6 +47,11 @@ export default class IssueChangeStatusModal extends Component {
             issue_id : (data.id)?(data.id):"",
             user_id : user_id,
             user_name : user_name,
+            owner_id : data.owner_id,
+            developer_id : data.developer_id,
+            tester_id : data.tester_id ,
+            project_name : data.project_name,
+            title : data.title,
             formTextareaClassName : "none"
         }, function(){
             this.setState({
@@ -66,7 +71,12 @@ export default class IssueChangeStatusModal extends Component {
             user_id : this.state.user_id,
             user_name : this.state.user_name,
             comment : this.state.comment,
-            action : this.props.action
+            action : this.props.action,
+            owner_id : this.state.owner_id,
+            developer_id : this.state.developer_id,
+            tester_id : this.state.tester_id ,
+            project_name : this.state.project_name,
+            title : this.state.title
         }
 
         HTTPService.post('issue/changeStatus', body, function(res){

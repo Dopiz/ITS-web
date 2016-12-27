@@ -28,7 +28,6 @@ let AllIssues = React.createClass({
         this.fetchIssues();
     },
     fetchIssues : function(){
-
         HTTPService.get('issue/getIssues', function(res){
             this.setState({
                 issuesList : res.data
@@ -69,10 +68,8 @@ let AllIssues = React.createClass({
         }
     },
     buttonViewHistory : function(){
-
         if(this.state.isSelected){
             HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
-
                 this.setState({
                     selectedHistoryData : (res.data.length) ? (JSON.stringify(res.data)) : ([])
                 });

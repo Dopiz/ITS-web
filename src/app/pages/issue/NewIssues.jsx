@@ -72,7 +72,6 @@ let NewIssues = React.createClass({
         }
     },
     buttonViewHistory : function(){
-
         if(this.state.isSelected){
             HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
 
