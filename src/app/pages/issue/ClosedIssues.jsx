@@ -20,6 +20,7 @@ let ClosedIssues = React.createClass({
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             isSelected : false,
+            selectedHistoryData : [],
             identity: window.localStorage.getItem("title"),
             issuesList : []
         };
@@ -29,7 +30,7 @@ let ClosedIssues = React.createClass({
     },
     fetchClosedIssues : function(){
 
-        HTTPService.get('issue/getIssues', function(res){
+        HTTPService.get("issue/getIssues?status='Closed'", function(res){
             this.setState({
                 issuesList : res.data
             })
@@ -52,9 +53,17 @@ let ClosedIssues = React.createClass({
     },
     buttonViewHistory : function(){
 
+        if(this.state.isSelected){
+            HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
+
+                this.setState({
+                    selectedHistoryData : (res.data.length) ? (JSON.stringify(res.data)) : ([])
+                });
+            }.bind(this))
+        }
     },
     buttonExportCSV: function(){
-        this.refs.tbl_allIssuesList.handleExportCSV();
+        this.refs.tbl_closedIssuesList.handleExportCSV();
     },
     onRowSelect: function(row, isSelected) {
         if (!isSelected) {
@@ -73,30 +82,11 @@ let ClosedIssues = React.createClass({
         this.forceUpdate();
     },
     render: function() {
+
         var arrow_style = {
             fontSize:"5px",
             margin:"0px 7px 0px 7px"
         };
-
-        function statusFormatter(cell, row){
-            switch (cell) {
-                case "New" :
-                    return '<span class="center-block padding-5 label btn-info">'+ cell +'</span>';
-                    break;
-                case "Development" :
-                    return '<span class="center-block padding-5 label btn-primary">'+ "In Progress" +'</span>';
-                    break;
-                case "Testing" :
-                    return '<span class="center-block padding-5 label btn-warning">'+ "In QA" +'</span>';
-                    break;
-                case "Done" :
-                    return '<span class="center-block padding-5 label btn-success">'+ cell +'</span>';
-                    break;
-                case "Closed" :
-                    return '<span class="center-block padding-5 label btn-danger">'+ cell +'</span>';
-                    break;
-            }
-        }
 
         function priorityFormatter(cell, row){
             switch (cell) {
@@ -143,11 +133,13 @@ let ClosedIssues = React.createClass({
             <div id="content">
 
               <IssueDialogModal
-                dialogState={this.state.dialogState}
-                data={this.state.selectedData}
-                fetchData={this.fetchUsers}
+                  dialogState={this.state.dialogState}
+                  data={this.state.selectedData}
+                  fetchData={this.fetchUsers}
               />
-              <IssueHistoryModal />
+              <IssueHistoryModal
+                  data={this.state.selectedHistoryData}
+              />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -220,18 +212,17 @@ let ClosedIssues = React.createClass({
 
                                 <div>
                                     <div className="widget-body">
-                                        <BootstrapTable ref="tbl_allIssuesList" selectRow={selectRowProp} csvFileName="allIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hide="true" dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                        <BootstrapTable ref="tbl_closedIssuesList" selectRow={selectRowProp} csvFileName="closedIssues.csv" data={this.state.issuesList} options={datatable_options} striped={true} hover={true} pagination>
+                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project">  <Msg phrase="Project" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="title" dataSort={true} csvHeader="Title">  <Msg phrase="Title" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='100' dataField="type" dataSort={true} csvHeader="Type">  <Msg phrase="Type" />  </TableHeaderColumn>
                                             <TableHeaderColumn width='140' dataField="priority" dataFormat={priorityFormatter} filter={priorityFilter} dataSort={true} csvHeader="Priority">  <Msg phrase="Priority" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='130' dataField="status" dataFormat={statusFormatter} dataSort={true} csvHeader="Status">  <Msg phrase="Status" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="owner" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="tester" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="developer" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="createDate" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='120' dataField="dueDate" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="owner_name" dataSort={true} csvHeader="Owner">  <Msg phrase="Owner" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="developer_name" dataSort={true} csvHeader="Developer">  <Msg phrase="Developer" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='100' dataField="tester_name" dataSort={true} csvHeader="Tester">  <Msg phrase="Tester" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="create_date" dataSort={true} csvHeader="Created Date">  <Msg phrase="Created Date" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='120' dataField="due_date" dataSort={true} csvHeader="Due Date">  <Msg phrase="Due Date" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>
