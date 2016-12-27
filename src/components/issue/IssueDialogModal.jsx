@@ -14,6 +14,7 @@ import {HTTPService} from '../../services/index.js'
 export default class IssueDialogModal extends Component {
 
     constructor(props) {
+      
         super(props);
 
         this.state = {
