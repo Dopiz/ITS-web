@@ -17,8 +17,7 @@ export default class IssueHistoryModal extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-
-        var data = (nextProps.data.length > 0) ? (JSON.parse(nextProps.data)) : ([]);
+        var data = (nextProps.data.length) ? (JSON.parse(nextProps.data)) : ([]) ;
         this.setState({
             historyList : data
         })

@@ -56,16 +56,15 @@ let AllIssues = React.createClass({
         }
     },
     buttonViewEvent : function() {
-        var selectedId = this.state.selectedId;
-        var issuesList = this.state.issuesList;
-        for(var i=0; i<issuesList.length ,selectedId; i++){
-
-            if(selectedId == issuesList[i].id){
-                this.setState({
-                    dialogState : "VIEW",
-                    selectedData : JSON.stringify(issuesList[i])
-                }.bind(this));
-                break;
+        if(this.state.selectedId){
+            for(var i = 0 ; i < this.state.issuesList.length ; i++){
+                if(this.state.selectedId == this.state.issuesList[i].id){
+                    this.setState({
+                        dialogState : "VIEW",
+                        selectedData : JSON.stringify(this.state.issuesList[i])
+                    });
+                    break;
+                }
             }
         }
     },
@@ -75,7 +74,7 @@ let AllIssues = React.createClass({
             HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
 
                 this.setState({
-                    selectedHistoryData : (res.data.length > 0) ? (JSON.stringify(res.data)) : ([])
+                    selectedHistoryData : (res.data.length) ? (JSON.stringify(res.data)) : ([])
                 });
             }.bind(this))
         }

@@ -78,6 +78,7 @@ export default class IssueDialogModal extends Component {
                     formTextareaClassName : "none"
                 }, function(){
                       this.hideErrorMessage();
+                      this.fetchUsers(data.project_id);
                 });
             break;
             case 'VIEW' :
@@ -98,6 +99,7 @@ export default class IssueDialogModal extends Component {
                     formTextareaClassName : "none"
                 }, function(){
                       this.hideErrorMessage();
+                      this.fetchUsers(data.project_id);
                 });
             break;
         }
@@ -387,16 +389,17 @@ export default class IssueDialogModal extends Component {
 
                                             <section>
                                                 <label className="label">Due Date</label>
-                                                <label className="input state-success">
+                                                <label className={this.state.formClassName}>
                                                     <i className="icon-append fa fa-calendar"></i>
-                                                    <input type="date" name="dueDate" id="dueDate" value={this.state.dueDate}  onChange={this.handleChange.bind(this, 'dueDate')} placeholder="Expected finish date" className="hasDatepicker valid" disabled={this.state.isViewState}/>
+                                                    <input type="date" name="dueDate" id="dueDate" value={this.state.dueDate}  onChange={this.handleChange.bind(this, 'dueDate')} placeholder="Expected finish date" className="hasDatepicker valid" disabled={this.state.isViewState} style={input_style}/>
                                                 </label>
                                             </section>
 
                                             <section>
                                                 <label className="label">Picture</label>
                                                 <Dropzone
-                                                    onDrop={this.handleUploadImage.bind(this)} //<= Here
+                                                    onDrop={this.handleUploadImage.bind(this)}
+                                                    disableClick = {this.state.isViewState}
                                                     accept="image/*"
                                                     className='dropzone'
                                                     activeClassName='active-dropzone'
