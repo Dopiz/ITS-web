@@ -14,6 +14,7 @@ import {HTTPService} from '../../services/index.js'
 export default class IssueDialogModal extends Component {
 
     constructor(props) {
+
         super(props);
 
         this.state = {
@@ -112,10 +113,23 @@ export default class IssueDialogModal extends Component {
             formClassName : "input",
             formTextareaClassName : "textarea"
         }, function(){
-            if(document.getElementById( "project_name-error"))
-                document.getElementById( "project_name-error").style.display = "none";
-            if(document.getElementById( "project_description-error"))
-                document.getElementById( "project_description-error").style.display = "none";
+            if(document.getElementById( "title-error"))
+                document.getElementById( "title-error").style.display = "none";
+            if(document.getElementById( "priority-error"))
+                document.getElementById( "priority-error").style.display = "none";
+            if(document.getElementById( "type-error"))
+                document.getElementById( "type-error").style.display = "none";
+            if(document.getElementById( "project-error"))
+                document.getElementById( "project-error").style.display = "none";
+            if(document.getElementById( "developer-error"))
+                document.getElementById( "developer-error").style.display = "none";
+            if(document.getElementById( "tester-error"))
+                document.getElementById( "tester-error").style.display = "none";
+            if(document.getElementById( "description-error"))
+                document.getElementById( "description-error").style.display = "none";
+            if(document.getElementById( "dueDate-error"))
+                document.getElementById( "dueDate-error").style.display = "none";
+
         })
     }
 
@@ -169,7 +183,10 @@ export default class IssueDialogModal extends Component {
             due_date : this.state.dueDate,
             image : this.state.imageURL,
             owner_id : window.localStorage.getItem('id'),
-            owner_name : window.localStorage.getItem("name")
+            owner_name : window.localStorage.getItem("name"),
+            project_name : this.state.project_name,
+            developer_name : this.state.developer_name,
+            tester_name : this.state.tester_name
         }
 
         if (this.props.dialogState == "NEW") {
@@ -195,7 +212,38 @@ export default class IssueDialogModal extends Component {
         switch(item_name){
             case 'project' :
                 this.fetchUsers(event.target.value);
+                this.state.projectOptions.some(function(item) {
+                    if(item.value == event.target.value){
+                        this.setState({
+                            project_name : item.label
+                        }, function(){
+                            return true;
+                        })
+                    }
+                }.bind(this));
             break ;
+            case 'developer' :
+                this.state.devOptions.some(function(item) {
+                    if(item.value == event.target.value){
+                        this.setState({
+                            developer_name : item.label
+                        }, function(){
+                            return true;
+                        })
+                    }
+                }.bind(this));
+            break;
+            case 'tester' :
+                this.state.testerOptions.some(function(item) {
+                    if(item.value == event.target.value){
+                        this.setState({
+                            tester_name : item.label
+                        }, function(){
+                            return true;
+                        })
+                    }
+                }.bind(this));
+            break;
         }
 
         var nextState = {};
@@ -381,7 +429,7 @@ export default class IssueDialogModal extends Component {
 
                                             <section>
                                                 <label className="label">Description</label>
-                                                <label className="textarea {this.state.formTextareaClassName}">
+                                                <label className={this.state.formTextareaClassName}>
                                                     <textarea rows="3" type="text" id='description' name='description' value={this.state.description} onChange={this.handleChange.bind(this, 'description')} placeholder="Description" disabled={this.state.isViewState} style={input_style}/>
                                                     <b className="tooltip tooltip-bottom-right">Enter Issue Description</b>
                                                 </label>

@@ -22,6 +22,7 @@ let NewIssues = React.createClass({
             endDate : moment().endOf('day'),
             isSelected : false,
             isAcceptable : false,
+            selectedHistoryData : [],
             identity: window.localStorage.getItem("title"),
             issuesList : []
         };
@@ -68,6 +69,16 @@ let NewIssues = React.createClass({
                 });
                 break;
             }
+        }
+    },
+    buttonViewHistory : function(){
+        if(this.state.isSelected){
+            HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
+
+                this.setState({
+                    selectedHistoryData : (res.data.length) ? (JSON.stringify(res.data)) : ([])
+                });
+            }.bind(this))
         }
     },
     buttonAcceptIssue : function(){
@@ -166,7 +177,9 @@ let NewIssues = React.createClass({
                   data={this.state.selectedData}
                   fetchData={this.fetchNewIssues}
               />
-              <IssueHistoryModal />
+              <IssueHistoryModal
+                  data={this.state.selectedHistoryData}
+              />
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -232,7 +245,7 @@ let NewIssues = React.createClass({
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
+                                        <a onClick={this.buttonViewHistory}
                                            data-toggle="modal"
                                            data-target={(this.state.isSelected) ? "#IssueHistoryModal" : null}
                                            disabled={!(this.state.isSelected)}
@@ -266,7 +279,7 @@ let NewIssues = React.createClass({
 
                                 <header>
                                     <div className="hidden-xs col-sm-2 ">
-                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Issues"/></h2>
+                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" New Issues"/></h2>
                                     </div>
                                     <div className="pull-right">
                                         <OverlayTrigger placement="top"
