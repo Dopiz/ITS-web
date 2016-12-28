@@ -164,7 +164,7 @@ let DevelopmentIssues = React.createClass({
               <IssueChangeStatusModal
                   title="Finish Issue"
                   data={this.state.selectedData}
-                  status="In Progress"
+                  status="Development"
                   action="Finish"
                   fetchData={this.fetchDevelopmentIssues}
               />
