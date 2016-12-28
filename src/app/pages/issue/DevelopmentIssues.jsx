@@ -21,6 +21,7 @@ let DevelopmentIssues = React.createClass({
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             isSelected : false,
+            isAcceptable : false,
             selectedHistoryData : [],
             identity: window.localStorage.getItem("title"),
             issuesList : []
@@ -77,7 +78,16 @@ let DevelopmentIssues = React.createClass({
         }
     },
     buttonFinishIssue : function(){
-
+      if(this.state.selectedId){
+          for(var i = 0 ; i < this.state.issuesList.length ; i++){
+              if(this.state.selectedId == this.state.issuesList[i].id){
+                  this.setState({
+                      selectedData : JSON.stringify(this.state.issuesList[i])
+                  });
+                  break;
+              }
+          }
+      }
     },
     buttonExportCSV: function(){
         this.refs.tbl_devIssuesList.handleExportCSV();
@@ -86,11 +96,13 @@ let DevelopmentIssues = React.createClass({
         if (!isSelected) {
             this.setState({
                 selectedId: "",
+                isAcceptable : false,
                 isSelected: isSelected
             });
         } else {
             this.setState({
                 selectedId: row.id,
+                isAcceptable : (row.developer_id == window.localStorage.getItem("id"))?true:false,
                 isSelected: isSelected
             });
         }
@@ -148,6 +160,14 @@ let DevelopmentIssues = React.createClass({
 
         return (
             <div id="content">
+
+              <IssueChangeStatusModal
+                  title="Finish Issue"
+                  data={this.state.selectedData}
+                  status="In Progress"
+                  action="Finish"
+                  fetchData={this.fetchDevelopmentIssues}
+              />
 
               <IssueDialogModal
                 dialogState={this.state.dialogState}
@@ -221,7 +241,7 @@ let DevelopmentIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Finish Issue </Popover> }>
-                                        <a onClick={this.buttonFinishIssue}  className="btn btn-sm btn-default"  >
+                                        <a onClick={this.buttonFinishIssue} disabled={!(this.state.isAcceptable)}  className="btn btn-sm btn-default" data-toggle="modal" data-target={(this.state.isAcceptable)?("#IssueChangeStatusModal"):null}>
                                             <i className="fa fa-check"></i>
                                         </a>
                                     </OverlayTrigger>
