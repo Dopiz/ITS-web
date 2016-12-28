@@ -209,7 +209,7 @@ let DoneIssues = React.createClass({
                                 <div className="btn-group" >
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
-                                        <a onClick={this.buttonViewEvent}
+                                        <a onClick={this.buttonViewHistory}
                                            data-toggle="modal"
                                            data-target={(this.state.isSelected) ? "#IssueHistoryModal" : null}
                                            disabled={!(this.state.isSelected)}
