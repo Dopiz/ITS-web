@@ -249,7 +249,7 @@ let DoneIssues = React.createClass({
 
                                 <header>
                                     <div className="hidden-xs col-sm-2 ">
-                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" All Issues"/></h2>
+                                        <h2><span className="widget-icon"> <i className="fa fa-table"/></span><Msg phrase=" Done Issues"/></h2>
                                     </div>
                                     <div className="pull-right">
                                         <OverlayTrigger placement="top"
