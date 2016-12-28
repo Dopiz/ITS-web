@@ -21,9 +21,6 @@ import {
     Login
 } from './pages/index.jsx'
 
-import Dashboard from './pages/dashboard/Dashboard.jsx'
-
-
 const Routes = (
     <Route>
         <Route path="/" component={Layout}>

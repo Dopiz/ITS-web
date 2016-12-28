@@ -22,13 +22,13 @@ export default class IssueChangeStatusModal extends Component {
 
         var data = (nextProps.data)?(JSON.parse(nextProps.data)) : [];
         var user_id, user_name;
-        
+
         switch(nextProps.status){
             case 'New' :
                 user_id = data.developer_id;
                 user_name = data.developer_name;
             break;
-            case 'Developer' :
+            case 'Development' :
                 user_id = data.developer_id;
                 user_name = data.developer_name;
             break;
@@ -52,6 +52,7 @@ export default class IssueChangeStatusModal extends Component {
             tester_id : data.tester_id ,
             project_name : data.project_name,
             title : data.title,
+            priority : data.priority,
             formTextareaClassName : "none"
         }, function(){
             this.setState({
@@ -76,6 +77,7 @@ export default class IssueChangeStatusModal extends Component {
             developer_id : this.state.developer_id,
             tester_id : this.state.tester_id ,
             project_name : this.state.project_name,
+            priority : this.state.priority,
             title : this.state.title
         }
 
