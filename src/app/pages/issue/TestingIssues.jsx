@@ -21,9 +21,12 @@ let TestingIssues = React.createClass({
             startDate : moment().startOf('day'),
             endDate : moment().endOf('day'),
             isSelected : false,
+            isAcceptable : false,
             selectedHistoryData : [],
             identity: window.localStorage.getItem("title"),
-            issuesList : []
+            issuesList : [],
+            changeStatusActionValue : "Finish",
+            changeStatusTitleValue : "Finish Issue"
         };
     },
     componentWillMount: function() {
@@ -77,10 +80,32 @@ let TestingIssues = React.createClass({
         }
     },
     buttonFinishIssue : function(){
-
+      if(this.state.selectedId){
+          for(var i = 0 ; i < this.state.issuesList.length ; i++){
+              if(this.state.selectedId == this.state.issuesList[i].id){
+                  this.setState({
+                      selectedData : JSON.stringify(this.state.issuesList[i]),
+                      changeStatusActionValue : "Finish",
+                      changeStatusTitleValue : "Finish Issue"
+                  });
+                  break;
+              }
+          }
+      }
     },
     buttonRejectIssue : function(){
-
+      if(this.state.selectedId){
+          for(var i = 0 ; i < this.state.issuesList.length ; i++){
+              if(this.state.selectedId == this.state.issuesList[i].id){
+                  this.setState({
+                      selectedData : JSON.stringify(this.state.issuesList[i]),
+                      changeStatusActionValue : "Reject",
+                      changeStatusTitleValue : "Reject Issue"
+                  });
+                  break;
+              }
+          }
+      }
     },
     buttonExportCSV: function(){
         this.refs.tbl_testingIssuesList.handleExportCSV();
@@ -89,11 +114,13 @@ let TestingIssues = React.createClass({
         if (!isSelected) {
             this.setState({
                 selectedId: "",
+                isAcceptable : false,
                 isSelected: isSelected
             });
         } else {
             this.setState({
                 selectedId: row.id,
+                isAcceptable : (row.tester_id == window.localStorage.getItem("id"))?true:false,
                 isSelected: isSelected
             });
         }
@@ -151,6 +178,14 @@ let TestingIssues = React.createClass({
 
         return (
             <div id="content">
+
+              <IssueChangeStatusModal
+                  title={this.state.changeStatusTitleValue}
+                  data={this.state.selectedData}
+                  status="Testing"
+                  action={this.state.changeStatusActionValue}
+                  fetchData={this.fetchTestingIssues}
+              />
 
               <IssueDialogModal
                   dialogState={this.state.dialogState}
@@ -224,13 +259,13 @@ let TestingIssues = React.createClass({
                                 <div className="btn-group">
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Finish Issue </Popover> }>
-                                        <a onClick={this.buttonFinishIssue}  className="btn btn-sm btn-default"  >
+                                        <a onClick={this.buttonFinishIssue} disabled={!(this.state.isAcceptable)}  className="btn btn-sm btn-default" data-toggle="modal" data-target={(this.state.isAcceptable)?("#IssueChangeStatusModal"):null}>
                                             <i className="fa fa-check"></i>
                                         </a>
                                     </OverlayTrigger>
                                     <OverlayTrigger placement="top"
                                         overlay={<Popover id="popover-activated-on-hover-popover"> Reject Issue </Popover> }>
-                                        <a onClick={this.buttonRejectIssue}  className="btn btn-sm btn-default"  >
+                                        <a onClick={this.buttonRejectIssue} disabled={!(this.state.isAcceptable)}  className="btn btn-sm btn-default" data-toggle="modal" data-target={(this.state.isAcceptable)?("#IssueChangeStatusModal"):null}>
                                             <i className="fa fa-reply"></i>
                                         </a>
                                     </OverlayTrigger>
