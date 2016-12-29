@@ -436,7 +436,7 @@ export default class IssueDialogModal extends Component {
                                                 </label>
                                             </section>
 
-                                            {(this.props.dialogState == "EDIT") ? "" : (
+                                            {!(this.props.dialogState == "VIEW") ? "" : (
                                             <section>
                                                 <label className="label">Create Date</label>
                                                 <label className={this.state.formClassName}>
