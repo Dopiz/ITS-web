@@ -94,6 +94,7 @@ export default class IssueDialogModal extends Component {
                     developer : data.developer_id,
                     tester : data.tester_id,
                     description : data.description,
+                    createdDate : data.create_date,
                     dueDate : data.due_date,
                     imageURL : data.image,
                     formClassName : "none",
@@ -435,6 +436,16 @@ export default class IssueDialogModal extends Component {
                                                 </label>
                                             </section>
 
+                                            {(this.props.dialogState == "EDIT") ? "" : (
+                                            <section>
+                                                <label className="label">Create Date</label>
+                                                <label className={this.state.formClassName}>
+                                                    <i className="icon-append fa fa-calendar"></i>
+                                                    <input type="date" name="createdDate" id="createdDate" value={this.state.createdDate}  onChange={this.handleChange.bind(this, 'createdDate')} placeholder="Expected finish date" className="hasDatepicker valid" disabled={this.state.isViewState} style={input_style}/>
+                                                </label>
+                                            </section>
+                                            )}
+
                                             <section>
                                                 <label className="label">Due Date</label>
                                                 <label className={this.state.formClassName}>
@@ -466,9 +477,11 @@ export default class IssueDialogModal extends Component {
                                                     <button type="button" className="btn btn-default " data-dismiss="modal">
                                                         Cancel
                                                     </button>
+                                                    {(this.props.dialogState == "VIEW") ? "" : (
                                                     <button type="submit" className="btn btn-success">
                                                         Save
                                                     </button>
+                                                    )}
                                                 </div>
                                             </footer>
                                         </section>
