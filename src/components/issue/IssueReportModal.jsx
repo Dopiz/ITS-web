@@ -100,7 +100,7 @@ export default class IssueReportModal extends Component {
                                                 <div className="col-md-7">
                                                     <PieChart
                                                         data={this.state.reportData.pieChartData}
-                                                        width={500}
+                                                        width={550}
                                                         height={550}
                                                         radius={150}
                                                         innerRadius={20}
