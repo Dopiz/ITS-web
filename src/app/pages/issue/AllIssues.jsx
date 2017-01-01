@@ -13,6 +13,7 @@ import {HTTPService, Authorization} from '../../../services/index.js'
 
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryModal from '../../../components/issue/IssueHistoryModal.jsx'
+import IssueReportModal from '../../../components/issue/IssueReportModal.jsx'
 
 let AllIssues = React.createClass({
     getInitialState: function() {
@@ -20,6 +21,7 @@ let AllIssues = React.createClass({
             dialogState : "",
             isSelected : false,
             selectedHistoryData : [],
+            selectedReportData : [],
             identity: window.localStorage.getItem("title"),
             issuesList : []
         };
@@ -72,6 +74,16 @@ let AllIssues = React.createClass({
             HTTPService.get('issue/getHistory?id=' + this.state.selectedId, function(res){
                 this.setState({
                     selectedHistoryData : (res.data.length) ? (JSON.stringify(res.data)) : ([])
+                });
+            }.bind(this))
+        }
+    },
+    buttonViewReport : function(){
+        if(this.state.isSelected){
+            HTTPService.get('issue/getReport?id=' + this.state.selectedId, function(res){
+                console.log(res);
+                this.setState({
+                    selectedReportData : (res) ? (JSON.stringify(res.data)) : ([])
                 });
             }.bind(this))
         }
@@ -174,6 +186,10 @@ let AllIssues = React.createClass({
                     data={this.state.selectedHistoryData}
                 />
 
+                <IssueReportModal
+                    data={this.state.selectedReportData}
+                />
+
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
                         <h1 className="page-title txt-color-blueDark">
@@ -246,6 +262,21 @@ let AllIssues = React.createClass({
                                             <span className="btn-label">
                                                 <i className="fa fa-history"></i>
                                             </span>History
+                                        </a>
+                                    </OverlayTrigger>
+                                </div>
+
+                                <div className="btn-group" >
+                                    <OverlayTrigger placement="top"
+                                        overlay={<Popover id="popover-activated-on-hover-popover"> View History </Popover> }>
+                                        <a onClick={this.buttonViewReport}
+                                           data-toggle="modal"
+                                           data-target={(this.state.isSelected) ? "#IssueReportModal" : null}
+                                           disabled={!(this.state.isSelected)}
+                                           className="btn btn-sm btn-labeled btn-danger">
+                                            <span className="btn-label">
+                                                <i className="fa fa-bar-chart-o"></i>
+                                            </span>Report
                                         </a>
                                     </OverlayTrigger>
                                 </div>
