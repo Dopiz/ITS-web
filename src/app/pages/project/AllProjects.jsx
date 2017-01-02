@@ -43,7 +43,7 @@ let AllProjects = React.createClass({
         })
     },
     buttonEditProject : function(){
-  
+
         if(this.state.selectedId){
             for(var i = 0 ; i < this.state.projectList.length ; i++){
                 if(this.state.selectedId == this.state.projectList[i].id){
@@ -176,9 +176,9 @@ let AllProjects = React.createClass({
                                 <div>
                                     <div className="widget-body">
                                         <BootstrapTable ref="tbl_allProjectsList" selectRow={selectRowProp} csvFileName="allProjects.csv" data={this.state.projectList} options={datatable_options} striped={true} hover={true} pagination>
-                                            <TableHeaderColumn width='100' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="project_name" dataSort={true} csvHeader="Project Name">  <Msg phrase="Project Name" />  </TableHeaderColumn>
-                                            <TableHeaderColumn width='100' dataField="project_description" dataSort={true} csvHeader="Project Description">  <Msg phrase="Project Description" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='0' dataField="id" isKey={true} hidden={true} dataSort={true} csvHeader="ID"> <Msg phrase="ID" /> </TableHeaderColumn>
+                                            <TableHeaderColumn width='200' dataField="project_name" dataSort={true} csvHeader="Project Name">  <Msg phrase="Project Name" />  </TableHeaderColumn>
+                                            <TableHeaderColumn width='500' dataField="project_description" dataSort={true} csvHeader="Project Description">  <Msg phrase="Project Description" />  </TableHeaderColumn>
                                         </BootstrapTable>
                                     </div>
                                 </div>
