@@ -14,7 +14,6 @@ import {HTTPService} from '../../../services/index.js'
 import IssueDialogModal from '../../../components/issue/IssueDialogModal.jsx'
 import IssueHistoryModal from '../../../components/issue/IssueHistoryModal.jsx'
 import IssueChangeStatusModal from '../../../components/issue/IssueChangeStatusModal.jsx'
-import IssueReportModal from '../../../components/issue/IssueReportModal.jsx'
 
 let NewIssues = React.createClass({
     getInitialState: function() {
@@ -24,7 +23,6 @@ let NewIssues = React.createClass({
             isSelected: false,
             isAcceptable: false,
             selectedHistoryData: [],
-            selectedReportData: [],
             identity: window.localStorage.getItem("title"),
             issuesList: []
         };
@@ -75,18 +73,6 @@ let NewIssues = React.createClass({
 
                 this.setState({
                     selectedHistoryData: (res.data.length)
-                        ? (JSON.stringify(res.data))
-                        : ([])
-                });
-            }.bind(this))
-        }
-    },
-    buttonViewReport: function() {
-        if (this.state.isSelected) {
-            HTTPService.get('issue/getReport?id=' + this.state.selectedId, function(res) {
-                console.log(res);
-                this.setState({
-                    selectedReportData: (res)
                         ? (JSON.stringify(res.data))
                         : ([])
                 });
@@ -177,7 +163,6 @@ let NewIssues = React.createClass({
                 <IssueChangeStatusModal title="Accept Issue" data={this.state.selectedData} status="New" action="Accept" fetchData={this.fetchNewIssues}/>
                 <IssueDialogModal dialogState={this.state.dialogState} data={this.state.selectedData} fetchData={this.fetchNewIssues}/>
                 <IssueHistoryModal data={this.state.selectedHistoryData}/>
-                <IssueReportModal data={this.state.selectedReportData}/>
 
                 <div className="row hidden-xs">
                     <div className='col-md-12 big-breadcrumbs'>
@@ -240,18 +225,6 @@ let NewIssues = React.createClass({
                                             <span className="btn-label">
                                                 <i className="fa fa-history"></i>
                                             </span>History
-                                        </a>
-                                    </OverlayTrigger>
-                                </div>
-
-                                <div className="btn-group">
-                                    <OverlayTrigger placement="top" overlay={< Popover id = "popover-activated-on-hover-popover" > View History < /Popover>}>
-                                        <a onClick={this.buttonViewReport} data-toggle="modal" data-target={(this.state.isSelected)
-                                            ? "#IssueReportModal"
-                                            : null} disabled={!(this.state.isSelected)} className="btn btn-sm btn-labeled btn-danger">
-                                            <span className="btn-label">
-                                                <i className="fa fa-bar-chart-o"></i>
-                                            </span>Report
                                         </a>
                                     </OverlayTrigger>
                                 </div>

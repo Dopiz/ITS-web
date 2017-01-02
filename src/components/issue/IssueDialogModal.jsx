@@ -31,7 +31,7 @@ export default class IssueDialogModal extends Component {
             description : "",
             dueDate : "",
             imageURL : "",
-            projectOptions : JSON.parse(window.localStorage.getItem('project')),
+            projectOptions : [],
             devOptions: [],
             testerOptions: [],
             priorityOptions : [{"label" : "Low", "value" : "Low"}, {"label" : "Medium", "value" : "Medium"}, {"label" : "High", "value" : "High"}, {"label" : "Critical", "value" : "Critical"}],
@@ -40,6 +40,9 @@ export default class IssueDialogModal extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
+      this.setState({
+        projectOptions : JSON.parse(window.localStorage.getItem('project'))
+      });
 
         switch(nextProps.dialogState){
             case 'NEW' :
