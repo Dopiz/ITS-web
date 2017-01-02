@@ -241,7 +241,7 @@ let AllIssues = React.createClass({
                                 </div>
 
                                 <div className="btn-group">
-                                    <OverlayTrigger placement="top" overlay={< Popover id = "popover-activated-on-hover-popover" > View History < /Popover>}>
+                                    <OverlayTrigger placement="top" overlay={< Popover id = "popover-activated-on-hover-popover" > View Report < /Popover>}>
                                         <a onClick={this.buttonViewReport} data-toggle="modal" data-target={(this.state.isSelected)
                                             ? "#IssueReportModal"
                                             : null} disabled={!(this.state.isSelected)} className="btn btn-sm btn-labeled btn-danger">
